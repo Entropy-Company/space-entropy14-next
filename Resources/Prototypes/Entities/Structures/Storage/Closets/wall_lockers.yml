@@ -165,9 +165,9 @@
 - type: entity
   parent: BaseWallLocker
   id: LockerWallEvacRepair
-  name: emergency shuttle emergency wall locker
-  description: It's emergencies all the way down.
+  name: evac repair wall locker
   components:
+  - type: Appearance
   - type: EntityStorageVisuals
     stateBaseClosed: eng
     stateDoorOpen: eng_open
