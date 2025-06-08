@@ -6,13 +6,13 @@ turret-controls-window-targeting-controls-label = Авторизованный �
 
 # Status reports
 turret-controls-window-no-turrets = <! Нет подключенных устройств !>
-turret-controls-window-turret-status = » {$device} - Status: {$status}
-turret-controls-window-turret-disabled = ***OFFLINE***
-turret-controls-window-turret-retracted = INACTIVE
-turret-controls-window-turret-retracting = DEACTIVATING
-turret-controls-window-turret-deployed = SEARCHING...
-turret-controls-window-turret-deploying = ACTIVATING
-turret-controls-window-turret-firing = ENGAGING TARGET
+turret-controls-window-turret-status = » {$device} - Статус: {$status}
+turret-controls-window-turret-disabled = ***ОФФЛАЙН***
+turret-controls-window-turret-retracted = ВЫКЛЮЧЕН
+turret-controls-window-turret-retracting = ДЕАКТИВАЦИЯ
+turret-controls-window-turret-deployed = ПОИСК...
+turret-controls-window-turret-deploying = АКТИВАЦИЯ
+turret-controls-window-turret-firing = ОБНАРУЖЕНА ЦЕЛЬ
 turret-controls-window-turret-error = ERROR [404]
 
 # Buttons
@@ -25,7 +25,7 @@ turret-controls-window-access-group-label = {$prefix} {$label}
 turret-controls-window-all-checkbox = Все
 
 # Flavor
-turret-controls-window-footer = Перед тем как продолжить, неавторизованный персонал должен убедиться, что средства защиты отключены.
+turret-controls-window-footer = Неавторизованным убедиться в отключении защиты перед продолжением.
 
 # Warnings
 turret-controls-access-denied = В доступе отказано.
