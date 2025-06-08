@@ -1,4 +1,4 @@
 ent-Bucket = ведро
     .desc = Скучное старое ведро.
-ent-BorgBucket = internal tank
-    .desc = The internal reservoir of a custodial cyborg, capable of holding a entire mop bucket worth of water.
+ent-BorgBucket = внутренний бак
+    .desc = Внутренний резервуар обслуживающего борга, способный вместить воды объемом целого ведра для швабры.

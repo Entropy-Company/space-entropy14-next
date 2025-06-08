@@ -1,7 +1,7 @@
 ent-FireExtinguisher = огнетушитель
     .desc = Он тушит пожары.
-ent-BorgFireExtinguisher = maneuvering jet
-    .desc = Based on fire extinguisher technology, the maneuvering jet is... well yes, its just a bigger fire extinguisher.
+ent-BorgFireExtinguisher = реактивный манёвр
+    .desc = Основан на технологии огнетушителя, реактивный манёвр — ну да, это просто увеличенный огнетушитель.
 ent-ExtinguisherSpray = струя огнетушителя
     .desc = { ent-Vapor.desc }
 ent-FireExtinguisherMini = карманный огнетушитель
