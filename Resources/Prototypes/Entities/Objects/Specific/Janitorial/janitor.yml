@@ -25,6 +25,9 @@
       collection: MetalThud
   - type: Spillable
     solution: absorbed
+    spillWhenThrown: false
+  - type: DrainableSolution
+    solution: absorbed
   - type: Wieldable
   - type: IncreaseDamageOnWield
     damage:
@@ -78,6 +81,9 @@
       soundHit:
          collection: MetalThud
     - type: Spillable
+      solution: absorbed
+      spillWhenThrown: false
+    - type: DrainableSolution
       solution: absorbed
     - type: Wieldable
     - type: IncreaseDamageOnWield
@@ -325,6 +331,9 @@
       maxFillLevels: 3
       fillBaseName: fill-
     - type: Spillable
+      solution: absorbed
+      spillWhenThrown: false
+    - type: DrainableSolution
       solution: absorbed
     - type: MeleeWeapon
       soundNoDamage:
