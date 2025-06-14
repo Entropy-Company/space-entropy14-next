@@ -658,5 +658,5 @@ binds:
   key: F
 - function: ToggleStanding # _CorvaxNext-edit Laying System
   type: State
-  key: C
+  key: R
   mod1: Shift
