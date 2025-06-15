@@ -17,6 +17,7 @@
   - type: Thirst
   - type: Sprite
     drawdepth: Mobs
+    scale: 0.94, 0.94
   - type: Vocal
     sounds:
       Male: MaleFelinid
@@ -24,7 +25,7 @@
       Female: FemaleFelinid
   - type: Speech
     allowedEmotes: ['Hiss', 'Meow', 'Mew', 'Growl', 'Purr']
-
+    
 - type: entity
   parent: BaseSpeciesDummy
   id: MobFelinidDummy
