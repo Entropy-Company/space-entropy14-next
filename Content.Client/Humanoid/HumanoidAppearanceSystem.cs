@@ -50,7 +50,7 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
 
     private void OnHandleState(EntityUid uid, HumanoidAppearanceComponent component, ref AfterAutoHandleStateEvent args)
     {
-        UpdateSprite((uid, component, Comp<SpriteComponent>(uid)));
+        UpdateSprite(new Entity<HumanoidAppearanceComponent, SpriteComponent>(uid, component, Comp<SpriteComponent>(uid)));
     }
 
     private void OnCvarChanged(bool value)
@@ -58,7 +58,7 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
         var humanoidQuery = AllEntityQuery<HumanoidAppearanceComponent, SpriteComponent>();
         while (humanoidQuery.MoveNext(out var uid, out var humanoidComp, out var spriteComp))
         {
-            UpdateSprite((uid, humanoidComp, spriteComp));
+            UpdateSprite(new Entity<HumanoidAppearanceComponent, SpriteComponent>(uid, humanoidComp, spriteComp));
         }
     }
 
@@ -69,17 +69,11 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
 
         var humanoidAppearance = entity.Comp1;
         var sprite = entity.Comp2;
-/* CorvaxGoob : Changes revert
-        // begin Goobstation: port EE height/width sliders
+
+        // Применяем масштаб по высоте
         var speciesPrototype = _prototypeManager.Index<SpeciesPrototype>(humanoidAppearance.Species);
-
-        var height = Math.Clamp(humanoidAppearance.Height, speciesPrototype.MinHeight, speciesPrototype.MaxHeight);
-        var width = Math.Clamp(humanoidAppearance.Width, speciesPrototype.MinWidth, speciesPrototype.MaxWidth);
-        humanoidAppearance.Height = height;
-        humanoidAppearance.Width = width;
-
-        _sprite.SetScale((entity, sprite), new Vector2(width, height));
-        // end Goobstation: port EE height/width sliders*/
+        var height = Math.Clamp(MathF.Round(humanoidAppearance.Height, 2), speciesPrototype.MinHeight, speciesPrototype.MaxHeight);
+        sprite.Scale = speciesPrototype.BaseScale * new Vector2(speciesPrototype.ScaleHeight ? height : 1f, height);
 
         sprite[_sprite.LayerMapReserve((entity.Owner, sprite), HumanoidVisualLayers.Eyes)].Color = humanoidAppearance.EyeColor;
     }
@@ -257,7 +251,7 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
         // humanoid.Height = profile.Height; // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
         // humanoid.Width = profile.Width; // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
 
-        UpdateSprite((uid, humanoid, Comp<SpriteComponent>(uid)));
+        UpdateSprite(new Entity<HumanoidAppearanceComponent, SpriteComponent>(uid, humanoid, Comp<SpriteComponent>(uid)));
     }
 
     private void ApplyMarkingSet(Entity<HumanoidAppearanceComponent, SpriteComponent> entity)
