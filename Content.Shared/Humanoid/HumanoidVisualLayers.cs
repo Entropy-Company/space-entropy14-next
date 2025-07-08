@@ -39,6 +39,9 @@ namespace Content.Shared.Humanoid
         Hair,
         FacialHair,
         Face, // EE Plasmeme Port
+        Socks,
+        UndergarmentTop,
+        UndergarmentBottom,
         Chest,
         Underwear,
         Undershirt,
@@ -51,7 +54,6 @@ namespace Content.Shared.Humanoid
         RArm,
         LArm,
         RHand,
-
         LHand,
         RLeg,
         LLeg,

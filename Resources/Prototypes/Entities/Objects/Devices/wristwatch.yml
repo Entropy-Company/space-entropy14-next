@@ -23,7 +23,7 @@
   - type: Clothing
     sprite: Objects/Devices/wristwatch.rsi
     slots:
-    - gloves
+    - WATCH
   - type: Appearance
   - type: Damageable
     damageContainer: Inorganic
@@ -47,6 +47,7 @@
   - type: PhysicalComposition
     materialComposition:
       Steel: 300
+
 
 - type: entity
   id: WristwatchGold
