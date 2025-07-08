@@ -273,6 +273,7 @@
     - map: [ "enum.HumanoidVisualLayers.LLeg" ]
     - map: [ "enum.HumanoidVisualLayers.Underwear" ] # Goob 3370
     - map: [ "enum.HumanoidVisualLayers.Undershirt" ] # Goob 3370
+    - map: [ "socks" ]
     - map: ["jumpsuit"]
     - map: ["enum.HumanoidVisualLayers.LFoot"]
     - map: ["enum.HumanoidVisualLayers.RFoot"]

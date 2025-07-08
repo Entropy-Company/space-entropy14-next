@@ -76,11 +76,14 @@ public sealed class ClientClothingSystem : ClothingSystem
         {"back", "BACKPACK"},
         {"belt", "BELT"},
         {"gloves", "HAND"},
+        {"socks", "SOCKS"},
         {"shoes", "FEET"},
         {"id", "IDCARD"},
         {"pocket1", "POCKET1"},
         {"pocket2", "POCKET2"},
         {"suitstorage", "SUITSTORAGE"},
+        {"ring", "RING"},
+        {"watch", "WATCH"},
     };
 
     [Dependency] private readonly IResourceCache _cache = default!;
@@ -235,8 +238,7 @@ public sealed class ClientClothingSystem : ClothingSystem
         if (!inventorySlots.VisualLayerKeys.TryGetValue(args.Slot, out var revealedLayers))
             return;
 
-        // Remove old layers. We could also just set them to invisible, but as items may add arbitrary layers, this
-        // may eventually bloat the player with lots of invisible layers.
+        // Исправлено: удаляем именно те слои, которые были добавлены (ключи из revealedLayers)
         foreach (var layer in revealedLayers)
         {
             _sprite.RemoveLayer(entity.AsNullable(), layer);
@@ -349,7 +351,6 @@ public sealed class ClientClothingSystem : ClothingSystem
             if (slotLayerExists)
             {
                 index++;
-                // note that every insertion requires reshuffling & remapping all the existing layers.
                 _sprite.AddBlankLayer((equipee, sprite), index);
                 _sprite.LayerMapSet((equipee, sprite), key, index);
 
@@ -361,7 +362,9 @@ public sealed class ClientClothingSystem : ClothingSystem
                     _sprite.LayerSetVisible((equipee, sprite), key, false);
             }
             else
+            {
                 index = _sprite.LayerMapReserve((equipee, sprite), key);
+            }
 
             if (sprite[index] is not Layer layer)
                 continue;
