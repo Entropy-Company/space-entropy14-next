@@ -46,6 +46,9 @@ using Content.Shared._EinsteinEngines.Language.Systems;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
 using Content.Shared.Speech;
+using Content.Shared.Inventory;
+using Content.Shared.PDA;
+using Content.Shared.Access.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
@@ -70,6 +73,7 @@ public sealed class RadioSystem : EntitySystem
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly LanguageSystem _language = default!; // Einstein Engines - Language
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Goobstation - Whitelisted radio channels
+    [Dependency] private readonly InventorySystem _inventory = default!;
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
@@ -182,15 +186,29 @@ public sealed class RadioSystem : EntitySystem
             ? FormattedMessage.EscapeText(message)
             : message;
 
-        // var wrappedMessage = Loc.GetString(speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
-        //     ("color", channel.Color),
-        //     ("fontType", speech.FontId),
-        //     ("fontSize", speech.FontSize),
-        //     ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-        //     ("channel", $"\\[{channel.LocalizedName}\\]"),
-        //     ("name", name),
-        //     ("message", content));
-        var wrappedMessage = WrapRadioMessage(messageSource, channel, name, content, language); // Einstein Engines - Language
+        // DS14-start
+        var headsetColor = TryComp(radioSource, out HeadsetComponent? headset) ? headset.Color : channel.Color;
+
+        var job = String.Empty;
+        if (_inventory.HasSlot(messageSource, "id"))
+        {
+            job = Loc.GetString("chat-radio-source-unknown");
+
+            if (_inventory.TryGetSlotEntity(messageSource, "id", out var idSlotEntity))
+            {
+                if (TryComp(idSlotEntity, out PdaComponent? pda))
+                    idSlotEntity = pda.ContainedId;
+
+                job = TryComp(idSlotEntity, out IdCardComponent? idCard) && !string.IsNullOrEmpty(idCard.LocalizedJobTitle)
+                    ? _chat.SanitizeMessageCapital(idCard.LocalizedJobTitle)
+                    : Loc.GetString("chat-radio-source-unknown");
+            }
+
+            job = $"\\[{job}\\] ";
+        }
+
+        var wrappedMessage = WrapRadioMessage(messageSource, channel, name, content, language, radioSource, headsetColor, job); // Einstein Engines - Language
+        // DS14-end
 
         // most radios are relayed to chat, so lets parse the chat message beforehand
         // var chat = new ChatMessage(
@@ -207,10 +225,8 @@ public sealed class RadioSystem : EntitySystem
 
         // Einstein Engines - Language begin
         var obfuscated = _language.ObfuscateSpeech(content, language);
-        var obfuscatedWrapped = WrapRadioMessage(messageSource, channel, name, obfuscated, language);
-        // Goobstation - Chat Pings
-        // Added GetNetEntity(messageSource), to source
-        var notUdsMsg = new ChatMessage(ChatChannel.Radio, obfuscated, obfuscatedWrapped, GetNetEntity(messageSource), null);
+        var obfuscatedWrapped = WrapRadioMessage(messageSource, channel, name, obfuscated, language, radioSource, headsetColor, job);
+        var notUdsMsg = new ChatMessage(ChatChannel.Radio, obfuscated, obfuscatedWrapped, NetEntity.Invalid, null);
         var ev = new RadioReceiveEvent(messageSource, channel, msg, notUdsMsg, language, radioSource);
         // Einstein Engines - Language end
 
@@ -316,14 +332,17 @@ public sealed class RadioSystem : EntitySystem
 
     // Einstein Engines - Language begin
     private string WrapRadioMessage(
-        EntityUid source,
+        EntityUid messageSource,
         RadioChannelPrototype channel,
         string name,
         string message,
-        LanguagePrototype language)
+        LanguagePrototype language,
+        EntityUid radioSource,
+        Color headsetColor,
+        string job)
     {
         // TODO: code duplication with ChatSystem.WrapMessage
-        var speech = _chat.GetSpeechVerb(source, message);
+        var speech = _chat.GetSpeechVerb(messageSource, message);
         var languageColor = channel.Color;
 
         // Goobstation - Bolded Language Overrides begin
@@ -339,30 +358,12 @@ public sealed class RadioSystem : EntitySystem
             ? Loc.GetString("chat-manager-language-prefix", ("language", language.ChatName))
             : "";
 
-        // goob start - loudspeakers
-
-        int? loudSpeakFont = null;
-
-        var getLoudspeakerEv = new GetLoudspeakerEvent();
-        RaiseLocalEvent(source, ref getLoudspeakerEv);
-
-        if (getLoudspeakerEv.Loudspeakers != null)
-            foreach (var loudspeaker in getLoudspeakerEv.Loudspeakers)
-            {
-                var loudSpeakerEv = new GetLoudspeakerDataEvent();
-                RaiseLocalEvent(loudspeaker, ref loudSpeakerEv);
-
-                if (loudSpeakerEv.IsActive && loudSpeakerEv.AffectRadio)
-                {
-                    loudSpeakFont = loudSpeakerEv.FontSize;
-                    break;
-                }
-            }
-
-        // goob end
+        // DS14-start
+        // DS14-end
 
         return Loc.GetString(wrapId,
-            ("color", channel.Color),
+            ("channel-color", channel.Color),
+            ("headset-color", headsetColor),
             ("languageColor", languageColor),
             ("fontType", language.SpeechOverride.FontId ?? speech.FontId),
             ("fontSize", loudSpeakFont ?? language.SpeechOverride.FontSize ?? speech.FontSize), // goob edit - "loudSpeakFont"
@@ -370,6 +371,7 @@ public sealed class RadioSystem : EntitySystem
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("channel", $"\\[{channel.LocalizedName}\\]"),
             ("name", name),
+            ("job", job),
             ("message", message),
             ("language", languageDisplay));
     }
