@@ -91,6 +91,12 @@ public sealed class CCCVars
         CVarDef.Create("jobs.mrp_enabled", true, CVar.SERVER | CVar.REPLICATED);
 
     /// <summary>
+    /// Show job titles in radio messages.
+    /// </summary>
+    public static readonly CVarDef<bool> RadioJobTitlesEnabled =
+        CVarDef.Create("radio.job_titles_enabled", true, CVar.SERVERONLY);
+
+    /// </summary>
     /// Activate announcer in round by their special calendar.
     /// </summary>
     public static readonly CVarDef<bool> CalendarAnnouncerEnabled =
