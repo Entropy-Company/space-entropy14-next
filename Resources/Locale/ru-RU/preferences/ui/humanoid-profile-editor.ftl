@@ -55,3 +55,7 @@ humanoid-profile-editor-trait-count-hint = Доступно очков: [{ $curr
 trait-category-disabilities = Ограничения
 trait-category-speech = Черты речи
 trait-category-quirks = Причуды
+humanoid-profile-editor-height-label = Рост (см):
+humanoid-profile-editor-reset-height-button = Сброс
+humanoid-profile-editor-weight-label = Вес (кг):
+humanoid-profile-editor-reset-weight-button = Сброс

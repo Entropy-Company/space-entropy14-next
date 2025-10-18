@@ -194,6 +194,7 @@ using Robust.Shared.Utility;
 using Direction = Robust.Shared.Maths.Direction;
 using Content.Client._CorvaxGoob.TTS;
 using Content.Shared._CorvaxGoob; // CorvaxGoob-TTS
+using System.Globalization;
 
 namespace Content.Client.Lobby.UI
 {
@@ -265,7 +266,9 @@ namespace Content.Client.Lobby.UI
 
         private bool _isDirty;
 
-        private static readonly ProtoId<GuideEntryPrototype> DefaultSpeciesGuidebook = "Species";
+
+        [ValidatePrototypeId<GuideEntryPrototype>]
+        private const string DefaultSpeciesGuidebook = "Species";
 
         public event Action<List<ProtoId<GuideEntryPrototype>>>? OnOpenGuidebook;
 
@@ -419,9 +422,19 @@ namespace Content.Client.Lobby.UI
 
             HeightReset.OnPressed += _ =>
             {
-                var prototype = _species.Find(x => x.ID == Profile?.Species) ?? _species.First();
-                HeightSlider.Value = prototype.DefaultHeight;
-                UpdateDimensions(SliderUpdate.Height);
+                if (Profile is null || !int.TryParse(args.Text, out var newWeightKg))
+                    return;
+
+                var newWidth = newWeightKg / 65f;
+                var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+                newWidth = MathF.Round(Math.Clamp(newWidth, prototype.MinWidth, prototype.MaxWidth), 2);
+
+                // The percentage between the start and end numbers, aka "inverse lerp"
+                var sliderPercent = (newWidth - prototype.MinWidth) /
+                                    (prototype.MaxWidth - prototype.MinWidth);
+                CDWidthSlider.Value = sliderPercent;
+
+                SetProfileWidth(newWidth);
             };
 
             WidthReset.OnPressed += _ =>
@@ -660,6 +673,88 @@ namespace Content.Client.Lobby.UI
 
             UpdateSpeciesGuidebookIcon();
             IsDirty = false;
+
+            #region CDWidth
+
+            CDWidth.OnTextChanged += args =>
+            {
+                if (Profile is null || !float.TryParse(args.Text, out var newWidth))
+                    return;
+
+                var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+                newWidth = MathF.Round(Math.Clamp(newWidth, prototype.MinWidth, prototype.MaxWidth), 2);
+
+                var sliderPercent = (newWidth - prototype.MinWidth) /
+                                    (prototype.MaxWidth - prototype.MinWidth);
+                CDWidthSlider.Value = sliderPercent;
+
+                SetProfileWidth(newWidth);
+            };
+
+            CDWidthReset.OnPressed += _ =>
+            {
+                if (Profile is null)
+                    return;
+                var defaultWidth = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).DefaultWidth;
+                var defaultWeightKg = (int)(defaultWidth * 65f * _prototypeManager.Index<SpeciesPrototype>(Profile.Species).BaseScale.X);
+                CDWidth.SetText(defaultWeightKg.ToString(CultureInfo.InvariantCulture), true);
+                SetProfileWidth(defaultWidth);
+            };
+
+            CDWidthSlider.OnValueChanged += _ =>
+            {
+                if (Profile is null)
+                    return;
+                var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+                var newWidth = MathF.Round(MathHelper.Lerp(prototype.MinWidth, prototype.MaxWidth, CDWidthSlider.Value), 2);
+                var weightKg = (int)(newWidth * 65f * prototype.BaseScale.X);
+                CDWidth.Text = weightKg.ToString(CultureInfo.InvariantCulture);
+                SetProfileWidth(newWidth);
+            };
+
+            #endregion CDWidth
+
+            #region CDHeight
+
+            CDHeight.OnTextChanged += args =>
+            {
+                if (Profile is null || !int.TryParse(args.Text, out var newHeightCm))
+                    return;
+
+                var newHeight = newHeightCm / 175f;
+                var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+                newHeight = MathF.Round(Math.Clamp(newHeight, prototype.MinHeight, prototype.MaxHeight), 2);
+
+                // The percentage between the start and end numbers, aka "inverse lerp"
+                var sliderPercent = (newHeight - prototype.MinHeight) /
+                                    (prototype.MaxHeight - prototype.MinHeight);
+                CDHeightSlider.Value = sliderPercent;
+
+                SetProfileHeight(newHeight);
+            };
+
+            CDHeightReset.OnPressed += _ =>
+            {
+                if (Profile is null)
+                    return;
+                var defaultHeight = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).DefaultHeight;
+                var defaultHeightCm = (int)(defaultHeight * 175f * _prototypeManager.Index<SpeciesPrototype>(Profile.Species).BaseScale.Y);
+                CDHeight.SetText(defaultHeightCm.ToString(CultureInfo.InvariantCulture), true);
+                SetProfileHeight(defaultHeight);
+            };
+
+            CDHeightSlider.OnValueChanged += _ =>
+            {
+                if (Profile is null)
+                    return;
+                var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+                var newHeight = MathF.Round(MathHelper.Lerp(prototype.MinHeight, prototype.MaxHeight, CDHeightSlider.Value), 2);
+                var heightCm = (int)(newHeight * 175f * prototype.BaseScale.Y);
+                CDHeight.Text = heightCm.ToString(CultureInfo.InvariantCulture);
+                SetProfileHeight(newHeight);
+            };
+
+            #endregion CDHeight
         }
 
         /// <summary>
@@ -1045,6 +1140,22 @@ namespace Content.Client.Lobby.UI
             UpdateCMarkingsFacialHair();
             // UpdateHeightWidthSliders(); // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
             // UpdateWeight(); // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
+
+            // Begin CD - Character Records
+            UpdateHeightControls();
+            UpdateWidthControls();
+            // Height and Weight are now calculated from appearance data, no need to sync to records
+            // if (profile?.CDCharacterRecords != null)
+            // {
+            //     var prototype = _prototypeManager.Index<SpeciesPrototype>(profile.Species);
+            //     var heightCm = (int)(profile.Height * 175f);
+            //     var weightKg = (int)(profile.Width * 65f);
+            //     var syncedRecords = profile.CDCharacterRecords
+            //         .WithHeight(heightCm)
+            //         .WithWeight(weightKg);
+            //     profile = profile.WithCDCharacterRecords(syncedRecords);
+            // }
+            // End CD - Character Records
 
             RefreshAntags();
             RefreshJobs();
@@ -2117,6 +2228,45 @@ namespace Content.Client.Lobby.UI
             _exporting = false;
             ImportButton.Disabled = false;
             ExportButton.Disabled = false;
+        }
+
+        private void SetProfileHeight(float height)
+        {
+            if (Profile == null)
+                return;
+            Profile = Profile.WithHeight(height);
+            SetDirty();
+            ReloadProfilePreview();
+        }
+
+        private void UpdateHeightControls()
+        {
+            if (Profile == null)
+                return;
+            var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+            var sliderPercent = (Profile.Height - prototype.MinHeight) / (prototype.MaxHeight - prototype.MinHeight);
+            CDHeightSlider.Value = sliderPercent;
+            CDHeight.Text = ((int)(Profile.Height * 175f * prototype.BaseScale.Y)).ToString(CultureInfo.InvariantCulture);
+            // CDHeightLabel.Text = Loc.GetString("humanoid-profile-editor-height-label");
+        }
+        private void SetProfileWidth(float width)
+        {
+            if (Profile == null)
+                return;
+            Profile = Profile.WithWidth(width);
+            SetDirty();
+            ReloadProfilePreview();
+        }
+
+        private void UpdateWidthControls()
+        {
+            if (Profile == null)
+                return;
+            var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
+            var sliderPercent = (Profile.Width - prototype.MinWidth) / (prototype.MaxWidth - prototype.MinWidth);
+            CDWidthSlider.Value = sliderPercent;
+            CDWidth.Text = ((int)(Profile.Width * 65f * prototype.BaseScale.X)).ToString(CultureInfo.InvariantCulture);
+            // CDWidthLabel.Text = Loc.GetString("humanoid-profile-editor-weight-label");
         }
     }
 }
