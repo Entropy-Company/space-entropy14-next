@@ -138,7 +138,6 @@
           maxCount: 2
           stationGrid: false
           paths:
-          # Corvax-Goob-Mapping-start
           - /Maps/_CorvaxGoob/Ruins/corvax_accident.yml
           - /Maps/_CorvaxGoob/Ruins/corvax_adventurer.yml
           - /Maps/_CorvaxGoob/Ruins/corvax_aplink.yml
@@ -153,41 +152,36 @@
           - /Maps/_CorvaxGoob/Ruins/corvax_sanctus.yml
           - /Maps/_CorvaxGoob/Ruins/corvax_ussp_debris.yml
           - /Maps/_CorvaxGoob/Ruins/corvax_ussp_asteroid.yml
-        #wrecks: !type:DungeonSpawnGroup
-        #  minimumDistance: 150
-        #  maximumDistance: 300
-        #  stationGrid: false
-        #  minCount: 12
-        #  maxCount: 16
-        #  addComponents:
-        #  - type: Gravity
-        #    enabled: true
-        #    inherent: true
-        #  - type: IFF
-        #    flags: HideLabel
-        #    color: "#88b0d1"
-        #  protos:
-        #  - ChunkDebrisSmall
-        #  - ChunkDebrisSmall
-        #  - ChunkDebrisSmall
-        #  - ChunkDebrisSmall
-        #  - ChunkDebris
-        # Corvax-Goob-Mapping-end
-        # goob - no vgroid
-        #vgroid: !type:DungeonSpawnGroup
-        #  minimumDistance: 300
-        #  maximumDistance: 350
-        #  nameDataset: NamesBorer
-        #  stationGrid: false
-        #  addComponents:
-        # - type: Gravity
-        #    enabled: true
-        #    inherent: true
-        #  - type: IFF
-        #    flags: HideLabel
-        #    color: "#d67e27"
-        #  protos:
-        #  - VGRoid
+        wrecks: !type:DungeonSpawnGroup
+          minimumDistance: 150
+          maximumDistance: 300
+          stationGrid: false
+          minCount: 6
+          maxCount: 10
+          addComponents:
+          - type: Gravity
+            enabled: true
+            inherent: true
+          - type: IFF
+            flags: HideLabel
+            color: "#88b0d1"
+          protos:
+          - ChunkDebrisSmall
+          - ChunkDebrisSmall
+          - ChunkDebrisSmall
+          - ChunkDebrisSmall
+          - ChunkDebris
+        vgroid: !type:DungeonSpawnGroup
+          minimumDistance: 400
+          maximumDistance: 450
+          nameDataset: NamesBorer
+          stationGrid: false
+          addComponents:
+          - type: Gravity
+            enabled: true
+            inherent: true
+          protos:
+          - VGRoid
 
 - type: entity
   id: BaseStationCentcomm
