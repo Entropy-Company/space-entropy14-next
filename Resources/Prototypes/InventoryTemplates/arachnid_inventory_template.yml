@@ -206,10 +206,3 @@
       uiWindowPos: 3,1
       strippingWindowPos: 2,1
       displayName: Ring
-    - name: watch
-      slotTexture: watch
-      slotFlags: WATCH
-      stripTime: 2
-      uiWindowPos: 3,2
-      strippingWindowPos: 3,3
-      displayName: Watch
