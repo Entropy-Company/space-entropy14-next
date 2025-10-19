@@ -406,7 +406,6 @@ namespace Content.Client.Lobby.UI
                 SetSpecies(_species[args.Id].ID);
                 UpdateHairPickers();
                 OnSkinColorOnValueChanged();
-                // UpdateHeightWidthSliders(); // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
             };
 
             /*// begin Goobstation: port EE height/width sliders
@@ -696,8 +695,6 @@ namespace Content.Client.Lobby.UI
                 if (Profile is null)
                     return;
                 var defaultWidth = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).DefaultWidth;
-                var defaultWeightKg = (int)(defaultWidth * 65f * _prototypeManager.Index<SpeciesPrototype>(Profile.Species).BaseScale.X);
-                CDWidth.SetText(defaultWeightKg.ToString(CultureInfo.InvariantCulture), true);
                 SetProfileWidth(defaultWidth);
             };
 
@@ -738,8 +735,6 @@ namespace Content.Client.Lobby.UI
                 if (Profile is null)
                     return;
                 var defaultHeight = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).DefaultHeight;
-                var defaultHeightCm = (int)(defaultHeight * 175f * _prototypeManager.Index<SpeciesPrototype>(Profile.Species).BaseScale.Y);
-                CDHeight.SetText(defaultHeightCm.ToString(CultureInfo.InvariantCulture), true);
                 SetProfileHeight(defaultHeight);
             };
 
@@ -1141,21 +1136,8 @@ namespace Content.Client.Lobby.UI
             // UpdateHeightWidthSliders(); // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
             // UpdateWeight(); // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
 
-            // Begin CD - Character Records
             UpdateHeightControls();
             UpdateWidthControls();
-            // Height and Weight are now calculated from appearance data, no need to sync to records
-            // if (profile?.CDCharacterRecords != null)
-            // {
-            //     var prototype = _prototypeManager.Index<SpeciesPrototype>(profile.Species);
-            //     var heightCm = (int)(profile.Height * 175f);
-            //     var weightKg = (int)(profile.Width * 65f);
-            //     var syncedRecords = profile.CDCharacterRecords
-            //         .WithHeight(heightCm)
-            //         .WithWeight(weightKg);
-            //     profile = profile.WithCDCharacterRecords(syncedRecords);
-            // }
-            // End CD - Character Records
 
             RefreshAntags();
             RefreshJobs();
@@ -1637,6 +1619,8 @@ namespace Content.Client.Lobby.UI
         private void SetSpecies(string newSpecies)
         {
             Profile = Profile?.WithSpecies(newSpecies);
+            var prototype = _prototypeManager.Index<SpeciesPrototype>(newSpecies);
+            Profile = Profile?.WithHeight(prototype.DefaultHeight).WithWidth(prototype.DefaultWidth);
             OnSkinColorOnValueChanged(); // Species may have special color prefs, make sure to update it.
             Markings.SetSpecies(newSpecies); // Repopulate the markings tab as well.
             // In case there's job restrictions for the species
@@ -1645,6 +1629,8 @@ namespace Content.Client.Lobby.UI
             RefreshLoadouts();
             UpdateSexControls(); // update sex for new species
             UpdateSpeciesGuidebookIcon();
+            UpdateHeightControls(); // Update height controls when species changes
+            UpdateWidthControls(); // Update width controls when species changes
             ReloadPreview();
             /*
             // begin Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
@@ -1909,107 +1895,6 @@ namespace Content.Client.Lobby.UI
             SpawnPriorityButton.SelectId((int) Profile.SpawnPriority);
         }
 
-        /*// begin Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
-        private void UpdateHeightWidthSliders()
-        {
-            if (Profile is null)
-                return;
-
-            var species = _species.Find(x => x.ID == Profile?.Species) ?? _species.First();
-
-            // we increase the min/max values of the sliders before we set their value, just so that we don't accidentally clamp down on a value loaded from a profile when we shouldn't
-            HeightSlider.MinValue = 0;
-            HeightSlider.MaxValue = 2;
-            HeightSlider.SetValueWithoutEvent(Profile?.Height ?? species.DefaultHeight);
-            HeightSlider.MinValue = species.MinHeight;
-            HeightSlider.MaxValue = species.MaxHeight;
-
-            WidthSlider.MinValue = 0;
-            WidthSlider.MaxValue = 2;
-            WidthSlider.SetValueWithoutEvent(Profile?.Width ?? species.DefaultWidth);
-            WidthSlider.MinValue = species.MinWidth;
-            WidthSlider.MaxValue = species.MaxWidth;
-
-            var height = MathF.Round(species.AverageHeight * HeightSlider.Value);
-            HeightLabel.Text = Loc.GetString("humanoid-profile-editor-height-label", ("height", (int) height));
-
-            var width = MathF.Round(species.AverageWidth * WidthSlider.Value);
-            WidthLabel.Text = Loc.GetString("humanoid-profile-editor-width-label", ("width", (int) width));
-
-            UpdateDimensions(SliderUpdate.Both);
-        }
-
-        private enum SliderUpdate
-        {
-            Height,
-            Width,
-            Both
-        }
-
-        private void UpdateDimensions(SliderUpdate updateType)
-        {
-            if (Profile == null)
-                return;
-
-            var species = _species.Find(x => x.ID == Profile?.Species) ?? _species.First();
-
-            var heightValue = Math.Clamp(HeightSlider.Value, species.MinHeight, species.MaxHeight);
-            var widthValue = Math.Clamp(WidthSlider.Value, species.MinWidth, species.MaxWidth);
-            var sizeRatio = species.SizeRatio;
-            var ratio = heightValue / widthValue;
-
-            if (updateType == SliderUpdate.Height || updateType == SliderUpdate.Both)
-                if (ratio < 1 / sizeRatio || ratio > sizeRatio)
-                    widthValue = heightValue / (ratio < 1 / sizeRatio ? (1 / sizeRatio) : sizeRatio);
-
-            if (updateType == SliderUpdate.Width || updateType == SliderUpdate.Both)
-                if (ratio < 1 / sizeRatio || ratio > sizeRatio)
-                    heightValue = widthValue * (ratio < 1 / sizeRatio ? (1 / sizeRatio) : sizeRatio);
-
-            heightValue = Math.Clamp(heightValue, species.MinHeight, species.MaxHeight);
-            widthValue = Math.Clamp(widthValue, species.MinWidth, species.MaxWidth);
-
-            HeightSlider.SetValueWithoutEvent(heightValue);
-            WidthSlider.SetValueWithoutEvent(widthValue);
-
-            SetProfileHeight(heightValue);
-            SetProfileWidth(widthValue);
-
-            var height = MathF.Round(species.AverageHeight * HeightSlider.Value);
-            HeightLabel.Text = Loc.GetString("humanoid-profile-editor-height-label", ("height", (int) height));
-
-            var width = MathF.Round(species.AverageWidth * WidthSlider.Value);
-            WidthLabel.Text = Loc.GetString("humanoid-profile-editor-width-label", ("width", (int) width));
-
-            UpdateWeight();
-        }
-
-        private void UpdateWeight()
-        {
-            if (Profile == null)
-                return;
-
-            var species = _species.Find(x => x.ID == Profile.Species) ?? _species.First();
-            //  TODO: Remove obsolete method
-            _prototypeManager.Index(species.Prototype).TryGetComponent<FixturesComponent>(out var fixture, _entManager.ComponentFactory);
-
-            if (fixture != null)
-            {
-                var avg = (Profile.Width + Profile.Height) / 2;
-                var weight = FixtureSystem.GetMassData(fixture.Fixtures["fix1"].Shape, fixture.Fixtures["fix1"].Density).Mass * avg;
-                WeightLabel.Text = Loc.GetString("humanoid-profile-editor-weight-label", ("weight", (int) weight));
-            }
-            else // Whelp, the fixture doesn't exist, guesstimate it instead
-                WeightLabel.Text = Loc.GetString("humanoid-profile-editor-weight-label", ("weight", (int) 71));
-
-            // SpriteViewS.InvalidateMeasure();
-            // SpriteViewN.InvalidateMeasure();
-            // SpriteViewE.InvalidateMeasure();
-            // SpriteViewW.InvalidateMeasure();
-            SpriteView.InvalidateMeasure();
-        }
-        // end Goobstation: port EE height/width sliders*/
-
         private void UpdateHairPickers()
         {
             if (Profile == null)
@@ -2068,6 +1953,7 @@ namespace Content.Client.Lobby.UI
                 Markings.HairMarking = null;
             }
         }
+
 
         private void UpdateCMarkingsFacialHair()
         {
@@ -2244,10 +2130,18 @@ namespace Content.Client.Lobby.UI
             if (Profile == null)
                 return;
             var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
-            var sliderPercent = (Profile.Height - prototype.MinHeight) / (prototype.MaxHeight - prototype.MinHeight);
+
+            // Clamp current values to new species limits
+            var clampedHeight = Math.Clamp(Profile.Height, prototype.MinHeight, prototype.MaxHeight);
+            if (clampedHeight != Profile.Height)
+            {
+                Profile = Profile.WithHeight(clampedHeight);
+            }
+
+            var sliderPercent = (clampedHeight - prototype.MinHeight) / (prototype.MaxHeight - prototype.MinHeight);
             CDHeightSlider.Value = sliderPercent;
-            CDHeight.Text = ((int)(Profile.Height * 175f * prototype.BaseScale.Y)).ToString(CultureInfo.InvariantCulture);
-            // CDHeightLabel.Text = Loc.GetString("humanoid-profile-editor-height-label");
+            CDHeight.Text = ((int)(clampedHeight * 175f * prototype.BaseScale.Y)).ToString(CultureInfo.InvariantCulture);
+
         }
         private void SetProfileWidth(float width)
         {
@@ -2263,10 +2157,17 @@ namespace Content.Client.Lobby.UI
             if (Profile == null)
                 return;
             var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
-            var sliderPercent = (Profile.Width - prototype.MinWidth) / (prototype.MaxWidth - prototype.MinWidth);
+
+            // Clamp current values to new species limits
+            var clampedWidth = Math.Clamp(Profile.Width, prototype.MinWidth, prototype.MaxWidth);
+            if (clampedWidth != Profile.Width)
+            {
+                Profile = Profile.WithWidth(clampedWidth);
+            }
+
+            var sliderPercent = (clampedWidth - prototype.MinWidth) / (prototype.MaxWidth - prototype.MinWidth);
             CDWidthSlider.Value = sliderPercent;
-            CDWidth.Text = ((int)(Profile.Width * 65f * prototype.BaseScale.X)).ToString(CultureInfo.InvariantCulture);
-            // CDWidthLabel.Text = Loc.GetString("humanoid-profile-editor-weight-label");
+            CDWidth.Text = ((int)(clampedWidth * 65f * prototype.BaseScale.X)).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

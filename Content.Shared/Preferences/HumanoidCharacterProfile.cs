@@ -185,6 +185,15 @@ namespace Content.Shared.Preferences
         [DataField]
         public PreferenceUnavailableMode PreferenceUnavailable { get; private set; } =
             PreferenceUnavailableMode.SpawnAsOverflow;
+
+        // Begin CD - Character records
+        [DataField("cosmaticDriftCharacterHeight")]
+        public float Height = 1f;
+
+        [DataField("cosmaticDriftCharacterWidth")]
+        public float Width = 1f;
+
+
         public HumanoidCharacterProfile(
             string name,
             string flavortext,
@@ -199,8 +208,12 @@ namespace Content.Shared.Preferences
             PreferenceUnavailableMode preferenceUnavailable,
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
-            Dictionary<string, RoleLoadout> loadouts)
-            // ProtoId<BarkPrototype> barkVoice) // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
+            Dictionary<string, RoleLoadout> loadouts,
+            // Vortex added
+            float height,
+            float width
+            // Vortex end
+        )
         {
             Name = name;
             FlavorText = flavortext;
@@ -217,6 +230,10 @@ namespace Content.Shared.Preferences
             _traitPreferences = traitPreferences;
             _loadouts = loadouts;
             // BarkVoice = barkVoice; // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
+            // Vortex added
+            Height = height;
+            Width = width;
+            // Vortex end
 
             var hasHighPrority = false;
             foreach (var (key, value) in _jobPriorities)
@@ -248,8 +265,11 @@ namespace Content.Shared.Preferences
                 other.PreferenceUnavailable,
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
-                new Dictionary<string, RoleLoadout>(other.Loadouts))
-                // other.BarkVoice) // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
+                // other.BarkVoice), // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
+                new Dictionary<string, RoleLoadout>(other.Loadouts),
+                other.Height, // CD - Character Records
+                other.Width // CD - Character Records
+            )
         {
         }
 
@@ -408,6 +428,17 @@ namespace Content.Shared.Preferences
             return new(this) { BarkVoice = barkVoice };
         }
         // Goob Station - Barks End*/
+        // Vortex added
+        public HumanoidCharacterProfile WithHeight(float height)
+        {
+            return new(this) { Height = height };
+        }
+
+        public HumanoidCharacterProfile WithWidth(float width)
+        {
+            return new(this) { Width = width };
+        }
+        // Vortex end
 
         public HumanoidCharacterProfile WithJobPriorities(IEnumerable<KeyValuePair<ProtoId<JobPrototype>, JobPriority>> jobPriorities)
         {
@@ -578,6 +609,8 @@ namespace Content.Shared.Preferences
             if (!_traitPreferences.SequenceEqual(other._traitPreferences)) return false;
             if (!Loadouts.SequenceEqual(other.Loadouts)) return false;
             if (FlavorText != other.FlavorText) return false;
+            if (Height != other.Height) return false; // CD
+            if (Width != other.Width) return false; // CD
             return Appearance.MemberwiseEquals(other.Appearance);
         }
 

@@ -90,7 +90,7 @@ trait-category-disabilities = Disabilities
 trait-category-speech = Speech traits
 trait-category-quirks = Quirks
 
-humanoid-profile-editor-height-label = Height ({$height}cm):
+humanoid-profile-editor-height-label = Height (cm):
 humanoid-profile-editor-reset-height-button = Reset
-humanoid-profile-editor-weight-label = Weight ({$weight}kg):
+humanoid-profile-editor-weight-label = Weight (kg):
 humanoid-profile-editor-reset-weight-button = Reset

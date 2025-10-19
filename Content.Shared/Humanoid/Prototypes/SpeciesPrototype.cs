@@ -164,7 +164,20 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField]
     public int MaxAge = 120;
 
-    // begin Goobstation: port EE height/width sliders
+    // Begin DV - CD Character Records shouldn't nuke species heights
+    /// <summary>
+    /// The base height scale for this species
+    /// </summary>
+    [DataField("baseScale")]
+    public System.Numerics.Vector2 BaseScale = new(1f, 1f);
+    // End DV - CD Character Records shouldn't nuke species heights
+
+    // Vortex added
+    /// <summary>
+    /// The minimum height for this species
+    /// </summary>
+    [DataField("minHeight")]
+    public float MinHeight = 0.85f; // DeltaV - less trolling with the heights
 
     /// <summary>
     ///     The minimum height and width ratio for this species
@@ -199,28 +212,9 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// <summary>
     ///     The default width for this species
     /// </summary>
-    [DataField]
-    public float DefaultWidth = 1f;
-
-    /// <summary>
-    ///     The maximum width for this species
-    /// </summary>
-    [DataField]
-    public float MaxWidth = 1.15f;
-
-    /// <summary>
-    ///     The average height in centimeters for this species, used to calculate player facing height values in UI elements
-    /// </summary>
-    [DataField]
-    public float AverageHeight = 176.1f;
-
-    /// <summary>
-    ///     The average shoulder-to-shoulder width in cm for this species, used to calculate player facing width values in UI elements
-    /// </summary>
-    [DataField]
-    public float AverageWidth = 40f;
-
-    // end Goobstation: port EE height/width sliders
+    [DataField("maxWidth")]
+    public float MaxWidth = 1.2f;
+    // Vortex end
 }
 
 public enum SpeciesNaming : byte
