@@ -151,8 +151,6 @@ using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using Content.Server._CD.Records; // CD - Character Records
-using Content.Shared._CD.Records; // CD - Character Records
 
 namespace Content.Server.Database
 {
@@ -379,11 +377,6 @@ namespace Content.Server.Database
                 }
             }
 
-            // Begin CD - Chracter Records
-            var cdRecords = profile.CDProfile?.CharacterRecords != null
-                ? RecordsSerialization.Deserialize(profile.CDProfile.CharacterRecords, profile.CDProfile.CharacterRecordEntries)
-                : PlayerProvidedCharacterRecords.DefaultRecords();
-            // End CD - Character Records
             var loadouts = new Dictionary<string, RoleLoadout>();
 
             foreach (var role in profile.Loadouts)
@@ -432,9 +425,8 @@ namespace Content.Server.Database
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts,
-                profile.CDProfile?.Height ?? 1.0f, // CD - Character Records
-                profile.CDProfile?.Width ?? 1.0f, // CD - Character Records
-                cdRecords // CD - Character Records
+                profile.CDProfile?.Height ?? 1.0f, // Vortex
+                profile.CDProfile?.Width ?? 1.0f // Vortex
             );
         }
 
@@ -490,14 +482,6 @@ namespace Content.Server.Database
             profile.CDProfile ??= new CDModel.CDProfile();
             profile.CDProfile.Height = humanoid.Height;
             profile.CDProfile.Width = humanoid.Width;
-            // There are JsonIgnore annotations to ensure that entries are not stored as JSON.
-            profile.CDProfile.CharacterRecords = JsonSerializer.SerializeToDocument(humanoid.CDCharacterRecords ?? PlayerProvidedCharacterRecords.DefaultRecords());
-            if (humanoid.CDCharacterRecords != null)
-            {
-                profile.CDProfile.CharacterRecordEntries.Clear();
-                profile.CDProfile.CharacterRecordEntries.AddRange(RecordsSerialization.GetEntries(humanoid.CDCharacterRecords));
-            }
-            // End CD - Character Records
 
             profile.Loadouts.Clear();
 

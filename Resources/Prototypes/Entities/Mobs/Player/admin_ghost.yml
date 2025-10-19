@@ -239,11 +239,6 @@
   - type: CrewMonitoringConsole
   - type: GeneralStationRecordConsole
     canDeleteEntries: true
-  # Begin CD - Character Records
-  - type: CharacterRecordConsole
-    consoleType: Admin
-  - type: CriminalRecordsConsole
-  # End CD - Character Records
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: CrewMonitor

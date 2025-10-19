@@ -189,9 +189,6 @@ namespace Content.Shared.Preferences
         [DataField("cosmaticDriftCharacterWidth")]
         public float Width = 1f;
 
-        [DataField("cosmaticDriftCharacterRecords")]
-        public PlayerProvidedCharacterRecords? CDCharacterRecords;
-        // End CD - Character records
 
         public HumanoidCharacterProfile(
             string name,
@@ -208,11 +205,10 @@ namespace Content.Shared.Preferences
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts,
-            // Begin CD - Character Records
+            // Vortex added
             float height,
-            float width,
-            PlayerProvidedCharacterRecords? cdCharacterRecords
-            // End CD - Character Records
+            float width
+            // Vortex end
         )
         {
             Name = name;
@@ -229,11 +225,10 @@ namespace Content.Shared.Preferences
             _antagPreferences = antagPreferences;
             _traitPreferences = traitPreferences;
             _loadouts = loadouts;
-            // Begin CD - Character Records
+            // Vortex added
             Height = height;
             Width = width;
-            CDCharacterRecords = cdCharacterRecords;
-            // End CD - Character Records
+            // Vortex end
 
             var hasHighPrority = false;
             foreach (var (key, value) in _jobPriorities)
@@ -267,8 +262,8 @@ namespace Content.Shared.Preferences
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
                 new Dictionary<string, RoleLoadout>(other.Loadouts),
                 other.Height, // CD - Character Records
-                other.Width, // CD - Character Records
-                other.CDCharacterRecords) // CD - Character Records
+                other.Width // CD - Character Records
+            )
         {
         }
 
@@ -413,7 +408,7 @@ namespace Content.Shared.Preferences
             return new(this) { SpawnPriority = spawnPriority };
         }
 
-        // Begin CD - Character Records
+        // Vortex added
         public HumanoidCharacterProfile WithHeight(float height)
         {
             return new(this) { Height = height };
@@ -423,12 +418,7 @@ namespace Content.Shared.Preferences
         {
             return new(this) { Width = width };
         }
-
-        public HumanoidCharacterProfile WithCDCharacterRecords(PlayerProvidedCharacterRecords records)
-        {
-            return new HumanoidCharacterProfile(this) { CDCharacterRecords = records };
-        }
-        // End CD - Character Records
+        // Vortex end
 
         public HumanoidCharacterProfile WithJobPriorities(IEnumerable<KeyValuePair<ProtoId<JobPrototype>, JobPriority>> jobPriorities)
         {
@@ -600,8 +590,6 @@ namespace Content.Shared.Preferences
             if (FlavorText != other.FlavorText) return false;
             if (Height != other.Height) return false; // CD
             if (Width != other.Width) return false; // CD
-            if (CDCharacterRecords != null && other.CDCharacterRecords != null && // CD
-               !CDCharacterRecords.MemberwiseEquals(other.CDCharacterRecords)) return false; // CD
             return Appearance.MemberwiseEquals(other.Appearance);
         }
 
@@ -779,18 +767,6 @@ namespace Content.Shared.Preferences
             if (voice is null || !CanHaveVoice(voice, Sex))
                 Voice = SharedHumanoidAppearanceSystem.DefaultSexVoice[sex];
             // CorvaxGoob-TTS-End
-            // Begin CD - Character Records
-            Height = height;
-            Width = width;
-            if (CDCharacterRecords == null)
-            {
-                CDCharacterRecords = PlayerProvidedCharacterRecords.DefaultRecords();
-            }
-            else
-            {
-                CDCharacterRecords!.EnsureValid();
-            }
-            // End CD - Character Records
 
             // Checks prototypes exist for all loadouts and dump / set to default if not.
             var toRemove = new ValueList<string>();
