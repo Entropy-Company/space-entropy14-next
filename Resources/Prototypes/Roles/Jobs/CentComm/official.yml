@@ -39,7 +39,7 @@
   setPreference: false
   startingGear: CentcomGear
   icon: "JobIconNanotrasen"
-  supervisors: job-supervisors-centcom # Goobstation.
+  supervisors: job-supervisors-centcom # Goobstation
   canBeAntag: false
   requirements:
   - !type:AgeRequirement
