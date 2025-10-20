@@ -30,8 +30,8 @@ using Robust.Client.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using System.Numerics; // CD - Character Records
-using Robust.Client.Console; // CD - Character Records
+using System.Numerics; // Vortex - Height & Weight
+using Robust.Client.Console; // Vortex - Height & Weight
 
 namespace Content.Client.Humanoid;
 
@@ -251,8 +251,8 @@ public sealed class HumanoidAppearanceSystem : SharedHumanoidAppearanceSystem
         humanoid.Species = profile.Species;
         humanoid.SkinColor = profile.Appearance.SkinColor;
         humanoid.EyeColor = profile.Appearance.EyeColor;
-        humanoid.Height = profile.Height; // CD - Character Records
-        humanoid.Width = profile.Width; // Enteral - Character Records
+        humanoid.Height = profile.Height; // Vortex - Height & Weight
+        humanoid.Width = profile.Width; // Vortex - Height & Weight
 
         UpdateSprite(new Entity<HumanoidAppearanceComponent, SpriteComponent>(uid, humanoid, Comp<SpriteComponent>(uid)));
     }

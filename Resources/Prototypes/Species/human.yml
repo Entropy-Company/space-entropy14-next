@@ -36,6 +36,12 @@
   minHeight: 0.86
   maxWidth: 1.15
   minWidth: 0.90
+  defaultHeightCm: 175
+  defaultWeightKg: 65
+  minHeightCm: 140
+  maxHeightCm: 220
+  minWeightKg: 40
+  maxWeightKg: 150
   
 # The lack of a layer means that
 # this person cannot have round-start anything

@@ -178,11 +178,10 @@ namespace Content.Server.Database
                 .Include(p => p.Profiles).ThenInclude(h => h.Jobs)
                 .Include(p => p.Profiles).ThenInclude(h => h.Antags)
                 .Include(p => p.Profiles).ThenInclude(h => h.Traits)
-                // Begin CD - Character Records
+                // add Vortex - Height & Weight
                 .Include(p => p.Profiles)
-                    .ThenInclude(h => h.CDProfile)
-                    .ThenInclude(cd => cd != null ? cd.CharacterRecordEntries : null)
-                // End CD - Character Records
+                    .ThenInclude(h => h.VortexProfile)
+                // end Vortex - Height & Weights
                 .Include(p => p.Profiles)
                     .ThenInclude(h => h.Loadouts)
                     .ThenInclude(l => l.Groups)
@@ -234,13 +233,12 @@ namespace Content.Server.Database
             }
 
             var oldProfile = db.DbContext.Profile
-                .Include(p => p.CDProfile) // CD - Character Records
-                    .ThenInclude(cd => cd != null ? cd.CharacterRecordEntries : null)
                 .Include(p => p.Preference)
                 .Where(p => p.Preference.UserId == userId.UserId)
                 .Include(p => p.Jobs)
                 .Include(p => p.Antags)
                 .Include(p => p.Traits)
+                .Include(p => p.VortexProfile)
                 .Include(p => p.Loadouts)
                     .ThenInclude(l => l.Groups)
                     .ThenInclude(group => group.Loadouts)
@@ -425,8 +423,8 @@ namespace Content.Server.Database
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts,
-                profile.CDProfile?.Height ?? 1.0f, // Vortex
-                profile.CDProfile?.Width ?? 1.0f // Vortex
+                profile.VortexProfile?.Height ?? 1.0f, // Vortex - Height & Weight
+                profile.VortexProfile?.Width ?? 1.0f // Vortex - Height & Weight
             );
         }
 
@@ -478,10 +476,10 @@ namespace Content.Server.Database
                         .Select(t => new Trait { TraitName = t })
             );
 
-            // Begin CD - Character Records
-            profile.CDProfile ??= new CDModel.CDProfile();
-            profile.CDProfile.Height = humanoid.Height;
-            profile.CDProfile.Width = humanoid.Width;
+            // Begin Vortex - Height & Weight
+            profile.VortexProfile ??= new VortexModel.VortexProfile();
+            profile.VortexProfile.Height = humanoid.Height;
+            profile.VortexProfile.Width = humanoid.Width;
 
             profile.Loadouts.Clear();
 
