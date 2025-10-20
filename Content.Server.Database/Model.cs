@@ -425,6 +425,8 @@ namespace Content.Server.Database
 
         public int PreferenceId { get; set; }
         public Preference Preference { get; set; } = null!;
+
+        public VortexModel.VortexProfile? VortexProfile { get; set; } // Vortex - Height & Weight
     }
 
     public class Job

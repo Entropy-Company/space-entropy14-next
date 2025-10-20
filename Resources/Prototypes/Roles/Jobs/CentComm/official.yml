@@ -46,10 +46,6 @@
   requirements:
   - !type:AgeRequirement
     requiredAge: 21
-  - !type:SpeciesRequirement # Goob - None Felinid
-    inverted: true
-    species:
-    - Felinid
   - !type:SpeciesRequirement # CorvaxGoob-Species
     inverted: true
     species:

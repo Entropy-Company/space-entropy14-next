@@ -116,13 +116,18 @@ public sealed partial class HumanoidAppearanceComponent : Component
     [ViewVariables(VVAccess.ReadOnly)]
     public Color? CachedFacialHairColor;
 
-    // CD - Character Records
+    // Vortex - Height & Weight
     /// <summary>
     ///     The height of this humanoid.
     /// </summary>
     [DataField, AutoNetworkedField]
     public float Height = 1f;
-    // CD - Character Records
+    /// <summary>
+    ///     The width of this humanoid.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float Width = 1f;
+    // Vortex - Height & Weight
 
     // DeltaV - let paradox anomaly be cloned
     public HumanoidCharacterProfile? LastProfileLoaded { get; set; }

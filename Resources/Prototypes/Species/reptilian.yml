@@ -35,9 +35,11 @@
   naming: FirstDashFirst
   baseScale: "1.1, 1.1"
   minHeight: 0.85
-  maxHeight: 1.1
-  maxWidth: 1.1
+  maxHeight: 1.095
+  maxWidth: 1.09
   minWidth: 0.90
+  defaultHeightCm: 183
+  defaultWeightKg: 70
 
 - type: speciesBaseSprites
   id: MobReptilianSprites

@@ -88,22 +88,22 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                     <Control HorizontalExpand="True"/>
                                     <LineEdit Name="AgeEdit" MinSize="40 0" HorizontalAlignment="Right" />
                                 </BoxContainer>
-                                <!-- Begin CD - Character Records -->
+                                <!-- added Vortex - Height & Weight -->
                                 <BoxContainer HorizontalExpand="True">
                                     <Label Text="{Loc 'humanoid-profile-editor-height-label'}" />
                                     <Control HorizontalExpand="True" />
-                                    <Slider Name="CDHeightSlider" HorizontalAlignment="Right" SetWidth="300" MinValue="0.0" MaxValue="1.0"/>
+                                    <Slider Name="HeightSlider" HorizontalAlignment="Right" SetWidth="300" MinValue="0.0" MaxValue="1.0"/>
                                     <LineEdit HorizontalAlignment="Right" Name="CDHeight" MinSize="60 0" Text="1.0" />
-                                    <Button Name="CDHeightReset" Text="{Loc 'humanoid-profile-editor-reset-height-button'}" HorizontalAlignment="Right"/>
+                                    <Button Name="HeightReset" Text="{Loc 'humanoid-profile-editor-reset-height-button'}" HorizontalAlignment="Right"/>
                                 </BoxContainer>
                                 <BoxContainer HorizontalExpand="True">
                                     <Label Text="{Loc 'humanoid-profile-editor-weight-label'}" />
                                     <Control HorizontalExpand="True" />
-                                    <Slider Name="CDWidthSlider" HorizontalAlignment="Right" SetWidth="300" MinValue="0.0" MaxValue="1.0"/>
+                                    <Slider Name="WidthSlider" HorizontalAlignment="Right" SetWidth="300" MinValue="0.0" MaxValue="1.0"/>
                                     <LineEdit HorizontalAlignment="Right" Name="CDWidth" MinSize="60 0" Text="1.0" />
-                                    <Button Name="CDWidthReset" Text="{Loc 'humanoid-profile-editor-reset-weight-button'}" HorizontalAlignment="Right"/>
+                                    <Button Name="WidthReset" Text="{Loc 'humanoid-profile-editor-reset-weight-button'}" HorizontalAlignment="Right"/>
                                 </BoxContainer>
-                                <!-- End CD - Character Records -->
+                                <!-- end Vortex - Height & Weight -->
                                 <!-- Sex -->
                                 <BoxContainer HorizontalExpand="True">
                                     <Label Text="{Loc 'humanoid-profile-editor-sex-label'}" />

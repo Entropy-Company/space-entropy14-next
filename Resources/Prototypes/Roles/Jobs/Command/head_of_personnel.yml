@@ -152,10 +152,6 @@
     - !type:DepartmentTimeRequirement
       department: Command
       time: 9000 # 2.5 hours
-    - !type:SpeciesRequirement # Goob - None Felinid
-      inverted: true
-      species:
-      - Felinid
     - !type:SpeciesRequirement # CorvaxGoob-Species
       inverted: true
       species:

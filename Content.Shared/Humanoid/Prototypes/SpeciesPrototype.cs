@@ -204,7 +204,43 @@ public sealed partial class SpeciesPrototype : IPrototype
     public float MaxHeight = 1.20f;
 
     /// <summary>
-    ///     The minimum width for this species
+    /// The default height in cm for this species (used for UI display)
+    /// </summary>
+    [DataField("defaultHeightCm")]
+    public int DefaultHeightCm = 175;
+
+    /// <summary>
+    /// The default weight in kg for this species (used for UI display)
+    /// </summary>
+    [DataField("defaultWeightKg")]
+    public int DefaultWeightKg = 65;
+
+    /// <summary>
+    /// The minimum height in cm for this species
+    /// </summary>
+    [DataField("minHeightCm")]
+    public int MinHeightCm = 140;
+
+    /// <summary>
+    /// The maximum height in cm for this species
+    /// </summary>
+    [DataField("maxHeightCm")]
+    public int MaxHeightCm = 220;
+
+    /// <summary>
+    /// The minimum weight in kg for this species
+    /// </summary>
+    [DataField("minWeightKg")]
+    public int MinWeightKg = 40;
+
+    /// <summary>
+    /// The maximum weight in kg for this species
+    /// </summary>
+    [DataField("maxWeightKg")]
+    public int MaxWeightKg = 150;
+
+    /// <summary>
+    /// Whether to scale horizontally or not
     /// </summary>
     [DataField]
     public float MinWidth = 0.85f;

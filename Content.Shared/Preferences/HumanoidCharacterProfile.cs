@@ -186,7 +186,7 @@ namespace Content.Shared.Preferences
         public PreferenceUnavailableMode PreferenceUnavailable { get; private set; } =
             PreferenceUnavailableMode.SpawnAsOverflow;
 
-        // Begin CD - Character records
+        // Vortex - Height & Weight
         [DataField("cosmaticDriftCharacterHeight")]
         public float Height = 1f;
 
@@ -267,8 +267,8 @@ namespace Content.Shared.Preferences
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
                 // other.BarkVoice), // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
                 new Dictionary<string, RoleLoadout>(other.Loadouts),
-                other.Height, // CD - Character Records
-                other.Width // CD - Character Records
+                other.Height, // Vortex - Height & Weight
+                other.Width // Vortex - Height & Weight
             )
         {
         }
@@ -321,14 +321,14 @@ namespace Content.Shared.Preferences
 
             var sex = Sex.Unsexed;
             var age = 18;
-            var height = 1f; // Goobstation: port EE height/width sliders
-            var width = 1f; // Goobstation: port EE height/width sliders
+            var height = 1f; // Vortex - Height & Weight
+            var width = 1f; // Vortex - Height & Weight
             if (prototypeManager.TryIndex<SpeciesPrototype>(species, out var speciesPrototype))
             {
                 sex = random.Pick(speciesPrototype.Sexes);
-                age = random.Next(speciesPrototype.MinAge, speciesPrototype.OldAge); // people don't look and keep making 119 year old characters with zero rp, cap it at middle aged
-                height = random.NextFloat(speciesPrototype.MinHeight, speciesPrototype.MaxHeight); // Goobstation: port EE height/width sliders
-                width = random.NextFloat(speciesPrototype.MinWidth, speciesPrototype.MaxWidth); // Goobstation: port EE height/width sliders
+                age = random.Next(speciesPrototype.MinAge, speciesPrototype.OldAge);
+                height = MathF.Round(random.NextFloat(speciesPrototype.MinHeight, speciesPrototype.MaxHeight), 2); // Vortex - Height & Weight
+                width = MathF.Round(random.NextFloat(speciesPrototype.MinWidth, speciesPrototype.MaxWidth), 2); // Vortex - Height & Weight
             }
 
             // CorvaxGoob-TTS-Start
@@ -609,8 +609,8 @@ namespace Content.Shared.Preferences
             if (!_traitPreferences.SequenceEqual(other._traitPreferences)) return false;
             if (!Loadouts.SequenceEqual(other.Loadouts)) return false;
             if (FlavorText != other.FlavorText) return false;
-            if (Height != other.Height) return false; // CD
-            if (Width != other.Width) return false; // CD
+            if (Height != other.Height) return false; // Vortex - Height & Weight
+            if (Width != other.Width) return false; // Vortex - Height & Weight
             return Appearance.MemberwiseEquals(other.Appearance);
         }
 
@@ -702,11 +702,15 @@ namespace Content.Shared.Preferences
                 flavortext = FormattedMessage.RemoveMarkupOrThrow(FlavorText);
             }
 
-            // Begin CD - Character Records
+            // Begin Vortex - Height & Weight
             var height = Height;
             if (speciesPrototype != null)
                 height = Math.Clamp(MathF.Round(Height, 2), speciesPrototype.MinHeight, speciesPrototype.MaxHeight);
-            // End CD - Character Records
+
+            var width = Width;
+            if (speciesPrototype != null)
+                width = Math.Clamp(MathF.Round(Width, 2), speciesPrototype.MinWidth, speciesPrototype.MaxWidth);
+            // End Vortex - Height & Weight
 
             var appearance = HumanoidCharacterAppearance.EnsureValid(Appearance, Species, Sex, sponsorPrototypes);
 
@@ -890,6 +894,8 @@ namespace Content.Shared.Preferences
             // hashCode.Add(BarkVoice); // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
             hashCode.Add((int) SpawnPriority);
             hashCode.Add((int) PreferenceUnavailable);
+            hashCode.Add(Height); // Vortex - Height & Weight
+            hashCode.Add(Width); // Vortex - Height & Weight
             return hashCode.ToHashCode();
         }
 
