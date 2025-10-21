@@ -205,7 +205,7 @@
     - LavalandStormScheduler
 
 - type: gamePreset
-  id: SecretPlusLow
+  id: SecretPlusCalm
   alias:
     - secretpluscalm
   name: Секрет+ Спокойный
