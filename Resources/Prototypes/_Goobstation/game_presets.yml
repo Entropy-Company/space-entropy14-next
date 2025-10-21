@@ -186,13 +186,23 @@
   id: SecretPlusLow
   alias:
     - secretpluslow
-    - secretpluscalm
     - turbulence
   name: secretplus-low-title
   description: secretplus-low-description
   showInVote: true
   rules:
     - SecretPlusLow
+
+- type: gamePreset
+  id: SecretPlusLow
+  alias:
+    - secretpluscalm
+  name: Секрет+ Спокойный
+  description: По началу спокойно. Возможно и до конца..
+  showInVote: true
+  rules:
+    - SecretPlusCalm
+    - LavalandStormScheduler
 
 - type: gamePreset
   id: SecretPlusMid
