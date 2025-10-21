@@ -195,6 +195,7 @@ public sealed class BanPanelEui : BaseEui
                     _sawmill.Warning($"{Player.Name} ({Player.UserId}) tried to issue a job ban with an invalid job: {role}");
                 }
             }
+            _banManager.WebhookUpdateRoleBans(targetUid, target, Player.UserId, addressRange, targetHWid, roles, minutes, severity, reason, now); // Vortex - Ban Webhook
 
             Close();
             return;

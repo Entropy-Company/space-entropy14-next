@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 using Content.Server.Chat.Managers;
 using Content.Server.Database;
 using Content.Server.GameTicking;
-using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.Players;
 using Content.Shared.Players.PlayTimeTracking;
@@ -37,8 +36,37 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Content.Shared.CCVar;
+using JetBrains.Annotations;
+using Robust.Shared;
+using CCVars = Content.Shared.CCVar.CCVars;
 
 namespace Content.Server.Administration.Managers;
+
+// Start Vortex - Ban Webhook
+public sealed class BanIssuedEventArgs : EventArgs
+{
+    public NetUserId? Target { get; init; }
+    public NetUserId? BanningAdmin { get; init; }
+    public string? Reason { get; init; }
+    public DateTimeOffset Time { get; init; }
+}
+
+public sealed class BanPardonedEventArgs : EventArgs
+{
+    public NetUserId? Target { get; init; }
+    public NetUserId? PardoningAdmin { get; init; }
+    public DateTimeOffset Time { get; init; }
+}
+// End Vortex - Ban Webhook
 
 public sealed partial class BanManager : IBanManager, IPostInjectInit
 {
@@ -56,10 +84,23 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
     [Dependency] private readonly ITaskManager _taskManager = default!;
     [Dependency] private readonly UserDbDataManager _userDbData = default!;
 
-    private ISawmill _sawmill = default!;
 
+    private ISawmill _sawmill = default!;
     public const string SawmillId = "admin.bans";
+    public const string PrefixAntag = "Antag:";
     public const string JobPrefix = "Job:";
+    public const string AntagPrefix = "Antag:";
+    // Start Vortex - Ban Webhook
+    private readonly HttpClient _httpClient = new();
+    private string _serverName = string.Empty;
+    private string _webhookUrl = string.Empty;
+    private WebhookData? _webhookData;
+    private string _webhookName = "Vortex Bans";
+    private string _webhookAvatarUrl = "https://cdn.discordapp.com/icons/1151571914213564418/d2c5167a0d6b9b5e60be12abfa423411.webp?size=1024";
+    private List<IPAddress?> _ipWhitelist = [];
+    public event EventHandler<BanIssuedEventArgs>? BanIssued;
+    public event EventHandler<BanPardonedEventArgs>? BanPardoned;
+    // End Vortex - Ban Webhook
 
     private readonly Dictionary<ICommonSession, List<ServerRoleBanDef>> _cachedRoleBans = new();
     // Cached ban exemption flags are used to handle
@@ -78,6 +119,11 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
 
         _userDbData.AddOnLoadPlayer(CachePlayerData);
         _userDbData.AddOnPlayerDisconnect(ClearPlayerData);
+
+        // Start Vortex - Ban Webhook
+        _cfg.OnValueChanged(CCVars.DiscordBanWebhook, OnWebhookChanged, true);
+        _cfg.OnValueChanged(CCVars.GameHostName, OnServerNameChanged, true);
+        // End Vortex - Ban Webhook
     }
 
     private async Task CachePlayerData(ICommonSession player, CancellationToken cancel)
@@ -208,6 +254,12 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
         _sawmill.Info(logMessage);
         _chat.SendAdminAlert(logMessage);
 
+        // Start Vortex - Ban Webhook
+        var ban = await _db.GetServerBanAsync(null, target, null, null);
+        if (ban != null)
+            SendWebhook(await GenerateBanPayload(ban, minutes));
+        // End Vortex - Ban Webhook
+
         KickMatchingConnectedPlayers(banDef, "newly placed ban");
     }
 
@@ -290,6 +342,16 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
             return;
         }
 
+        // Start Vortex - Ban Webhook
+        BanIssued?.Invoke(this, new BanIssuedEventArgs
+        {
+            Target = target,
+            BanningAdmin = banningAdmin,
+            Reason = reason,
+            Time = timeOfBan
+        });
+        // End Vortex - Ban Webhook
+
         var length = expires == null ? Loc.GetString("cmd-roleban-inf") : Loc.GetString("cmd-roleban-until", ("expires", expires));
         _chat.SendAdminAlert(Loc.GetString("cmd-roleban-success", ("target", targetUsername ?? "null"), ("role", role), ("reason", reason), ("length", length)));
 
@@ -322,6 +384,15 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
         }
 
         await _db.AddServerRoleUnbanAsync(new ServerRoleUnbanDef(banId, unbanningAdmin, DateTimeOffset.Now));
+
+        // Start Vortex - Ban Webhook
+        BanPardoned?.Invoke(this, new BanPardonedEventArgs
+        {
+            Target = ban.UserId,
+            PardoningAdmin = unbanningAdmin,
+            Time = DateTimeOffset.Now
+        });
+        // End Vortex - Ban Webhook
 
         if (ban.UserId is { } player
             && _playerManager.TryGetSessionById(player, out var session)
@@ -361,8 +432,483 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
         _netManager.ServerSendMessage(bans, pSession.Channel);
     }
 
+    // Start Vortex - Ban Webhook
+    public async void WebhookUpdateRoleBans(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableTypedHwid? hwid, IReadOnlyCollection<string> roles, uint? minutes, NoteSeverity severity, string reason, DateTimeOffset timeOfBan)
+    {
+        _systems.TryGetEntitySystem(out GameTicker? ticker);
+        int? roundId = ticker == null || ticker.RoundId == 0 ? null : ticker.RoundId;
+        var playtime = target == null ? TimeSpan.Zero : (await _db.GetPlayTimes(target.Value)).Find(p => p.Tracker == PlayTimeTrackingShared.TrackerOverall)?.TimeSpent ?? TimeSpan.Zero;
+
+        DateTimeOffset? expires = null;
+        if (minutes > 0)
+        {
+            expires = DateTimeOffset.Now + TimeSpan.FromMinutes(minutes.Value);
+        }
+
+        var banDef = new ServerRoleBanDef(
+            null,
+            target,
+            addressRange,
+            hwid,
+            timeOfBan,
+            expires,
+            roundId,
+            playtime,
+            reason,
+            severity,
+            banningAdmin,
+            null,
+            "plug");
+
+        SendWebhook(await GenerateJobBanPayload(banDef, roles, minutes));
+    }
+
+    public async Task PardonBan(ICommonSession? admin, int banId, ServerBanDef ban)
+    {
+        await _db.AddServerUnbanAsync(new ServerUnbanDef(banId, admin?.UserId, DateTimeOffset.UtcNow));
+        if (admin != null)
+        {
+            BanPardoned?.Invoke(this, new BanPardonedEventArgs
+            {
+                Target = ban.UserId,
+                PardoningAdmin = admin.UserId,
+                Time = DateTimeOffset.UtcNow
+            });
+        }
+    }
+
+    private void OnServerNameChanged(string obj)
+    {
+        _serverName = obj;
+    }
+
+    private void OnIpWhitelistChanged(string serverList)
+    {
+        var ips = new List<IPAddress?>();
+
+        foreach (var addr in serverList.Split(','))
+        {
+            try
+            {
+                var ipAddress = IPAddress.Parse(addr.Trim());
+                ips.Add(ipAddress);
+            }
+            catch (FormatException)
+            {
+                _sawmill.Warning($"Invalid IP address format: {addr}");
+            }
+        }
+
+        _ipWhitelist = ips;
+    }
+    // End Vortex - Ban Webhook
+
     public void PostInject()
     {
         _sawmill = _logManager.GetSawmill(SawmillId);
     }
+
+    // Start Vortex - Ban Webhook
+    #region Webhook
+    private async void SendWebhook(WebhookPayload payload)
+    {
+        if (_webhookUrl == string.Empty) return;
+
+        var request = await _httpClient.PostAsync($"{_webhookUrl}?wait=true",
+            new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json"));
+
+        var content = await request.Content.ReadAsStringAsync();
+        if (!request.IsSuccessStatusCode)
+        {
+            _sawmill.Log(LogLevel.Error, $"Discord returned bad status code when posting message (perhaps the message is too long?): {request.StatusCode}\nResponse: {content}");
+            return;
+        }
+
+        var id = JsonNode.Parse(content)?["id"];
+        if (id == null)
+        {
+            _sawmill.Log(LogLevel.Error, $"Could not find id in json-content returned from discord webhook: {content}");
+            return;
+        }
+    }
+    private async Task<WebhookPayload> GenerateJobBanPayload(ServerRoleBanDef banDef, IReadOnlyCollection<string> roles, uint? minutes = null)
+    {
+        var hwidString = banDef.HWId != null
+            ? string.Concat(banDef.HWId.Hwid.Select(x => x.ToString("x2")))
+        : "null";
+        var adminName = banDef.BanningAdmin == null
+            ? Loc.GetString("system-user")
+            : (await _db.GetPlayerRecordByUserId(banDef.BanningAdmin.Value))?.LastSeenUserName ?? Loc.GetString("system-user");
+        var targetName = banDef.UserId == null
+            ? Loc.GetString("server-ban-no-name", ("hwid", hwidString))
+            : (await _db.GetPlayerRecordByUserId(banDef.UserId.Value))?.LastSeenUserName ?? Loc.GetString("server-ban-no-name", ("hwid", hwidString));
+        var expiresString = banDef.ExpirationTime == null ? Loc.GetString("server-ban-string-never") : "" + TimeZoneInfo.ConvertTimeFromUtc(
+        banDef.ExpirationTime.Value.UtcDateTime,
+        TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
+        var reason = banDef.Reason;
+        var id = banDef.Id;
+        var round = "" + banDef.RoundId;
+        var severity = "" + banDef.Severity;
+        var serverName = _serverName[..Math.Min(_serverName.Length, 1500)];
+        var timeNow = TimeZoneInfo.ConvertTimeFromUtc(
+        DateTime.UtcNow,
+        TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
+        var rolesString = "";
+        foreach (var role in roles)
+            rolesString += $"\n> `{role}`";
+
+        string? adminDiscordId = null;
+        string? targetDiscordId = null;
+
+        var adminLink = "";
+        var targetLink = "";
+        var mentions = new List<User>{};
+        if (adminDiscordId != null)
+        {
+            adminLink = $"<@{adminDiscordId}>";
+            mentions.Add(new User(){Id = adminDiscordId});
+        }
+
+        if (targetDiscordId != null)
+        {
+            targetLink = $"<@{targetDiscordId}>";
+            mentions.Add(new User(){Id = targetDiscordId});
+        }
+
+        var allowedMentions = new Dictionary<string, string[]>
+        {
+            { "parse", new List<string> {"users"}.ToArray() }
+        };
+
+        if (banDef.ExpirationTime != null && minutes != null) // Time ban
+            return new WebhookPayload
+            {
+                Username = _webhookName,
+                AvatarUrl = _webhookAvatarUrl,
+                AllowedMentions = allowedMentions,
+                Mentions = mentions,
+                Embeds = new List<Embed>
+                {
+                    new()
+                    {
+                        Description = Loc.GetString(
+            "server-role-ban-string",
+            ("targetName", targetName),
+            ("adminName", adminName),
+            ("TimeNow", timeNow),
+            ("roles", rolesString),
+            ("expiresString", expiresString),
+            ("reason", reason),
+            ("severity", Loc.GetString($"admin-note-editor-severity-{severity.ToLower()}"))),
+                        Color = 0x004281,
+                        Author = new EmbedAuthor
+                        {
+                        Name = Loc.GetString("server-role-ban", ("mins", minutes.Value)) + $"",
+                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless" // Смайлик бан хаммера. URL прямо из дискорд)
+                        },
+                        Footer = new EmbedFooter
+                        {
+                            Text =  Loc.GetString("server-ban-footer", ("server", serverName), ("round", round))
+                        },
+                    },
+                },
+            };
+        else // Perma ban
+            return new WebhookPayload
+            {
+                Username = _webhookName,
+                AvatarUrl = _webhookAvatarUrl,
+                AllowedMentions = allowedMentions,
+                Mentions = mentions,
+                Embeds = new List<Embed>
+                {
+                    new()
+                    {
+                        Description = Loc.GetString(
+            "server-perma-role-ban-string",
+            ("targetName", targetName),
+            ("adminName", adminName),
+            ("TimeNow", timeNow),
+            ("roles", rolesString),
+            ("expiresString", expiresString),
+            ("reason", reason),
+            ("severity", Loc.GetString($"admin-note-editor-severity-{severity.ToLower()}"))),
+                        Color = 0xffb840,
+                        Author = new EmbedAuthor
+                        {
+                        Name = $"{Loc.GetString("server-perma-role-ban")}",
+                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless"
+                        },
+                        Footer = new EmbedFooter
+                        {
+                            Text = Loc.GetString("server-ban-footer", ("server", serverName), ("round", round)),
+                        },
+                    },
+                },
+            };
+    }
+
+    private async Task<WebhookPayload> GenerateBanPayload(ServerBanDef banDef, uint? minutes = null)
+    {
+        var hwidString = banDef.HWId != null
+            ? string.Concat(banDef.HWId.Hwid.Select(x => x.ToString("x2")))
+            : "null";
+        var adminName = banDef.BanningAdmin == null
+            ? Loc.GetString("system-user")
+            : (await _db.GetPlayerRecordByUserId(banDef.BanningAdmin.Value))?.LastSeenUserName ?? Loc.GetString("system-user");
+        var targetName = banDef.UserId == null
+            ? Loc.GetString("server-ban-no-name", ("hwid", hwidString))
+            : (await _db.GetPlayerRecordByUserId(banDef.UserId.Value))?.LastSeenUserName ?? Loc.GetString("server-ban-no-name", ("hwid", hwidString));
+        var expiresString = banDef.ExpirationTime == null ? Loc.GetString("server-ban-string-never") : "" + TimeZoneInfo.ConvertTimeFromUtc(
+            banDef.ExpirationTime.Value.UtcDateTime,
+            TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
+        var reason = banDef.Reason;
+        var id = banDef.Id;
+        var round = "" + banDef.RoundId;
+        var severity = "" + banDef.Severity;
+        var serverName = _serverName[..Math.Min(_serverName.Length, 1500)];
+        var timeNow = TimeZoneInfo.ConvertTimeFromUtc(
+            DateTime.UtcNow,
+            TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
+
+        string? adminDiscordId = null;
+        string? targetDiscordId = null;
+
+        var adminLink = "";
+        var targetLink = "";
+        var mentions = new List<User>{};
+        if (adminDiscordId != null)
+        {
+            adminLink = $"<@{adminDiscordId}>";
+            mentions.Add(new User(){Id = adminDiscordId});
+        }
+
+        if (targetDiscordId != null)
+        {
+            targetLink = $"<@{targetDiscordId}>";
+            mentions.Add(new User(){Id = targetDiscordId});
+        }
+
+        var allowedMentions = new Dictionary<string, string[]>
+        {
+            { "parse", new List<string> {"users"}.ToArray() }
+        };
+
+        if (banDef.ExpirationTime != null && minutes != null) // Time ban
+            return new WebhookPayload
+            {
+                Username = _webhookName,
+                AvatarUrl = _webhookAvatarUrl,
+                AllowedMentions = allowedMentions,
+                Mentions = mentions,
+                Embeds = new List<Embed>
+                {
+                    new()
+                    {
+                        Description = Loc.GetString(
+            "server-time-ban-string",
+            ("targetName", targetName),
+            ("adminName", adminName),
+            ("TimeNow", timeNow),
+            ("expiresString", expiresString),
+            ("reason", reason),
+            ("severity", Loc.GetString($"admin-note-editor-severity-{severity.ToLower()}"))),
+                        Color = 0x803045,
+                        Author = new EmbedAuthor
+                        {
+                        Name = Loc.GetString("server-time-ban", ("mins", minutes.Value)) + $" #{id}",
+                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless" // Смайлик бан хаммера. URL прямо из дискорд)
+                        },
+                        Footer = new EmbedFooter
+                        {
+                            Text = Loc.GetString("server-ban-footer", ("server", serverName), ("round", round)),
+                            IconUrl = "https://cdn.discordapp.com/emojis/1143995749928030208.webp?size=40&quality=lossless"
+                        },
+                    },
+                },
+            };
+        else // Perma ban
+            return new WebhookPayload
+            {
+                Username = _webhookName,
+                AvatarUrl = _webhookAvatarUrl,
+                AllowedMentions = allowedMentions,
+                Mentions = mentions,
+                Embeds = new List<Embed>
+                {
+                    new()
+                    {
+                        Description = Loc.GetString(
+            "server-perma-ban-string",
+            ("targetName", targetName),
+            ("adminName", adminName),
+            ("TimeNow", timeNow),
+            ("reason", reason),
+            ("severity", Loc.GetString($"admin-note-editor-severity-{severity.ToLower()}"))),
+                        Color = 0x8B0000,
+                        Author = new EmbedAuthor
+                        {
+                        Name = $"{Loc.GetString("server-perma-ban")} #{id}",
+                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless" // Смайлик бан хаммера. URL прямо из дискорд)
+                        },
+                        Footer = new EmbedFooter
+                        {
+                            Text = Loc.GetString("server-ban-footer", ("server", serverName), ("round", round)),
+                            IconUrl = "https://cdn.discordapp.com/emojis/1129769076647002122.webp?size=40&quality=lossless"
+                        },
+                    },
+                },
+            };
+    }
+    private void OnWebhookChanged(string url)
+    {
+        _webhookUrl = url;
+
+        if (url == string.Empty)
+            return;
+
+        var match = Regex.Match(url, @"^https://discord\.com/api/webhooks/(\d+)/((?!.*/).*)$");
+
+        if (!match.Success)
+        {
+
+            _sawmill.Warning("Webhook URL does not appear to be valid. Using anyways...");
+            return;
+        }
+
+        if (match.Groups.Count <= 2)
+        {
+            _sawmill.Error("Could not get webhook ID or token.");
+            return;
+        }
+
+        var webhookId = match.Groups[1].Value;
+        var webhookToken = match.Groups[2].Value;
+
+        _ = SetWebhookData(webhookId, webhookToken);
+    }
+    private async Task SetWebhookData(string id, string token)
+    {
+        var response = await _httpClient.GetAsync($"https://discord.com/api/v10/webhooks/{id}/{token}");
+
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            _sawmill.Log(LogLevel.Error, $"Discord returned bad status code when trying to get webhook data (perhaps the webhook URL is invalid?): {response.StatusCode}\nResponse: {content}");
+            return;
+        }
+
+        _webhookData = JsonSerializer.Deserialize<WebhookData>(content);
+    }
+
+    // https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
+    private struct Embed
+    {
+        [JsonPropertyName("description")]
+        public string Description { get; set; } = "";
+
+        [JsonPropertyName("color")]
+        public int Color { get; set; } = 0;
+
+        [JsonPropertyName("author")]
+        public EmbedAuthor? Author { get; set; } = null;
+
+        [JsonPropertyName("thumbnail")]
+        public EmbedThumbnail? Thumbnail { get; set; } = null;
+
+        [JsonPropertyName("footer")]
+        public EmbedFooter? Footer { get; set; } = null;
+        public Embed()
+        {
+        }
+    }
+    // https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
+    private struct EmbedAuthor
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = "";
+
+        [JsonPropertyName("icon_url")]
+        public string? IconUrl { get; set; }
+
+        public EmbedAuthor()
+        {
+        }
+    }
+    // https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+    private struct WebhookData
+    {
+        [JsonPropertyName("guild_id")]
+        public string? GuildId { get; set; } = null;
+
+        [JsonPropertyName("channel_id")]
+        public string? ChannelId { get; set; } = null;
+
+        public WebhookData()
+        {
+        }
+    }
+    // https://discord.com/developers/docs/resources/channel#message-object-message-structure
+    private struct WebhookPayload
+    {
+        [JsonPropertyName("username")]
+        public string Username { get; set; } = "";
+
+        [JsonPropertyName("avatar_url")]
+        public string? AvatarUrl { get; set; } = "";
+
+        [JsonPropertyName("embeds")]
+        public List<Embed>? Embeds { get; set; } = null;
+
+        [JsonPropertyName("mentions")]
+        public List<User> Mentions { get; set; } = new();
+
+        [JsonPropertyName("allowed_mentions")]
+        public Dictionary<string, string[]> AllowedMentions { get; set; } =
+            new()
+            {
+                    { "parse", Array.Empty<string>() },
+            };
+
+        public WebhookPayload()
+        {
+        }
+    }
+
+    // https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
+    private struct EmbedFooter
+    {
+        [JsonPropertyName("text")]
+        public string Text { get; set; } = "";
+
+        [JsonPropertyName("icon_url")]
+        public string? IconUrl { get; set; }
+
+        public EmbedFooter()
+        {
+        }
+    }
+
+    // https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
+    private struct EmbedThumbnail
+    {
+        [JsonPropertyName("url")]
+        public string Url { get; set; } = "";
+        public EmbedThumbnail()
+        {
+        }
+    }
+
+    private struct User
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; } = "";
+        public User()
+        {
+        }
+    }
+
+    #endregion
+
+    // End Vortex - Ban Webhook
 }

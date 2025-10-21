@@ -99,4 +99,10 @@ public sealed partial class CCVars
     public static readonly CVarDef<bool> DiscordNewsWebhookSendDuringRound =
         CVarDef.Create("discord.news_webhook_send_during_round", false, CVar.SERVERONLY);
 
+    /// <summary>
+    ///     URL of the Discord webhook which will relay all ban messages. If left empty, disables the webhook.
+    /// </summary>
+    public static readonly CVarDef<string> DiscordBanWebhook =
+        CVarDef.Create("discord.ban_webhook", string.Empty, CVar.SERVERONLY | CVar.CONFIDENTIAL);
+
 }
