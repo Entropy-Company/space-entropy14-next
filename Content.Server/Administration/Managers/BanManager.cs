@@ -722,7 +722,6 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
                         Footer = new EmbedFooter
                         {
                             Text = Loc.GetString("server-ban-footer", ("server", serverName), ("round", round)),
-                            IconUrl = "https://cdn.discordapp.com/emojis/1143995749928030208.webp?size=40&quality=lossless"
                         },
                     },
                 },
@@ -749,12 +748,11 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
                         Author = new EmbedAuthor
                         {
                         Name = $"{Loc.GetString("server-perma-ban")} #{id}",
-                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless" // Смайлик бан хаммера. URL прямо из дискорд)
+                        IconUrl = "https://cdn.discordapp.com/emojis/1129749368199712829.webp?size=40&quality=lossless"
                         },
                         Footer = new EmbedFooter
                         {
                             Text = Loc.GetString("server-ban-footer", ("server", serverName), ("round", round)),
-                            IconUrl = "https://cdn.discordapp.com/emojis/1129769076647002122.webp?size=40&quality=lossless"
                         },
                     },
                 },
