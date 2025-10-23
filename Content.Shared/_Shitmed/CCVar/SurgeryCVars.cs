@@ -85,6 +85,12 @@ public sealed class SurgeryCVars : CVars
         CVarDef.Create("traumas.organ_run_speed_slowdown", 0.6f, CVar.SERVER | CVar.REPLICATED);
 
     /// <summary>
+    /// Whether organ damage is enabled or disabled.
+    /// </summary>
+    public static readonly CVarDef<bool> OrganDamageEnabled =
+        CVarDef.Create("traumas.organ_damage_enabled", true, CVar.SERVER | CVar.REPLICATED);
+
+    /// <summary>
     /// How much damage needs to happen in a single attack to destroy a part?
     /// </summary>
     public static readonly CVarDef<float> DestroySeverityMultiplier =

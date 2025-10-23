@@ -86,6 +86,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.ResourceManagement;
+using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -94,6 +95,7 @@ using Content.Shared._Shitmed.Targeting;
 using Content.Shared._Shitmed.Medical.HealthAnalyzer;
 using Content.Shared._Shitmed.Medical.Surgery.Wounds;
 using Content.Shared._Shitmed.Medical.Surgery.Wounds.Systems;
+using Content.Shared._Shitmed.CCVar;
 using Content.Shared.Atmos.Rotting;
 using Content.Shared.Body.Part;
 using Content.Shared.Chemistry.Components;
@@ -112,6 +114,7 @@ namespace Content.Client.HealthAnalyzer.UI
 
         // Shitmed Change Start
         private readonly WoundSystem _wound;
+        private readonly IConfigurationManager _cfg; // Vortex
         public event Action<TargetBodyPart?, EntityUid>? OnBodyPartSelected;
         public event Action<HealthAnalyzerMode, EntityUid>? OnModeChanged;
         private EntityUid _spriteViewEntity;
@@ -132,6 +135,7 @@ namespace Content.Client.HealthAnalyzer.UI
             _spriteSystem = _entityManager.System<SpriteSystem>();
             _prototypes = dependencies.Resolve<IPrototypeManager>();
             _cache = dependencies.Resolve<IResourceCache>();
+            _cfg = dependencies.Resolve<IConfigurationManager>(); // Vortex
             // Shitmed Change Start
             _wound = _entityManager.System<WoundSystem>();
             _bodyPartControls = new Dictionary<TargetBodyPart, TextureButton>
@@ -158,6 +162,8 @@ namespace Content.Client.HealthAnalyzer.UI
             BodyButton.OnPressed += _ => SetMode(HealthAnalyzerMode.Body);
             OrgansButton.OnPressed += _ => SetMode(HealthAnalyzerMode.Organs);
             ChemicalsButton.OnPressed += _ => SetMode(HealthAnalyzerMode.Chemicals);
+
+            OrgansButton.Visible = _cfg.GetCVar(SurgeryCVars.OrganDamageEnabled);// Vortex - disable Organs button if organ damage is disabled
             // Shitmed Change End
         }
 
@@ -173,6 +179,10 @@ namespace Content.Client.HealthAnalyzer.UI
         public void SetMode(HealthAnalyzerMode mode)
         {
             if (_target == null)
+                return;
+
+            // Vortex - disable Organs button if organ damage is disabledd
+            if (mode == HealthAnalyzerMode.Organs && !_cfg.GetCVar(SurgeryCVars.OrganDamageEnabled))
                 return;
 
             OnModeChanged?.Invoke(mode, _target.Value);

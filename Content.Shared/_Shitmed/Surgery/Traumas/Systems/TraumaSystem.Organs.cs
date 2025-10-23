@@ -132,7 +132,8 @@ public partial class TraumaSystem
         OrganComponent? organ = null)
     {
         if (severity == 0
-            || !Resolve(uid, ref organ))
+            || !Resolve(uid, ref organ)
+            || !_cfg.GetCVar(SurgeryCVars.OrganDamageEnabled))
             return false;
 
         if (!organ.IntegrityModifiers.TryAdd((identifier, effectOwner), severity))
@@ -150,7 +151,8 @@ public partial class TraumaSystem
         OrganComponent? organ = null)
     {
         if (severity == 0
-            || !Resolve(uid, ref organ))
+            || !Resolve(uid, ref organ)
+            || !_cfg.GetCVar(SurgeryCVars.OrganDamageEnabled))
             return false;
 
         organ.IntegrityModifiers[(identifier, effectOwner)] = severity;
@@ -166,7 +168,8 @@ public partial class TraumaSystem
         OrganComponent? organ = null)
     {
         if (change == 0
-            || !Resolve(uid, ref organ))
+            || !Resolve(uid, ref organ)
+            || !_cfg.GetCVar(SurgeryCVars.OrganDamageEnabled))
             return false;
 
         if (!organ.IntegrityModifiers.TryGetValue((identifier, effectOwner), out var value))
