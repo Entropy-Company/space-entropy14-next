@@ -87,6 +87,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Audio.Systems;
 using static Content.Shared.Paper.PaperComponent;
 using Robust.Shared.Prototypes;
+using Content.Shared._Vortex.Paper;
 
 namespace Content.Shared.Paper;
 
@@ -166,14 +167,55 @@ public sealed class PaperSystem : EntitySystem
 
             if (entity.Comp.StampedBy.Count > 0)
             {
-                var commaSeparated =
-                    string.Join(", ", entity.Comp.StampedBy.Select(s => Loc.GetString(s.StampedName)));
-                args.PushMarkup(
-                    Loc.GetString(
-                        "paper-component-examine-detail-stamped-by",
-                        ("paper", entity),
-                        ("stamps", commaSeparated))
-                );
+                // Separate stamps into signatures and actual stamps
+                var signatures = new List<string>();
+                var stamps = new List<string>();
+
+                foreach (var stamp in entity.Comp.StampedBy)
+                {
+                    var isSignature = false;
+                    foreach (var sig in entity.Comp.SignedBy)
+                    {
+                        if (sig.SignedName == stamp.StampedName && sig.SignColor == stamp.StampedColor)
+                        {
+                            isSignature = true;
+                            break;
+                        }
+                    }
+
+                    if (isSignature)
+                    {
+                        signatures.Add(Loc.GetString(stamp.StampedName));
+                    }
+                    else
+                    {
+                        stamps.Add(Loc.GetString(stamp.StampedName));
+                    }
+                }
+
+                // Show signatures
+                if (signatures.Count > 0)
+                {
+                    var commaSeparatedSigns = string.Join(", ", signatures);
+                    args.PushMarkup(
+                        Loc.GetString(
+                            "paper-component-examine-detail-signed-by",
+                            ("paper", entity),
+                            ("signs", commaSeparatedSigns))
+                    );
+                }
+
+                // Show stamps (non-signatures)
+                if (stamps.Count > 0)
+                {
+                    var commaSeparatedStamps = string.Join(", ", stamps);
+                    args.PushMarkup(
+                        Loc.GetString(
+                            "paper-component-examine-detail-stamped-by",
+                            ("paper", entity),
+                            ("stamps", commaSeparatedStamps))
+                    );
+                }
             }
         }
     }
@@ -182,9 +224,36 @@ public sealed class PaperSystem : EntitySystem
     {
         // only allow editing if there are no stamps or when using a cyberpen
         var editable = entity.Comp.StampedBy.Count == 0 || _tagSystem.HasTag(args.Used, WriteIgnoreStampsTag);
+        //Vortex added
+        // Allow editing if using a pen with SignEdit tag, even if signed, but only if there are no non-signature stamps
+        var signEditable = false;
+        if (_tagSystem.HasTag(args.Used, "SignEdit"))
+        {
+            // Check if all stamps are signatures (match SignedBy entries)
+            var hasNonSignatureStamps = false;
+            foreach (var stamp in entity.Comp.StampedBy)
+            {
+                var isSignature = false;
+                foreach (var sig in entity.Comp.SignedBy)
+                {
+                    if (sig.SignedName == stamp.StampedName && sig.SignColor == stamp.StampedColor)
+                    {
+                        isSignature = true;
+                        break;
+                    }
+                }
+                if (!isSignature)
+                {
+                    hasNonSignatureStamps = true;
+                    break;
+                }
+            }
+            signEditable = !hasNonSignatureStamps;
+        }
+        //Vortex end
         if (_tagSystem.HasTag(args.Used, WriteTag))
         {
-            if (editable)
+            if (editable || signEditable)
             {
                 if (entity.Comp.EditingDisabled)
                 {
@@ -339,7 +408,7 @@ public sealed class PaperSystem : EntitySystem
 
     public void UpdateUserInterface(Entity<PaperComponent> entity)
     {
-        _uiSystem.SetUiState(entity.Owner, PaperUiKey.Key, new PaperBoundUserInterfaceState(entity.Comp.Content, entity.Comp.StampedBy, entity.Comp.Mode));
+        _uiSystem.SetUiState(entity.Owner, PaperUiKey.Key, new PaperBoundUserInterfaceState(entity.Comp.Content, entity.Comp.StampedBy, entity.Comp.SignedBy, entity.Comp.Mode));
     }
 
     //Vortex added

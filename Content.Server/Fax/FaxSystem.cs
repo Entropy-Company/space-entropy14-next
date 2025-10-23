@@ -137,6 +137,7 @@ using Content.Shared.Paper;
 using Content.Shared.Power;
 using Content.Shared.Tools;
 using Content.Shared.UserInterface;
+using Content.Shared._Vortex.Paper;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -419,10 +420,13 @@ public sealed class FaxSystem : EntitySystem
                     args.Data.TryGetValue(FaxConstants.FaxPaperLabelData, out string? label);
                     args.Data.TryGetValue(FaxConstants.FaxPaperStampStateData, out string? stampState);
                     args.Data.TryGetValue(FaxConstants.FaxPaperStampedByData, out List<StampDisplayInfo>? stampedBy);
+                    //Vortex added
+                    args.Data.TryGetValue(FaxConstants.FaxPaperSignedByData, out List<SignatureDisplayInfo>? signedBy);
+                    //Vortex end
                     args.Data.TryGetValue(FaxConstants.FaxPaperPrototypeData, out string? prototypeId);
                     args.Data.TryGetValue(FaxConstants.FaxPaperLockedData, out bool? locked);
 
-                    var printout = new FaxPrintout(content, name, label, prototypeId, stampState, stampedBy, locked ?? false);
+                    var printout = new FaxPrintout(content, name, label, prototypeId, stampState, stampedBy, signedBy, locked ?? false);
                     Receive(uid, printout, args.SenderAddress);
 
                     break;
@@ -619,12 +623,13 @@ public sealed class FaxSystem : EntitySystem
 
         // TODO: See comment in 'Send()' about not being able to copy whole entities
         var printout = new FaxPrintout(paper.Content,
-                                       nameMod?.BaseName ?? metadata.EntityName,
-                                       labelComponent?.CurrentLabel,
-                                       metadata.EntityPrototype?.ID ?? component.PrintPaperId,
-                                       paper.StampState,
-                                       paper.StampedBy,
-                                       paper.EditingDisabled);
+                                        nameMod?.BaseName ?? metadata.EntityName,
+                                        labelComponent?.CurrentLabel,
+                                        metadata.EntityPrototype?.ID ?? component.PrintPaperId,
+                                        paper.StampState,
+                                        paper.StampedBy,
+                                        paper.SignedBy,
+                                        paper.EditingDisabled);
 
         component.PrintingQueue.Enqueue(printout);
         component.SendTimeoutRemaining += component.SendTimeout;
@@ -697,6 +702,9 @@ public sealed class FaxSystem : EntitySystem
         {
             payload[FaxConstants.FaxPaperStampStateData] = paper.StampState;
             payload[FaxConstants.FaxPaperStampedByData] = paper.StampedBy;
+            //Vortex added
+            payload[FaxConstants.FaxPaperSignedByData] = paper.SignedBy;
+            //Vortex end
         }
 
         _deviceNetworkSystem.QueuePacket(uid, component.DestinationFaxAddress, payload);
@@ -764,6 +772,14 @@ public sealed class FaxSystem : EntitySystem
                     _paperSystem.TryStamp((printed, paper), stamp, printout.StampState);
                 }
             }
+
+            //Vortex added
+            // Apply signatures
+            foreach (var signature in printout.SignedBy)
+            {
+                paper.SignedBy.Add(signature);
+            }
+            //Vortex end
 
             paper.EditingDisabled = printout.Locked;
         }

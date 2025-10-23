@@ -16,6 +16,7 @@ using Robust.Server.Audio;
 using Robust.Shared.Player;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Content.Shared._Vortex.Paper;
 
 namespace Content.Server._DV.Paper;
 
@@ -87,24 +88,44 @@ public sealed class SignatureSystem : EntitySystem
         var hasPlaceholders = HasSignPlaceholders(content);
 
         // Enforce total signature limit
-        if (comp.StampedBy.Count >= totalLimit)
+        if (comp.SignedBy.Count >= totalLimit)
         {
             _popup.PopupEntity(Loc.GetString("paper-signed-failure", ("target", paper.Owner)), signer, signer, PopupType.SmallCaution);
             return false;
         }
 
         // Enforce per-signer repeat limit (count by name)
-        var existingByThisSigner = comp.StampedBy.Count(s => s.StampedName == signatureName);
+        var existingByThisSigner = comp.SignedBy.Count(s => s.SignedName == signatureName);
         if (existingByThisSigner >= repeatLimit)
         {
             _popup.PopupEntity(Loc.GetString("paper-signed-failure", ("target", paper.Owner)), signer, signer, PopupType.SmallCaution);
             return false;
         }
 
+        // Get signing tool properties
+        var signColor = Color.DarkSlateGray;
+        var fontId = "Sign";
+        var fontSize = 16;
+
+        if (TryComp<SignToolComponent>(pen, out var signTool))
+        {
+            signColor = signTool.SignColor;
+            fontId = signTool.FontId;
+            fontSize = signTool.FontSize;
+        }
+
+        var signatureInfo = new SignatureDisplayInfo()
+        {
+            SignedName = signatureName,
+            SignColor = signColor,
+            FontId = fontId,
+            FontSize = fontSize
+        };
+
         var stampInfo = new StampDisplayInfo()
         {
             StampedName = signatureName,
-            StampedColor = Color.DarkSlateGray, //TODO Make this configurable depending on the pen.
+            StampedColor = signColor, // Use the same color as the signature
         };
 
         // If placeholders exist, add entry but avoid visual stamp sprite; also allow duplicate entries up to repeatLimit.
@@ -114,13 +135,21 @@ public sealed class SignatureSystem : EntitySystem
         if (hasPlaceholders)
         {
             // Clear existing world overlay so only textual signatures are visible
-            comp.StampState = null;
-            if (TryComp<AppearanceComponent>(paper, out var appearance))
-                _appearance.SetData(paper, PaperComponent.PaperVisuals.Stamp, "", appearance);
-            Dirty(paper);
+            // But preserve the original StampState if it was set before signing
+            if (string.IsNullOrEmpty(comp.StampState))
+            {
+                comp.StampState = null;
+                if (TryComp<AppearanceComponent>(paper, out var appearance))
+                    _appearance.SetData(paper, PaperComponent.PaperVisuals.Stamp, "", appearance);
+                Dirty(paper);
+            }
         }
         //Vortex end
         //Vortex end
+
+        // Add signature info to SignedBy list
+        comp.SignedBy.Add(signatureInfo);
+        Dirty(paper);
 
         if (_paper.TryAddStampInfo(paper, stampInfo, spriteState, allowDuplicate))
         {
@@ -145,6 +174,10 @@ public sealed class SignatureSystem : EntitySystem
         }
         else
         {
+            // Remove the signature we just added if stamp failed
+            comp.SignedBy.Remove(signatureInfo);
+            Dirty(paper);
+
             // Show an error popup
             _popup.PopupEntity(Loc.GetString("paper-signed-failure", ("target", paper.Owner)), signer, signer, PopupType.SmallCaution);
 

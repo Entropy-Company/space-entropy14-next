@@ -98,6 +98,7 @@ using Robust.Shared.Utility;
 using Robust.Client.UserInterface.RichText;
 using Content.Client.UserInterface.RichText;
 using Robust.Shared.Input;
+using Content.Shared._Vortex.Paper;
 
 namespace Content.Client.Paper.UI
 {
@@ -130,6 +131,7 @@ namespace Content.Client.Paper.UI
             typeof(BoldTag),
             typeof(BulletTag),
             typeof(ColorTag),
+            typeof(FontTag),
             typeof(HeadingTag),
             typeof(ItalicTag),
             typeof(MonoTag)
@@ -349,7 +351,7 @@ namespace Content.Client.Paper.UI
             //Vortex added
             // Process text: replace signature placeholders with textual signatures and strip control tags
             var hasPlaceholders = Regex.IsMatch(state.Text, "(<\\s*sign\\s*=\\s*\\d+\\s*>)|([\\[]\\s*sign\\s*=\\s*\\d+\\s*[\\]])");
-            var processed = ReplaceSignaturePlaceholders(state.Text, state.StampedBy);
+            var processed = ReplaceSignaturePlaceholders(state.Text, state.SignedBy);
             processed = StripControlTags(processed);
             //Vortex end
 
@@ -373,10 +375,15 @@ namespace Content.Client.Paper.UI
             //Vortex added
             if (!hasPlaceholders)
             {
-                for (var i = 0; i <= state.StampedBy.Count * 3 + 1; i++)
+                for (var i = 0; i <= state.SignedBy.Count * 3 + 1; i++)
                 {
                     msg.AddMarkupPermissive("\r\n");
                 }
+            }
+            else
+            {
+                // When using placeholders, don't add extra newlines for signatures
+                // Signatures are displayed inline in the text
             }
             //Vortex end
             WrittenTextLabel.SetMessage(msg, _allowedTags, DefaultTextColor);
@@ -394,6 +401,29 @@ namespace Content.Client.Paper.UI
                     StampDisplay.AddStamp(new StampWidget { StampInfo = stamper });
                 }
             }
+            else
+            {
+                // When using placeholders, only show stamps that are not signatures
+                // Signatures are displayed inline in text, not as stamps
+                foreach (var stamper in state.StampedBy)
+                {
+                    // Check if this stamp corresponds to a signature by matching name and color
+                    var isSignature = false;
+                    foreach (var sig in state.SignedBy)
+                    {
+                        if (sig.SignedName == stamper.StampedName && sig.SignColor == stamper.StampedColor)
+                        {
+                            isSignature = true;
+                            break;
+                        }
+                    }
+
+                    if (!isSignature)
+                    {
+                        StampDisplay.AddStamp(new StampWidget { StampInfo = stamper });
+                    }
+                }
+            }
             //Vortex end
         }
 
@@ -408,7 +438,7 @@ namespace Content.Client.Paper.UI
             return text;
         }
 
-        private static string ReplaceSignaturePlaceholders(string text, System.Collections.Generic.List<Content.Shared.Paper.StampDisplayInfo> stamps)
+        private static string ReplaceSignaturePlaceholders(string text, System.Collections.Generic.List<Content.Shared._Vortex.Paper.SignatureDisplayInfo> signatures)
         {
             //Vortex added
             // Support <sign=id>, [sign=id], and bare <sign>, [sign], case-insensitive, with any id payload
@@ -418,8 +448,11 @@ namespace Content.Client.Paper.UI
             text = angleEq.Replace(text, m =>
             {
                 var val = m.Groups[1].Value.Trim();
-                if (int.TryParse(val, out var idx) && idx >= 1 && idx <= stamps.Count)
-                    return Loc.GetString(stamps[idx - 1].StampedName);
+                if (int.TryParse(val, out var idx) && idx >= 1 && idx <= signatures.Count)
+                {
+                    var sig = signatures[idx - 1];
+                    return $"[font=\"{sig.FontId}\" size={sig.FontSize}][color={sig.SignColor.ToHex()}]{Loc.GetString(sig.SignedName)}[/color][/font]";
+                }
                 return underline;
             });
 
@@ -427,8 +460,11 @@ namespace Content.Client.Paper.UI
             text = squareEq.Replace(text, m =>
             {
                 var val = m.Groups[1].Value.Trim();
-                if (int.TryParse(val, out var idx) && idx >= 1 && idx <= stamps.Count)
-                    return Loc.GetString(stamps[idx - 1].StampedName);
+                if (int.TryParse(val, out var idx) && idx >= 1 && idx <= signatures.Count)
+                {
+                    var sig = signatures[idx - 1];
+                    return $"[font=\"{sig.FontId}\" size={sig.FontSize}][color={sig.SignColor.ToHex()}]{Loc.GetString(sig.SignedName)}[/color][/font]";
+                }
                 return underline;
             });
 

@@ -86,6 +86,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Content.Shared._Vortex.Paper;
 
 namespace Content.Shared.Fax.Components;
 
@@ -254,6 +255,11 @@ public sealed partial class FaxPrintout
     [DataField("stampedBy")]
     public List<StampDisplayInfo> StampedBy { get; private set; } = new();
 
+    //Vortex added
+    [DataField("signedBy")]
+    public List<SignatureDisplayInfo> SignedBy { get; private set; } = new();
+    //Vortex end
+
     [DataField]
     public bool Locked { get; private set; }
 
@@ -261,7 +267,7 @@ public sealed partial class FaxPrintout
     {
     }
 
-    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, bool locked = false)
+    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, List<SignatureDisplayInfo>? signedBy = null, bool locked = false)
     {
         Content = content;
         Name = name;
@@ -269,6 +275,9 @@ public sealed partial class FaxPrintout
         PrototypeId = prototypeId ?? "";
         StampState = stampState;
         StampedBy = stampedBy ?? new List<StampDisplayInfo>();
+        //Vortex added
+        SignedBy = signedBy ?? new List<SignatureDisplayInfo>();
+        //Vortex end
         Locked = locked;
     }
 }

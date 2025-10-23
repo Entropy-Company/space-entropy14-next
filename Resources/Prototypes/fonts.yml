@@ -57,3 +57,7 @@
 - type: font # Einstein Engines
   id: Aliensatemymum
   path: /Fonts/Aliensatemymum.ttf
+
+- type: font # Vortex
+  id: Sign
+  path: /Fonts/MarckScript-Regular.ttf
