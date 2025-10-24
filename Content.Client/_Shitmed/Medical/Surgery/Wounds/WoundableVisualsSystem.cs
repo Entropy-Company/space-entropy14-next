@@ -208,7 +208,7 @@ public sealed class WoundableVisualsSystem : VisualizerSystem<WoundableVisualsCo
             var totalBleeds = (FixedPoint2) 0;
             foreach (var wound in woundList)
             {
-                if (TryComp<BleedInflicterComponent>(wound, out var bleeds))
+                if (TryComp<BleedInflicterComponent>(wound, out var bleeds) && bleeds.IsBleeding)
                     totalBleeds += bleeds.BleedingAmount;
             }
 
@@ -218,12 +218,15 @@ public sealed class WoundableVisualsSystem : VisualizerSystem<WoundableVisualsCo
             var part = symmetry + partType;
 
             if (sprite.LayerMapTryGet($"{part}Bleeding", out var parentBleedingLayer))
+            {
                 UpdateBleedingLayerState(
                 sprite,
                 parentBleedingLayer,
                 part,
                 totalBleeds,
                 GetBleedingThreshold(totalBleeds, comp));
+                Dirty(uid, comp);
+            }
         }
         else
         {
@@ -233,16 +236,19 @@ public sealed class WoundableVisualsSystem : VisualizerSystem<WoundableVisualsCo
             var totalBleeds = (FixedPoint2) 0;
             foreach (var wound in wounds.GroupList.Select(GetEntity))
             {
-                if (TryComp<BleedInflicterComponent>(wound, out var bleeds))
+                if (TryComp<BleedInflicterComponent>(wound, out var bleeds) && bleeds.IsBleeding)
                     totalBleeds += bleeds.BleedingAmount;
             }
 
             if (sprite.LayerMapTryGet($"{layer}Bleeding", out var bleedingLayer))
+            {
                 UpdateBleedingLayerState(sprite,
                 bleedingLayer,
                 layer.ToString(),
                 totalBleeds,
                 GetBleedingThreshold(totalBleeds, comp));
+                Dirty(uid, comp);
+            }
         }
     }
 

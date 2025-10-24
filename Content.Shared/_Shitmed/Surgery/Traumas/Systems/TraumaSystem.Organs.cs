@@ -207,11 +207,17 @@ public partial class TraumaSystem
     {
         var oldIntegrity = organ.OrganIntegrity;
 
-        if (organ.IntegrityModifiers.Count > 0)
+        if (!_cfg.GetCVar(SurgeryCVars.OrganDamageEnabled))
+        {
+            organ.OrganIntegrity = organ.IntegrityCap;
+        }
+        else if (organ.IntegrityModifiers.Count > 0)
+        {
             organ.OrganIntegrity = FixedPoint2.Clamp(organ.IntegrityModifiers
                 .Aggregate(FixedPoint2.Zero, (current, modifier) => current + modifier.Value),
                 0,
                 organ.IntegrityCap);
+        }
 
         if (oldIntegrity != organ.OrganIntegrity)
         {

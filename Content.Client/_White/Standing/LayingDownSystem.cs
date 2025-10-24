@@ -62,11 +62,13 @@ public sealed class LayingDownSystem : SharedLayingDownSystem
         {
             rotationVisuals.HorizontalRotation = Angle.FromDegrees(270);
             sprite.Rotation = Angle.FromDegrees(270);
+            Dirty(uid, rotationVisuals);
             return;
         }
 
         rotationVisuals.HorizontalRotation = Angle.FromDegrees(90);
         sprite.Rotation = Angle.FromDegrees(90);
+        Dirty(uid, rotationVisuals);
     }
 
     public override void UpdateSpriteRotation(EntityUid uid)
@@ -88,9 +90,11 @@ public sealed class LayingDownSystem : SharedLayingDownSystem
         if (rotation.GetDir() is Direction.SouthEast or Direction.East or Direction.NorthEast or Direction.North)
         {
             rotationVisuals.HorizontalRotation = Angle.FromDegrees(270);
+            Dirty(uid, rotationVisuals);
             return;
         }
 
         rotationVisuals.HorizontalRotation = Angle.FromDegrees(90);
+        Dirty(uid, rotationVisuals);
     }
 }
