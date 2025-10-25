@@ -206,4 +206,10 @@ public sealed partial class CCVars
     /// </summary>
     public static readonly CVarDef<bool> AdminAllowMultiServerPlay =
         CVarDef.Create("admin.allow_multi_server_play", true, CVar.SERVERONLY);
+
+    /// <summary>
+    ///     Whether to send admin alerts and logs when a player attempts to connect with a userid from another account.
+    /// </summary>
+    public static readonly CVarDef<bool> AdminAlertUseridMismatch =
+        CVarDef.Create("admin.alert.userid_mismatch", true, CVar.SERVERONLY);
 }
