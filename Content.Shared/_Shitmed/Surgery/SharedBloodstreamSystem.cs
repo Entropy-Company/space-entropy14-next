@@ -56,6 +56,18 @@ public abstract partial class SharedBloodstreamSystem
             if (!bleeds.IsBleeding)
                 continue;
 
+            // Auto-stop bleeding for minor bleeds if enabled
+            if (_cfg.GetCVar(SurgeryCVars.BleedsAutoStopEnabled) &&
+                _timing.CurTime >= bleeds.ScalingStartsAt + TimeSpan.FromSeconds(_cfg.GetCVar(SurgeryCVars.BleedsAutoStopTime)) &&
+                bleeds.BleedingAmount <= 1.0f) // Consider minor bleeds as those with low bleeding amount
+            {
+                bleeds.IsBleeding = false;
+                bleeds.BleedingAmountRaw = 0;
+                bleeds.Scaling = 0;
+                Dirty(ent, bleeds);
+                continue;
+            }
+
             var totalTime = bleeds.ScalingFinishesAt - bleeds.ScalingStartsAt;
             var currentTime = bleeds.ScalingFinishesAt - _timing.CurTime;
 

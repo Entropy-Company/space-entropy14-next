@@ -112,6 +112,18 @@ public sealed class SurgeryCVars : CVars
     public static readonly CVarDef<float> BleedsScalingTime =
         CVarDef.Create("bleeds.bleeding_scaling_time", 60f, CVar.SERVER | CVar.REPLICATED);
 
+    /// <summary>
+    /// Whether bleeding automatically stops after a certain time for minor bleeds.
+    /// </summary>
+    public static readonly CVarDef<bool> BleedsAutoStopEnabled =
+        CVarDef.Create("bleeds.auto_stop_enabled", true, CVar.SERVER | CVar.REPLICATED);
+
+    /// <summary>
+    /// Time in seconds after bleeding starts before it automatically stops for minor bleeds.
+    /// </summary>
+    public static readonly CVarDef<float> BleedsAutoStopTime =
+        CVarDef.Create("bleeds.auto_stop_time", 30f, CVar.SERVER | CVar.REPLICATED);
+
     #endregion
 
     #region Pain CVars
