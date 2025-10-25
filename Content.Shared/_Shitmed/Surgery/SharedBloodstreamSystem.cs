@@ -368,10 +368,6 @@ public abstract partial class SharedBloodstreamSystem
             return;
 
         _audio.PlayPvs(new SoundPathSpecifier("/Audio/Effects/lightburn.ogg"), bodyPart.Body.Value);
-        _popup.PopupPredicted(Loc.GetString("bloodstream-component-bleeding"),
-            bodyPart.Body.Value,
-            bodyPart.Body.Value,
-            PopupType.Medium);
     }
 
     // begin Goobstation: port EE height/width sliders
