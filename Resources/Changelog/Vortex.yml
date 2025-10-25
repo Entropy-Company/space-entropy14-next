@@ -65,3 +65,9 @@ Entries:
     type: Add
   id: 20
   time: '2025-10-23T19:06:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Временно удален взрывной режим у клинка ГСБ."
+    type: Fix
+  id: 21
+  time: '2025-10-25T14:25:00.000Z'
