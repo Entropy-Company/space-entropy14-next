@@ -1,6 +1,6 @@
 using Content.Server.NodeContainer.Nodes;
 
-namespace Content.Server._Scp.Transfers.GasTransfer;
+namespace Content.Server._Vortex.Transfers.GasTransfer;
 
 [RegisterComponent]
 public sealed partial class GasTransferComponent : Component
