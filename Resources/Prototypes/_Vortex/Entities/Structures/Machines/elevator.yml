@@ -1,0 +1,266 @@
+- type: entity
+  id: Elevator
+  name: Elevator
+  suffix: "Elevator"
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _Vortex/Structures/elevator.rsi
+    state: steel
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: _Vortex/Structures/elevator.rsi
+    state: steel
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.4,-1.4,1.4,1.4"
+        density: 0
+        friction: 0
+        hard: false
+        mask: []
+        layer:
+        - MidImpassable
+  - type: Elevator
+    elevatorId: "Elevator_1"
+    currentFloor: "First"
+    intermediateFloorId: "IntermediateFloor"
+    intermediateDelay: 6
+    floors:
+      - Second
+      - First
+  - type: ContainerContainer
+    containers:
+      ElevatorContents: !type:Container
+  - type: ItemSlots
+
+- type: entity
+  parent: Elevator
+  id: Elevator_backup
+  name: Elevator
+  suffix: "Backup elevator"
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Elevator
+    elevatorId: "Elevator_2"
+    currentFloor: "First2"
+    intermediateFloorId: "IntermediateFloor2"
+    floors:
+      - Second2
+      - First2
+
+- type: entity
+  parent: Elevator
+  id: Elevator_white
+  name: Elevator
+  suffix: Elevator of the complex, White
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _Vortex/Structures/elevator.rsi
+    state: white
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: _Vortex/Structures/elevator.rsi
+    state: white
+  - type: Elevator
+    elevatorId: "Elevator_3"
+    currentFloor: "First"
+    intermediateFloorId: "IntermediateFloor"
+    floors:
+      - Second
+      - First
+
+- type: entity
+  parent: Elevator_white
+  id: Elevator_white_backup
+  name: Elevator
+  suffix: Backup elevator, White
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Elevator
+    elevatorId: "Elevator_4"
+    currentFloor: "First2"
+    intermediateFloorId: "IntermediateFloor2"
+    floors:
+      - Second2
+      - First2
+
+- type: entity
+  parent: Elevator
+  id: Elevator_catwalk
+  name: Elevator
+  suffix: Elevator of the complex, Catwalk
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _Vortex/Structures/elevator.rsi
+    state: catwalk
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: _Vortex/Structures/elevator.rsi
+    state: catwalk
+  - type: Elevator
+    elevatorId: "Elevator_5"
+    currentFloor: "First"
+    intermediateFloorId: "IntermediateFloor"
+    floors:
+      - Second
+      - First
+
+- type: entity
+  parent: Elevator_white
+  id: Elevator_catwalk_backup
+  name: Elevator
+  suffix: Backup elevator, Catwalk
+  description: It goes up and down. The main thing is not to jump when it goes down.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Elevator
+    elevatorId: "Elevator_6"
+    currentFloor: "First3"
+    intermediateFloorId: "IntermediateFloor3"
+    floors:
+      - Second3
+      - First3
+
+- type: entity
+  parent: SignalButton
+  id: ElevatorButtonAbstract
+  abstract: true
+  name: Elevator button
+  description: Button for controlling the elevator.
+  suffix: "Call button"
+  components:
+  - type: Godmode
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _Vortex/Structures/Wallmounts/elevator_buttons.rsi
+    state: off
+  - type: InteractionOutline
+  - type: UseDelay
+    delay: 7
+  - type: WallMount
+    arc: 180
+  - type: ElevatorButton
+    elevatorId: "Elevator_1"
+    buttonType: CallButton
+
+- type: entity
+  parent: ElevatorButtonAbstract
+  id: ElevatorButton
+  name: Elevator button
+  description: Button for controlling the elevator.
+  suffix: "Call button"
+  components:
+  - type: Appearance
+  - type: ElevatorButtonVisuals
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _Vortex/Structures/Wallmounts/elevator_buttons.rsi
+    layers:
+    - state: base
+    - state: elevator_here
+      map: ["enum.ElevatorButtonLayers.Base"]
+  - type: ElevatorButton
+    elevatorId: "Elevator_1"
+    buttonType: CallButton
+    floor: "First"
+
+- type: entity
+  parent: ElevatorButtonAbstract
+  id: ElevatorButtonUp
+  name: Elevator up button
+  components:
+  - type: ElevatorButton
+    buttonType: SendElevatorUp
+
+- type: entity
+  parent: ElevatorButtonAbstract
+  id: ElevatorButtonDown
+  name: Elevator down button
+  components:
+  - type: ElevatorButton
+    buttonType: SendElevatorDown
+
+- type: entity
+  parent: BlastDoor
+  id: ElevatorBlastDoor
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  components:
+  - type: ElevatorDoor
+    elevatorId: ""
+    floor: ""
+
+- type: entity
+  parent: BlastDoorOpen
+  id: ElevatorBlastDoorOpen
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  suffix: Open
+  components:
+  - type: ElevatorDoor
+    elevatorId: ""
+    floor: ""
+
+- type: entity
+  parent: ElevatorBlastDoor
+  id: ElevatorBlastDoor_First
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  suffix: First floor
+  components:
+  - type: ElevatorDoor
+    elevatorId: "Elevator_1"
+    floor: "First"
+
+- type: entity
+  parent: ElevatorBlastDoorOpen
+  id: ElevatorBlastDoorOpen_First
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  suffix: Open, First floor
+  components:
+  - type: ElevatorDoor
+    elevatorId: "Elevator_1"
+    floor: "First"
+
+- type: entity
+  parent: ElevatorBlastDoor
+  id: ElevatorBlastDoor_Second
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  suffix: Second floor
+  components:
+  - type: ElevatorDoor
+    elevatorId: "Elevator_1"
+    floor: "Second"
+
+- type: entity
+  parent: ElevatorBlastDoorOpen
+  id: ElevatorBlastDoorOpen_Second
+  name: Elevator door
+  description: Door that opens when the elevator arrives at the floor.
+  suffix: Open, Second floor
+  components:
+  - type: ElevatorDoor
+    elevatorId: "Elevator_1"
+    floor: "Second"

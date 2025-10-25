@@ -69,6 +69,7 @@ using System.Threading.Tasks;
 using Content.Goobstation.Common.Construction; // Goobstation
 using Content.Server.Construction.Components;
 using Content.Shared._CorvaxGoob.Skills;
+using Content.Shared._Vortex.Construction;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Construction;
 using Content.Shared.Construction.Prototypes;
@@ -85,6 +86,7 @@ using Content.Shared.Storage;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
@@ -615,12 +617,25 @@ namespace Content.Server.Construction
             var mapPos = _transformSystem.ToMapCoordinates(location);
             var predicate = GetPredicate(constructionPrototype.CanBuildInImpassable, mapPos);
 
+            // fire added
+            var gridUid = _transformSystem.GetGrid(location);
+            if (TryComp<MapGridComponent>(gridUid, out var mapGrid))
+            {
+                var anchored = _map.GetAnchoredEntities((gridUid.Value, mapGrid), mapPos);
+                if (anchored.Any(e => HasComp<ConstructionBlockerComponent>(e)))
+                {
+                    _popup.PopupEntity(Loc.GetString("construction-system-construct-marker-block"), user, user);
+                    Cleanup();
+                    return false;
+                }
+            }
+            // fire end
+
             if (!_interactionSystem.InRangeUnobstructed(user, mapPos, predicate: predicate))
             {
                 Cleanup();
                 return false;
             }
-
             if (pathFind == null)
                 throw new InvalidDataException($"Can't find path from starting node to target node in construction! Recipe: {prototypeName}");
 
