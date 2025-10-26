@@ -1491,8 +1491,12 @@ public sealed partial class WoundSystem
             {
                 if (damageFeeling <= 0)
                 {
-                    nearestSeverity = WoundableSeverity.Mangled;
+                    // Vortex edited
+                    nearestSeverity = woundable.WoundableIntegrity >= woundable.IntegrityCap
+                        ? WoundableSeverity.Healthy
+                        : WoundableSeverity.Mangled;
                     break;
+                    // Vortex end
                 }
 
                 if (damageFeeling >= woundable.IntegrityCap)
