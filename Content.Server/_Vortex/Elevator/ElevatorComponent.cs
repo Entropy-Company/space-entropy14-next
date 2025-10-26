@@ -53,5 +53,11 @@ public sealed partial class ElevatorComponent : Component
     [DataField]
     public bool ClearGases = true;
 
+    [DataField]
+    public bool KillEntitiesInTargetArea = false;
+
+    [DataField]
+    public bool ForceStandardAtmosphere = false;
+
     public bool IsMoving = false;
 }

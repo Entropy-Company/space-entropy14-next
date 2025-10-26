@@ -7,6 +7,7 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared._Vortex.Elevator;
+using Content.Shared.Buckle.Components;
 using Robust.Shared.Physics.Components;
 using Content.Shared.Ghost;
 using Robust.Shared.Physics;
@@ -74,6 +75,7 @@ public sealed class ElevatorSystem : EntitySystem
         var mixture = new GasMixture(Atmospherics.CellVolume);
         if (isIntermediate)
         {
+            // Clear only harmful/dangerous gases, keep nitrogen and oxygen
             var gasesToRemove = new[] {
                 Gas.Plasma, Gas.Tritium, Gas.Frezon, Gas.BZ,
                 Gas.Healium, Gas.Nitrium, Gas.NitrousOxide, Gas.CarbonDioxide
@@ -82,11 +84,13 @@ public sealed class ElevatorSystem : EntitySystem
             {
                 mixture.SetMoles(gas, 0);
             }
+            // Keep a minimal breathable atmosphere
             mixture.SetMoles(Gas.Nitrogen, 82);
             mixture.SetMoles(Gas.Oxygen, 22);
         }
         else
         {
+            // For non-intermediate floors, just clear everything except minimal amounts
             mixture.SetMoles(Gas.Oxygen, 1);
             mixture.SetMoles(Gas.Nitrogen, 1);
         }
@@ -141,7 +145,8 @@ public sealed class ElevatorSystem : EntitySystem
 
     private void MoveToFloorImmediate(Entity<ElevatorComponent> ent, string floorId)
     {
-        KillEntitiesInTargetArea(ent, floorId);
+        if (ent.Comp.KillEntitiesInTargetArea)
+            KillEntitiesInTargetArea(ent, floorId);
         TeleportToFloor(ent, floorId);
     }
 
@@ -158,16 +163,32 @@ public sealed class ElevatorSystem : EntitySystem
             if (IsEntityValidForTeleport(entUid, elevatorUid, entTransform))
                 entitiesInElevator.Add(entUid);
         }
+
+        // Include buckled entities (entities that are anchored to entities in the elevator)
+        var buckledEntities = new List<EntityUid>();
+        foreach (var entUid in entitiesInElevator)
+        {
+            if (TryComp<BuckleComponent>(entUid, out var buckleComp) && buckleComp.BuckledTo is not null)
+            {
+                var buckledEntity = buckleComp.BuckledTo.Value;
+                if (!entitiesInElevator.Contains(buckledEntity) && IsEntityValidForTeleport(buckledEntity, elevatorUid, null, true))
+                {
+                    buckledEntities.Add(buckledEntity);
+                }
+            }
+        }
+        entitiesInElevator.AddRange(buckledEntities);
+
         return entitiesInElevator;
     }
 
-    private bool IsEntityValidForTeleport(EntityUid entUid, EntityUid elevatorUid, TransformComponent? entTransform = null)
+    private bool IsEntityValidForTeleport(EntityUid entUid, EntityUid elevatorUid, TransformComponent? entTransform = null, bool allowAnchored = false)
     {
         if (entUid == elevatorUid || HasComp<ElevatorDoorComponent>(entUid))
             return false;
 
         entTransform ??= Transform(entUid);
-        if (entTransform.Anchored)
+        if (entTransform.Anchored && !allowAnchored)
             return false;
 
         if (TryComp<PhysicsComponent>(entUid, out var physics) && physics.BodyType == BodyType.Static)
@@ -229,10 +250,50 @@ public sealed class ElevatorSystem : EntitySystem
                             {
                                 if (elevatorComp.TransferGases)
                                     _atmosphere.SetTileMixture(gridEntity, null, targetPos, mixture.Clone());
-                                if (elevatorComp.ClearGases)
+                                if (elevatorComp.ClearGases || elevatorComp.ForceStandardAtmosphere)
                                 {
-                                    var replacementMixture = CreateReplacementMixture(elevatorComp.CurrentFloor == elevatorComp.IntermediateFloorId);
-                                    _atmosphere.SetTileMixture(gridEntity, null, sourcePos, replacementMixture);
+                                    var sourceMixture = _atmosphere.GetTileMixture(gridEntity, null, sourcePos);
+                                    if (sourceMixture != null)
+                                    {
+                                        GasMixture replacementMixture;
+
+                                        if (elevatorComp.ForceStandardAtmosphere)
+                                        {
+                                            // Always set standard atmosphere (82 N2 + 22 O2)
+                                            replacementMixture = new GasMixture(Atmospherics.CellVolume);
+                                            replacementMixture.SetMoles(Gas.Nitrogen, 82);
+                                            replacementMixture.SetMoles(Gas.Oxygen, 22);
+                                            replacementMixture.Temperature = 293;
+                                        }
+                                        else
+                                        {
+                                            // Only clear gases if the source tile has dangerous gases
+                                            var hasDangerousGases = sourceMixture.GetMoles(Gas.Plasma) > 0 ||
+                                                                    sourceMixture.GetMoles(Gas.Tritium) > 0 ||
+                                                                    sourceMixture.GetMoles(Gas.Frezon) > 0 ||
+                                                                    sourceMixture.GetMoles(Gas.BZ) > 0 ||
+                                                                    sourceMixture.GetMoles(Gas.NitrousOxide) > 0 ||
+                                                                    sourceMixture.GetMoles(Gas.CarbonDioxide) > Atmospherics.MolesCellStandard * 0.1; // Allow some CO2
+
+                                            if (hasDangerousGases || elevatorComp.CurrentFloor == elevatorComp.IntermediateFloorId)
+                                            {
+                                                // Create a mixture that preserves existing N2 and O2 but removes dangerous gases
+                                                var preservedN2 = sourceMixture.GetMoles(Gas.Nitrogen);
+                                                var preservedO2 = sourceMixture.GetMoles(Gas.Oxygen);
+
+                                                replacementMixture = CreateReplacementMixture(elevatorComp.CurrentFloor == elevatorComp.IntermediateFloorId);
+
+                                                // Restore the preserved N2 and O2 amounts
+                                                if (preservedN2 > 0)
+                                                    replacementMixture.SetMoles(Gas.Nitrogen, preservedN2);
+                                                if (preservedO2 > 0)
+                                                    replacementMixture.SetMoles(Gas.Oxygen, preservedO2);
+
+                                                _atmosphere.SetTileMixture(gridEntity, null, sourcePos, replacementMixture);
+                                            }
+                                        }
+                                    }
+
                                     if (floorId == elevatorComp.IntermediateFloorId)
                                     {
                                         var targetMixture = CreateReplacementMixture(true);
@@ -473,6 +534,18 @@ public sealed class ElevatorSystem : EntitySystem
             {
                 if (IsEntityValidForTeleport(entUid, elevator.Owner) && !HasComp<GhostComponent>(entUid))
                 {
+                    // Check if entity is buckled to something in the elevator area
+                    if (TryComp<BuckleComponent>(entUid, out var buckleComp) && buckleComp.BuckledTo is not null)
+                    {
+                        var buckledTo = buckleComp.BuckledTo.Value;
+                        var buckledToTransform = Transform(buckledTo);
+                        if (_lookup.GetEntitiesIntersecting(pointTransform.MapID, aabb, LookupFlags.Dynamic).Contains(buckledTo))
+                        {
+                            // Don't kill buckled entities if their buckled object is also in the area
+                            continue;
+                        }
+                    }
+
                     var damage = new DamageSpecifier();
                     damage.DamageDict["Blunt"] = 1000;
                     _damageable.TryChangeDamage(entUid, damage, true);
