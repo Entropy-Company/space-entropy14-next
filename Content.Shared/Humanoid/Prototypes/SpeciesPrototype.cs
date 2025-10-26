@@ -198,28 +198,22 @@ public sealed partial class SpeciesPrototype : IPrototype
     public float MinHeight = 0.85f; // DeltaV - less trolling with the heights
 
     /// <summary>
-    ///     The minimum height and width ratio for this species
+    /// The maximum height for this species
     /// </summary>
-    [DataField]
-    public float SizeRatio = 1.2f;
+    [DataField("maxHeight")]
+    public float MaxHeight = 1.2f; // DeltaV - less trolling with the heights
 
     /// <summary>
-    ///     The minimum height for this species
+    /// The default height for this species
     /// </summary>
-    [DataField]
-    public float MinHeight = 0.80f;
-
-    /// <summary>
-    ///     The default height for this species
-    /// </summary>
-    [DataField]
+    [DataField("defaultHeight")]
     public float DefaultHeight = 1f;
 
     /// <summary>
-    ///     The maximum height for this species
+    /// The default width for this species
     /// </summary>
-    [DataField]
-    public float MaxHeight = 1.20f;
+    [DataField("defaultWidth")]
+    public float DefaultWidth = 1f;
 
     /// <summary>
     /// The default height in cm for this species (used for UI display)
@@ -260,11 +254,23 @@ public sealed partial class SpeciesPrototype : IPrototype
     /// <summary>
     /// Whether to scale horizontally or not
     /// </summary>
-    [DataField]
+    [DataField("scaleWidth")]
+    public bool ScaleWidth = true;
+
+    /// <summary>
+    /// Whether to scale vertically or not
+    /// </summary>
+    [DataField("scaleHeight")]
+    public bool ScaleHeight = true;
+
+    /// <summary>
+    /// The minimum width for this species
+    /// </summary>
+    [DataField("minWidth")]
     public float MinWidth = 0.85f;
 
     /// <summary>
-    ///     The default width for this species
+    /// The maximum width for this species
     /// </summary>
     [DataField("maxWidth")]
     public float MaxWidth = 1.2f;

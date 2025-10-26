@@ -73,3 +73,4 @@ research-technology-advanced-spray = Продвинутые спреи
 research-technology-clowning-utilities = Клоунские принадлежности
 research-technology-quantum-fiber-weaving = Плетение квантового волокна
 research-technology-bluespace-cargo-transport = Блюспейс-транспортировка грузов
+research-technology-tech-fabs = ТехФабы отделов

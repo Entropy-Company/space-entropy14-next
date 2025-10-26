@@ -102,3 +102,7 @@
   - HolopadMachineCircuitboard
   - TeslaCoilCircuitboard
   - RadiationCollectorCircuitboard
+  - EngineeringTechFabCircuitboardRecipe # Vortex
+  - ServiceTechFabCircuitboardRecipe # Vortex
+  - CargoTechFabCircuitboardRecipe # Vortex
+  - ScienceTechFabCircuitboardRecipe # Vortex

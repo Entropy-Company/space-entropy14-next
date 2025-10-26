@@ -322,3 +322,20 @@
   position: 2, -4
   technologyPrerequisites:
     - MassExcavation
+- type: technology
+  id: TechFabricators
+  name: research-technology-tech-fabs
+  icon:
+    sprite: Structures/Machines/techfab.rsi
+    state: icon
+  discipline: Industrial
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+    - EngineeringTechFabCircuitboardRecipe
+    - ServiceTechFabCircuitboardRecipe
+    - CargoTechFabCircuitboardRecipe
+    - ScienceTechFabCircuitboardRecipe
+  position: 3, 0
+  technologyPrerequisites:
+    - MechanicalCompression

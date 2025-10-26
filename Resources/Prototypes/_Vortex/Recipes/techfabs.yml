@@ -1,0 +1,23 @@
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchComputerRecipeCategory ]
+  id: ScienceTechFabCircuitboardRecipe
+  icon: Structures/Machines/techfab.rsi/icon.png
+  result: ScienceTechFabCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchComputerRecipeCategory ]
+  id: CargoTechFabCircuitboardRecipe
+  icon: Structures/Machines/techfab.rsi/icon.png
+  result: CargoTechFabCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchComputerRecipeCategory ]
+  id: ServiceTechFabCircuitboardRecipe
+  icon: Structures/Machines/techfab.rsi/icon.png
+  result: ServiceTechFabCircuitboard
+
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseResearchComputerRecipeCategory ]
+  id: EngineeringTechFabCircuitboardRecipe
+  icon: Structures/Machines/techfab.rsi/icon.png
+  result: EngineeringTechFabCircuitboard
