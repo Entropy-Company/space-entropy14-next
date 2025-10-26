@@ -35,6 +35,17 @@ public sealed class RotationVisualizerSystem : SharedRotationVisualsSystem
         if (!_appearance.TryGetData<RotationState>(uid, RotationVisuals.RotationState, out var state, args.Component))
             return;
 
+        // For entities with no FOV (ghosts, AI eyes, etc.), update immediately without animation
+        // to prevent desync where they see entities as lying down when they are standing
+        // Vortex - fix
+        if (TryComp<EyeComponent>(uid, out var eye) && !eye.DrawFov)
+        {
+            var targetRotation = state == RotationState.Vertical ? component.VerticalRotation : component.HorizontalRotation;
+            args.Sprite.Rotation = targetRotation;
+            return;
+        }
+        // Vortex - fix end
+
         switch (state)
         {
             case RotationState.Vertical:

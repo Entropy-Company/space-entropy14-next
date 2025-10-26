@@ -503,7 +503,7 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
             _alertsSystem.ClearAlert(ent, ent.Comp.BleedingAlert);
         else
         {
-            var severity = (short)Math.Clamp(Math.Round(ent.Comp.BleedAmount, MidpointRounding.ToZero), 0, 10);
+            var severity = (short)Math.Clamp(Math.Round(ent.Comp.BleedAmount, MidpointRounding.ToZero), 1, 10);
             _alertsSystem.ShowAlert(ent, ent.Comp.BleedingAlert, severity);
         }
 
