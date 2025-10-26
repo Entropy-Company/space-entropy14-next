@@ -79,3 +79,61 @@ Entries:
     type: Fix
   id: 22
   time: '2025-10-26T14:37:00.000Z'
+- author: Mor_Dastik
+  changes:
+  - message: "Изменён спрайт криокапсул."
+    type: Tweak
+  - message: "Изменён спрайт мензурки."
+    type: Tweak
+  - message: "Изменён спрайт большой мензурки."
+    type: Tweak
+  - message: "Изменён спрайт бс мензурки."
+    type: Tweak
+  - message: "Изменён спрайт книжки еретика."
+    type: Tweak
+  - message: "Изменён спрайт колбочки еретика."
+    type: Tweak
+  - message: "Изменён спрайт аварийного EVA-скафандра."
+    type: Tweak
+  - message: "Изменён спрайт EVA-скафандра."
+    type: Tweak
+  - message: "Изменён спрайт шлема EVA-скафандра."
+    type: Tweak
+  - message: "Изменён спрайт панели контроля турелей."
+    type: Tweak
+  - message: "Изменёны спрайты большинства поясов."
+    type: Tweak
+  - message: "Изменёны спрайты большинства зимних курток (только иконки)."
+    type: Tweak
+  - message: "Изменёны спрайты всех мехов, кроме Кларка."
+    type: Tweak
+  - message: "Изменён спрайт пожарного топора."
+    type: Tweak
+  - message: "Изменён спрайт алмазного бура."
+    type: Tweak
+  - message: "Изменёны спрайты аптечек."
+    type: Tweak
+  - message: "Изменёны спрайты почти всех материалов."
+    type: Tweak
+  - message: "Изменёны спрайты ID-карт."
+    type: Tweak
+  - message: "Изменёны спрайт джетпаков."
+    type: Tweak
+  - message: "Изменёны спрайт баллонов."
+    type: Tweak
+  - message: "Изменёны спрайт руд."
+    type: Tweak
+  - message: "Изменён спрайт лабораторного халата."
+    type: Tweak
+  - message: "Изменён спрайт лабораторного халата НРа."
+    type: Tweak
+  - message: "Изменён спрайт лабораторного халата ГВ."
+    type: Tweak
+  - message: "Изменёны спрайт огнетушителей (большой и маленький)."
+    type: Tweak
+  - message: "Изменён спрайт шкафчика огнетушителей."
+    type: Tweak
+  - message: "Изменён спрайт шкафчика пожарного топора."
+    type: Tweak
+  id: 23
+  time: '2025-10-26T21:04:00.000Z'
