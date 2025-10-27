@@ -7,6 +7,7 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared._Vortex.Elevator;
+using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Robust.Shared.Physics.Components;
 using Content.Shared.Ghost;
@@ -38,6 +39,7 @@ public sealed class ElevatorSystem : EntitySystem
     [Dependency] private readonly AudioSystem _audio = default!;
     [Dependency] private readonly AppearanceSystem _appearance = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
+    [Dependency] private readonly SharedBuckleSystem _buckle = default!;
 
     public override void Initialize()
     {
@@ -214,6 +216,15 @@ public sealed class ElevatorSystem : EntitySystem
             var elevatorTransform = Transform(uid);
 
             var entitiesToTeleport = GetEntitiesInElevator(uid);
+
+            // Unbuckle all buckled entities before teleporting
+            foreach (var entUid in entitiesToTeleport)
+            {
+                if (TryComp<BuckleComponent>(entUid, out var buckleComp) && buckleComp.Buckled)
+                {
+                    _buckle.Unbuckle(entUid, null);
+                }
+            }
 
             var entitiesWithPositions = new List<(EntityUid, Vector2)>();
             foreach (var entUid in entitiesToTeleport)
