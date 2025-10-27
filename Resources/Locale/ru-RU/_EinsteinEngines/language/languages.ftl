@@ -111,5 +111,5 @@ language-NewKinPidgin-description =
 
 # Custom
 language-Telepathy-name = Телепатия?
-language-NewKinPidgin-description = 
+language-Telepathy-description = 
     Величайший способ переговоров — вы слышите всё, а они — лишь молчание!
