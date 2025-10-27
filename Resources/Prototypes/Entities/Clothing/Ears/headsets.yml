@@ -207,6 +207,8 @@
     sprite: Clothing/Ears/Headsets/centcom.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/centcom.rsi
+  - type: Headset
+    color: "#2681a5"
 
 - type: entity
   parent: [ClothingHeadset, BaseCommandContraband]
@@ -222,6 +224,8 @@
     sprite: Clothing/Ears/Headsets/command.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/command.rsi
+  - type: Headset
+    color: "#fcdf03"
 
 - type: entity
   parent: ClothingHeadset
@@ -238,6 +242,8 @@
     sprite: Clothing/Ears/Headsets/engineering.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/engineering.rsi
+  - type: Headset
+    color: "#ff733c"
 
 - type: entity
   parent: [ClothingHeadsetEngineering, BaseCommandContraband]
@@ -251,6 +257,8 @@
       - EncryptionKeyEngineering
       - EncryptionKeyCommand
       - EncryptionKeyCommon
+  - type: Headset
+    color: "#ff733c"
 
 - type: entity
   parent: ClothingHeadset
@@ -267,6 +275,8 @@
     sprite: Clothing/Ears/Headsets/medical.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/medical.rsi
+  - type: Headset
+    color: "#57b8f0"
 
 - type: entity
   parent: [ClothingHeadsetMedical, BaseCommandContraband]
@@ -280,6 +290,8 @@
       - EncryptionKeyMedical
       - EncryptionKeyCommand
       - EncryptionKeyCommon
+  - type: Headset
+    color: "#57b8f0"
 
 - type: entity
   parent: ClothingHeadset
@@ -296,6 +308,8 @@
     sprite: Clothing/Ears/Headsets/science.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/science.rsi
+  - type: Headset
+    color: "#cd7ccd"
 
 - type: entity
   parent: ClothingHeadsetScience
@@ -312,6 +326,8 @@
     sprite: Clothing/Ears/Headsets/medicalscience.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/medicalscience.rsi
+  - type: Headset
+    color: "#cd7ccd"
 
 - type: entity
   parent: ClothingHeadsetScience
@@ -328,6 +344,8 @@
     sprite: Clothing/Ears/Headsets/robotics.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/robotics.rsi
+  - type: Headset
+    color: "#cd7ccd"
 
 - type: entity
   parent: [ClothingHeadsetScience, BaseCommandContraband]
@@ -341,6 +359,8 @@
       - EncryptionKeyScience
       - EncryptionKeyCommand
       - EncryptionKeyCommon
+  - type: Headset
+    color: "#cd7ccd"
 
 - type: entity
   parent: [ClothingHeadset, BaseSecurityLawyerContraband]
@@ -394,6 +414,8 @@
     sprite: Clothing/Ears/Headsets/service.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/service.rsi
+  - type: Headset
+    color: "#539c00"
 
 - type: entity
   parent: ClothingHeadset
@@ -409,6 +431,8 @@
       sprite: Clothing/Ears/Headsets/freelance.rsi
     - type: Clothing
       sprite: Clothing/Ears/Headsets/freelance.rsi
+    - type: Headset
+      color: "#f6ce64"
 
 - type: entity
   parent: [ClothingHeadset, BaseMagicalContraband]
@@ -424,3 +448,5 @@
       sprite: Clothing/Ears/Headsets/wizard.rsi
     - type: Clothing
       sprite: Clothing/Ears/Headsets/wizard.rsi
+    - type: Headset
+      color: "#35d389"

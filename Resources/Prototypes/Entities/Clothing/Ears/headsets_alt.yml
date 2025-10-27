@@ -128,6 +128,8 @@
     sprite: Clothing/Ears/Headsets/cargo.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/cargo.rsi
+  - type: Headset
+    color: "#b48b57"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseCommandContraband] # Goobstation
@@ -143,6 +145,8 @@
     sprite: Clothing/Ears/Headsets/centcom.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/centcom.rsi
+  - type: Headset
+    color: "#2681a5"
 
 - type: entity
   parent: [ClothingHeadsetAltLoudspeaker, BaseCommandContraband] # goob
@@ -157,6 +161,8 @@
     sprite: Clothing/Ears/Headsets/command.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/command.rsi
+  - type: Headset
+    color: "#fcdf03"
 
 - type: entity
   parent: [ClothingHeadsetAltLoudspeaker, BaseCommandContraband] # goob
@@ -173,6 +179,8 @@
     sprite: Clothing/Ears/Headsets/engineering.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/engineering.rsi
+  - type: Headset
+    color: "#ff733c"
 
 - type: entity
   parent: [ClothingHeadsetAltLoudspeaker, BaseCommandContraband] # goob
@@ -191,6 +199,8 @@
     sprite: Clothing/Ears/Headsets/medical.rsi
   - type: StealTarget
     stealGroup: ClothingHeadsetAltMedical
+  - type: Headset
+    color: "#57b8f0"
 
 - type: entity
   parent: [ClothingHeadsetAltLoudspeaker, BaseCommandContraband] # goob
@@ -225,6 +235,8 @@
     sprite: Clothing/Ears/Headsets/science.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/science.rsi
+  - type: Headset
+    color: "#cd7ccd"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseSyndicateContraband]
@@ -260,6 +272,8 @@
       sprite: Clothing/Ears/Headsets/freelance.rsi
     - type: Clothing
       sprite: Clothing/Ears/Headsets/freelance.rsi
+    - type: Headset
+      color: "#f6ce64"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseMagicalContraband]
@@ -277,3 +291,5 @@
       sprite: Clothing/Ears/Headsets/wizard.rsi
     - type: Clothing
       sprite: Clothing/Ears/Headsets/wizard.rsi
+    - type: Headset
+      color: "#35d389"
