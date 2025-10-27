@@ -1,0 +1,11 @@
+- type: language
+  id: Telepathy
+  isVisibleLanguage: true
+  speech:
+    color: "#7d7d7d"
+  obfuscation:
+    !type:SyllableObfuscation
+    minSyllables: 1
+    maxSyllables: 2
+    replacement:
+    - .
