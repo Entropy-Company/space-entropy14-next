@@ -770,7 +770,7 @@ public sealed partial class WoundSystem
                 Dirty(body, targeting);
 
                 if (_net.IsServer)
-                    RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(body)), body);
+                    RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(body), bodyStatus: targeting.BodyStatus), body);
             }
 
             _audio.PlayPvs(woundableComp.WoundableDestroyedSound, body);
@@ -953,7 +953,7 @@ public sealed partial class WoundSystem
             Dirty(body, targeting);
 
             if (_net.IsServer)
-                RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(body)), body);
+                RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(body), bodyStatus: targeting.BodyStatus), body);
         }
 
         var childBodyPart = Comp<BodyPartComponent>(woundableEntity);
@@ -1338,7 +1338,7 @@ public sealed partial class WoundSystem
         Dirty(bodyPart.Body.Value, targeting);
 
         if (_net.IsServer)
-            RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(bodyPart.Body.Value)), bodyPart.Body.Value);
+            RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(bodyPart.Body.Value), bodyStatus: targeting.BodyStatus), bodyPart.Body.Value);
 
         _appearance.SetData(woundable,
             WoundableVisualizerKeys.Wounds,

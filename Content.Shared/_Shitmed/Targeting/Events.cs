@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Serialization;
+using Content.Shared._Shitmed.Medical.Surgery.Wounds;
 
 namespace Content.Shared._Shitmed.Targeting.Events;
 
@@ -25,9 +26,11 @@ public sealed class TargetIntegrityChangeEvent : EntityEventArgs
 {
     public NetEntity Uid { get; }
     public bool RefreshUi { get; }
-    public TargetIntegrityChangeEvent(NetEntity uid, bool refreshUi = true)
+    public Dictionary<TargetBodyPart, WoundableSeverity>? BodyStatus { get; }
+    public TargetIntegrityChangeEvent(NetEntity uid, bool refreshUi = true, Dictionary<TargetBodyPart, WoundableSeverity>? bodyStatus = null)
     {
         Uid = uid;
         RefreshUi = refreshUi;
+        BodyStatus = bodyStatus;
     }
 }

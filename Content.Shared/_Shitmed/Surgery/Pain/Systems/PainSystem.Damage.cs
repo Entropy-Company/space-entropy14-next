@@ -642,7 +642,7 @@ public partial class PainSystem
         Dirty(bodyPart.Body.Value, targeting);
 
         if (_net.IsServer)
-            RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(bodyPart.Body.Value)), bodyPart.Body.Value);
+            RaiseNetworkEvent(new TargetIntegrityChangeEvent(GetNetEntity(bodyPart.Body.Value), bodyStatus: targeting.BodyStatus), bodyPart.Body.Value);
     }
 
     private void UpdateDamage(EntityUid nerveSysEnt, NerveSystemComponent nerveSys)

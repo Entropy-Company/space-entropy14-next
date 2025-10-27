@@ -13,6 +13,9 @@
 using Content.Shared.Input;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared._Shitmed.Targeting.Events;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
+using Content.Shared.Alert;
 using Robust.Client.Player;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Player;
@@ -21,6 +24,7 @@ namespace Content.Client._Shitmed.Targeting;
 public sealed class TargetingSystem : SharedTargetingSystem
 {
     [Dependency] private readonly IPlayerManager _playerManager = default!;
+    [Dependency] private readonly AlertsSystem _alertsSystem = default!;
 
     public event Action<TargetingComponent>? TargetingStartup;
     public event Action? TargetingShutdown;
@@ -100,6 +104,9 @@ public sealed class TargetingSystem : SharedTargetingSystem
             || !TryComp(uid, out TargetingComponent? component)
             || !args.RefreshUi)
             return;
+
+        if (args.BodyStatus != null)
+            component.BodyStatus = args.BodyStatus;
 
         PartStatusUpdate?.Invoke(component);
     }
