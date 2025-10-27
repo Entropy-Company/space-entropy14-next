@@ -262,6 +262,7 @@
   name: freelancer's over-ear headset
   components:
     - type: Headset
+      color: "#f6ce64"
     - type: EncryptionKeyHolder
       keySlots: 5
     - type: ContainerFill
@@ -272,15 +273,12 @@
       sprite: Clothing/Ears/Headsets/freelance.rsi
     - type: Clothing
       sprite: Clothing/Ears/Headsets/freelance.rsi
-    - type: Headset
-      color: "#f6ce64"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseMagicalContraband]
   id: ClothingHeadsetAltWizard
   name: wizard's over-ear headset
   components:
-    - type: Headset
     - type: EncryptionKeyHolder
       keySlots: 5
     - type: ContainerFill
