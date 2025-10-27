@@ -67,6 +67,8 @@
     sprite: _Goobstation/Clothing/Ears/Headsets/warden.rsi
   - type: Clothing
     sprite: _Goobstation/Clothing/Ears/Headsets/warden.rsi
+  - type: Headset
+    color: "#ff4242"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseCentcommContraband]
@@ -84,6 +86,8 @@
     sprite: _Goobstation/Clothing/Ears/Headsets/deathsquad.rsi
   - type: Tag
     tags: [] # ignore "WhitelistChameleon" tag
+  - type: Headset
+    color: "#2681a5"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseSecurityContraband]
@@ -99,6 +103,8 @@
     sprite: Clothing/Ears/Headsets/security.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/security.rsi
+  - type: Headset
+    color: "#ff4242"
 
 - type: entity
   parent: [ClothingHeadsetAlt, BaseCentcommContraband]
@@ -115,6 +121,8 @@
     sprite: _Goobstation/Clothing/Ears/Headsets/blueshield.rsi
   - type: Clothing
     sprite: _Goobstation/Clothing/Ears/Headsets/blueshield.rsi
+  - type: Headset
+    color: "#2681a5"
 
 - type: entity
   parent: ClothingHeadsetCommand
@@ -128,3 +136,5 @@
       - EncryptionKeyCommand
       - EncryptionKeyService
       - EncryptionKeyCommon
+  - type: Headset
+    color: "#2681a5"
