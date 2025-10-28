@@ -152,47 +152,47 @@ Entries:
 - author: Neyran
   changes:
   - message: "Изменён спрайт бутылки кетчупа."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки майонеза."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки соуса барбекю."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки холодного соуса."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки жгучего соуса."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки уксуса."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки оливкового масла."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки молока."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки соевого молока."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылки овсяного молока."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт мешка муки."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт мешка кукурузной муки."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт мешка риса."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт мешка сахара."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт коробки яиц."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт бутылочки."
-    type: Twich
+    type: Tweak
   - message: "Изменёны спрайт пицц и их кусочков."
-    type: Twich
+    type: Tweak
   - message: "Изменёны спрайты таблеток и баночки для таблеток."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт умного холодильника."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт факса."
-    type: Twich
+    type: Tweak
   - message: "Изменён спрайт емага."
-    type: Twich
+    type: Tweak
   - message: "Исправлена текстура носков пчелки."
     type: Fix
   id: 25
