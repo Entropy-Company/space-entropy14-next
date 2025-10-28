@@ -197,3 +197,13 @@ Entries:
     type: Fix
   id: 25
   time: '2025-10-28T08:25:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Обновлены все формы документов."
+    type: Tweak
+  - message: "Обновлено оформление бумаги о цели."
+    type: Tweak
+  - message: "Большая часть документов получила поле для подписи."
+    type: Tweak
+  id: 26
+  time: '2025-10-28T23:49:00.000Z'
