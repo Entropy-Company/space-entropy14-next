@@ -1,12 +1,9 @@
 station-goal-fax-paper-name = бумага
-station-goal-start = [color=#b8972d]███[/color][color=#1d7a1d]░███░░░░██░░░░[/color][color=#b8972d]                          ★ ★ ★[/color][color=#1d7a1d]
-    ░██░████░░░██░░░░           [head=3]Бланк документа[/head]
-    ░░█░██░██░░██░█░░                   [head=3]NanoTrasen[/head]
-    ░░░░██░░██░██░██░                        [bold]ЦК-КОМ[/bold]
-    ░░░░██░░░████░[/color][color=#b8972d]███[/color][color=#b8972d]                          ★ ★ ★[/color]
-    ==================================================[bold]
+station-goal-start = [color=#b8972d]◥ [/color][color=#1d7a1d][bold]█▄ █[/bold][/color]       [bold]|[/bold]     [color=#b8972d]★ ★ ★[/color] [color=#1d7a1d][head=2]NanoTrasen[/head][/color] [color=#b8972d]★ ★ ★[/color][color=#1d7a1d][bold]
+         █ ▀█[/bold][/color][color=#b8972d] ◣[/color]  [bold]|[/bold]      [bold]ЦентКом | ЦК-КОМ[/bold]                    
+    ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬[bold]
                                              ЦЕЛЬ СТАНЦИИ[/bold]
-    ==================================================[bold]
+    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾[bold]
     Цель смены станции { $station } — поддержание станции в рабочем состоянии.[/bold]
     
     Ваша станция должна провести в рабочем состоянии как минимум 2 часа.
@@ -18,7 +15,7 @@ station-goal-start = [color=#b8972d]███[/color][color=#1d7a1d]░███
     При выполнении первостепенной [bold]и[/bold] второстепенной цели вы получите полный оклад и премиальные.
 station-goal-end =
     Слава NanoTrasen!
-    ==================================================[italic]
+    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾[italic]
                                           Место для печати[/italic]
 station-goal-singularity =
     { station-goal-start }[bold]
