@@ -45,6 +45,12 @@ chat-emote-name-robotbeep = Robot
 chat-emote-name-yawn = Yawn
 chat-emote-name-snore = Snore
 
+chat-emote-name-Hiss = Hiss
+chat-emote-name-Meow = Meow
+chat-emote-name-Mew = Mew
+chat-emote-name-Growl = Growl
+chat-emote-name-Purr = Purr
+
 # Message
 chat-emote-msg-scream = screams!
 chat-emote-msg-laugh = laughs.
@@ -79,3 +85,9 @@ chat-emote-msg-cathisses = hisses!
 chat-emote-msg-monkeyscreeches = screeches!
 chat-emote-msg-yawn = yawns.
 chat-emote-msg-snore = snores.
+
+chat-emote-msg-Hiss = hisses.
+chat-emote-msg-Meow = meows.
+chat-emote-msg-Mew = mews.
+chat-emote-msg-Growl = growls.
+chat-emote-msg-Purr = purrs.

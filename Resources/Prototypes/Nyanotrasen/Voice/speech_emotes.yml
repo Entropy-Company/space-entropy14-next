@@ -11,7 +11,7 @@
 # vocal emotes
 - type: emote
   id: Hiss
-  name: Шипеть
+  name: chat-emote-name-Hiss
   category: Vocal
   icon: _Goobstation/Interface/Emotes/hiss.png
   whitelist:
@@ -22,7 +22,7 @@
   blacklist:
     components:
     - BorgChassis
-  chatMessages: [шипит.]
+  chatMessages: [chat-emote-msg-Hiss]
   chatTriggers:
     - hiss
     - hisses
@@ -31,7 +31,7 @@
 
 - type: emote
   id: Meow
-  name: Мяукать
+  name: chat-emote-name-Meow
   category: Vocal
   icon: _Goobstation/Interface/Emotes/meow.png
   whitelist:
@@ -41,7 +41,7 @@
   blacklist:
     components:
     - BorgChassis
-  chatMessages: [мяукает.]
+  chatMessages: [chat-emote-msg-Meow]
   chatTriggers:
     - meow
     - meows
@@ -56,7 +56,7 @@
 
 - type: emote
   id: Mew
-  name: Мяукнуть
+  name: chat-emote-name-Mew
   category: Vocal
   icon: _Goobstation/Interface/Emotes/mew.png
   whitelist:
@@ -66,7 +66,7 @@
   blacklist:
     components:
     - BorgChassis
-  chatMessages: [мяукнула.]
+  chatMessages: [chat-emote-msg-Mew]
   chatTriggers:
     - mew
     - mews
@@ -75,7 +75,7 @@
 
 - type: emote
   id: Growl
-  name: Рычать
+  name: chat-emote-name-Growl
   category: Vocal
   icon: _Goobstation/Interface/Emotes/growl.png
   whitelist:
@@ -85,7 +85,7 @@
   blacklist:
     components:
     - BorgChassis
-  chatMessages: [рычит.]
+  chatMessages: [chat-emote-msg-Growl]
   chatTriggers:
     - growl
     - growls
@@ -94,7 +94,7 @@
 
 - type: emote
   id: Purr
-  name: Помурчать
+  name: chat-emote-name-Purr
   category: Vocal
   icon: _Goobstation/Interface/Emotes/purr.png
   whitelist:
@@ -104,7 +104,7 @@
   blacklist:
     components:
     - BorgChassis
-  chatMessages: [мурлычет.]
+  chatMessages: [chat-emote-msg-Purr]
   chatTriggers:
     - purr
     - purrs

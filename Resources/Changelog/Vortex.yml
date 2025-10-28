@@ -143,3 +143,9 @@ Entries:
     type: Add
   id: 24
   time: '2025-10-26T23:50:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Перевод эмоутов фелинидов."
+    type: Add
+  id: 25
+  time: '2025-10-28T04:50:00.000Z'
