@@ -798,8 +798,6 @@
     speechVerb: Moth
     speechSounds: Squeak
     allowedEmotes: ['Chitter', 'Squeak', 'Flap'] #flap is from goob
-  - type: FaxableObject
-    insertingState: inserting_mothroach
   - type: FaxSlip # Goobstation
     slipChance: 0.3
   - type: DashAction # Goobstation - dark souls moths
@@ -2086,8 +2084,6 @@
     rootTask:
       task: MouseCompound
   - type: Physics
-  - type: FaxableObject
-    insertingState: inserting_mouse
   - type: Fixtures
     fixtures:
       fix1:

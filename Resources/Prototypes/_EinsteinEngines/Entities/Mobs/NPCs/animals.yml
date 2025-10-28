@@ -55,8 +55,6 @@
   - type: Speech
     speechVerb: Harpy
     speechSounds: Harpy
-  - type: FaxableObject
-    insertingState: inserting_squackroach
   - type: Sprite
     sprite: _EinsteinEngines/Mobs/Animals/squackroach.rsi
     layers:

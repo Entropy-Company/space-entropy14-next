@@ -149,3 +149,51 @@ Entries:
     type: Add
   id: 25
   time: '2025-10-28T04:50:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Изменён спрайт бутылки кетчупа."
+    type: Twich
+  - message: "Изменён спрайт бутылки майонеза."
+    type: Twich
+  - message: "Изменён спрайт бутылки соуса барбекю."
+    type: Twich
+  - message: "Изменён спрайт бутылки холодного соуса."
+    type: Twich
+  - message: "Изменён спрайт бутылки жгучего соуса."
+    type: Twich
+  - message: "Изменён спрайт бутылки уксуса."
+    type: Twich
+  - message: "Изменён спрайт бутылки оливкового масла."
+    type: Twich
+  - message: "Изменён спрайт бутылки молока."
+    type: Twich
+  - message: "Изменён спрайт бутылки соевого молока."
+    type: Twich
+  - message: "Изменён спрайт бутылки овсяного молока."
+    type: Twich
+  - message: "Изменён спрайт мешка муки."
+    type: Twich
+  - message: "Изменён спрайт мешка кукурузной муки."
+    type: Twich
+  - message: "Изменён спрайт мешка риса."
+    type: Twich
+  - message: "Изменён спрайт мешка сахара."
+    type: Twich
+  - message: "Изменён спрайт коробки яиц."
+    type: Twich
+  - message: "Изменён спрайт бутылочки."
+    type: Twich
+  - message: "Изменёны спрайт пицц и их кусочков."
+    type: Twich
+  - message: "Изменёны спрайты таблеток и баночки для таблеток."
+    type: Twich
+  - message: "Изменён спрайт умного холодильника."
+    type: Twich
+  - message: "Изменён спрайт факса."
+    type: Twich
+  - message: "Изменён спрайт емага."
+    type: Twich
+  - message: "Исправлена текстура носков пчелки."
+    type: Fix
+  id: 25
+  time: '2025-10-28T08:25:00.000Z'

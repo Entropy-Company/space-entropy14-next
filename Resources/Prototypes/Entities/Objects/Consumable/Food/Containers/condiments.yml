@@ -385,18 +385,7 @@
     canChangeTransferAmount: true
     minTransferAmount: 5
     maxTransferAmount: 30
-  - type: Sprite
-    state: bottle-empty
   - type: Appearance
-  - type: SolutionContainerVisuals
-    maxFillLevels: 6
-    fillBaseName: bottle-alpha-
-  - type: GenericVisualizer
-    visuals:
-      enum.OpenableVisuals.Opened:
-        enum.OpenableVisuals.Layer:
-          True: {state: "bottle-open"}
-          False: {state: "bottle-empty"}
   - type: PhysicalComposition
     materialComposition:
       Glass: 50
@@ -415,12 +404,7 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-c
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-coldsauce
   - type: Icon
     state: bottle-coldsauce
   - type: Tag
@@ -441,12 +425,7 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-e
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-enzyme
   - type: Icon
     state: bottle-enzyme
   - type: Tag
@@ -467,12 +446,7 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-v
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-vinegar
   - type: Icon
     state: bottle-vinegar
 
@@ -490,12 +464,7 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-h
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-hotsauce
   - type: Icon
     state: bottle-hotsauce
   - type: Tag
@@ -516,12 +485,7 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-k
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-ketchup
   - type: Icon
     state: bottle-ketchup
   - type: Tag
@@ -542,15 +506,10 @@
           Quantity: 30
   - type: Sprite
     layers:
-    - state: bottle-empty
-      map: ["enum.OpenableVisuals.Layer"]
-    - state: label-b
-    - state: bottle-alpha-6
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: true
+    - state: bottle-bbqsauce
   # So there's no error.
   - type: Icon
-    state: bottle-ketchup
+    state: bottle-bbqsauce
   - type: Tag
     tags:
       - BBQsauce
