@@ -229,5 +229,9 @@ Entries:
     type: Tweak
   - message: "Изменен спрайт мясницкого секача."
     type: Tweak
+  - message: "Изменен спрайт химмастера 4000."
+    type: Tweak
+  - message: "Изменен спрайт пробирок."
+    type: Tweak
   id: 27
   time: '2025-10-29T07:14:00.000Z'
