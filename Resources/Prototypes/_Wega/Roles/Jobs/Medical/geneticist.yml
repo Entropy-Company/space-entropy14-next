@@ -26,7 +26,7 @@
 - type: startingGear
   id: GeneticistGear
   equipment:
-    id: GeneticistPDA
+    id: MedicalPDA
     ears: ClothingHeadsetMedicalScience
     belt: ClothingBeltMedicalFilled
 
