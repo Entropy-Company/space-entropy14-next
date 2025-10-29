@@ -235,3 +235,11 @@ Entries:
     type: Tweak
   id: 27
   time: '2025-10-29T07:14:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Раса Аркан."
+    type: Add
+  - message: "Страницы в руководстве про следующие расы: Арканы."
+    type: Add
+  id: 28
+  time: '2025-10-29T19:57:00.000Z'

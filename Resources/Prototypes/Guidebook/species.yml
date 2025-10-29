@@ -31,8 +31,6 @@
     - Moth
     - Reptilian
     - SlimePerson
-    # Goobstation
-    # - Felinid
     - Gingerbread
     - Harpy
     - Vox
@@ -46,6 +44,9 @@
     - Chitinid
     - Plasmaman
     - Feroxi
+    # Corvax-Wega-Species-start
+    - Demon
+    # Corvax-Wega-Species-end
 
 - type: guideEntry
   id: Arachnid
