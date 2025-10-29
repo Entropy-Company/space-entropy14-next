@@ -51,6 +51,17 @@ public sealed partial class InventoryComponent : Component
     /// </summary>
     [DataField]
     public Dictionary<string, DisplacementData> MaleDisplacements = new();
+
+    // Corvax-Wega-Genetics-start
+    public void Clone(InventoryComponent targetInventory)
+    {
+        this.SpeciesId = targetInventory.SpeciesId;
+        this.Displacements = targetInventory.Displacements;
+        this.FemaleDisplacements = targetInventory.FemaleDisplacements;
+        this.MaleDisplacements = targetInventory.MaleDisplacements;
+    }
+    // Corvax-Wega-Genetics-end
+
 }
 
 /// <summary>

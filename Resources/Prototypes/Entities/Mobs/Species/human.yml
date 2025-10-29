@@ -152,7 +152,9 @@
             state: jumpsuit-female
   - type: Sprinter # Goob Change: human major
     staminaDrainRate: 8
-
+  - type: DnaModifier
+    upper: MobHuman
+    lowest: MobMonkey
 
 - type: entity
   parent: BaseSpeciesDummy

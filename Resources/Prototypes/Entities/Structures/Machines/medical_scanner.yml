@@ -100,6 +100,7 @@
   - type: ContainerContainer
     containers:
       scanner-bodyContainer: !type:ContainerSlot
+      beakerSlot: !type:ContainerSlot # Corvax-Wega-Genetic
       machine_board: !type:Container
       machine_parts: !type:Container
   - type: Damageable
@@ -118,6 +119,14 @@
         node: machineFrame
       - !type:DoActsBehavior
         acts: ["Destruction"]
+  # Corvax-Wega-Genetic-start
+  - type: ItemSlots
+    slots:
+      beakerSlot:
+        whitelist:
+          components:
+          - FitsInDispenser
+  # Corvax-Wega-Genetic-end
   - type: Machine
     board: MedicalScannerMachineCircuitboard
   - type: WiresPanel

@@ -207,3 +207,27 @@ Entries:
     type: Tweak
   id: 26
   time: '2025-10-28T23:49:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Консоль модификатора-ДНК."
+    type: Add
+  - message: "Диск модификатора-ДНК."
+    type: Add
+  - message: "ДНК-инъектор."
+    type: Add
+  - message: "Должность генетика. (Пока что не доступна на станциях)"
+    type: Add
+  - message: "Тикет машина выдающая тикеты с номерком."
+    type: Add
+  - message: "Слот мензурки для медицинского сканера."
+    type: Add
+  - message: "Изменены спрайты ложек."
+    type: Tweak
+  - message: "Изменены спрайты вилок."
+    type: Tweak
+  - message: "Изменен спрайт кухонного ножа."
+    type: Tweak
+  - message: "Изменен спрайт мясницкого секача."
+    type: Tweak
+  id: 27
+  time: '2025-10-29T07:14:00.000Z'

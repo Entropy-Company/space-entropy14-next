@@ -241,6 +241,9 @@
     - DoorBumpOpener
     - AnomalyHost
     - ReptilianEmotes
+  - type: DnaModifier
+    upper: MobReptilian
+    lowest: MobLizard
 
 - type: entity
   parent: BaseSpeciesDummy
