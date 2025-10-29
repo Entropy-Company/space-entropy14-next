@@ -3553,6 +3553,9 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2
     baseSprintSpeed: 4
+  - type: DnaModifier
+    upper: MobFelinid
+    lowest: MobCat
 
 - type: entity
   name: calico cat

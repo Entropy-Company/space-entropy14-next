@@ -261,16 +261,13 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
             var skinColoration = speciesProto.SkinColoration;
             switch (skinColoration)
             {
-                // Для Unary заполняем блок 13 (тон кожи)
+                // Для HumanToned заполняем блок 13 (тон кожи)
                 case HumanoidSkinColor.HumanToned:
                     uniqueIdentifiers.SkinTone = ConvertSkinToneToHexArray(humanoid.SkinColor);
                     break;
 
-                // Для Color заполняем блоки 14-16 (цвет меха)
-                case HumanoidSkinColor.AnimalFur:
-                case HumanoidSkinColor.Hues:
-                case HumanoidSkinColor.TintedHues:
-                case HumanoidSkinColor.VoxFeathers:
+                // Для других типов заполняем блоки 14-16 (цвет меха)
+                default: // Vortex edited
                     var furColorArray = ConvertColorToHexArray(humanoid.SkinColor);
                     uniqueIdentifiers.FurColorR = new[] { furColorArray[0], furColorArray[1], furColorArray[2] };
                     uniqueIdentifiers.FurColorG = new[] { furColorArray[3], furColorArray[4], furColorArray[5] };
@@ -612,8 +609,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
 
         Dirty(ent, ent.Comp);
 
-        TryChangeUniqueIdentifiers(ent);
-        TryChangeStructuralEnzymes(ent);
+        ApplyDnaChangesToEntity(ent, ent.Comp, skipEnzyme55: false); // Vortex edited
     }
 
     public void ChangeDna(Entity<DnaModifierComponent> ent, int type)
@@ -621,7 +617,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
         switch (type)
         {
             case 0: TryChangeUniqueIdentifiers(ent); break;
-            case 1: TryChangeStructuralEnzymes(ent); break;
+            case 1: ApplyDnaChangesToEntity(ent, ent.Comp, skipEnzyme55: false); break; // Vortex edited
         }
     }
 
@@ -630,8 +626,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
         if (!Resolve(uid, ref uid.Comp))
             return;
 
-        TryChangeUniqueIdentifiers((uid, uid.Comp));
-        TryChangeStructuralEnzymes((uid, uid.Comp));
+        ApplyDnaChangesToEntity(uid, uid.Comp, skipEnzyme55: false); // Vortex edited
     }
 
     #region Modify U.I.
@@ -640,6 +635,9 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
     {
         if (!Resolve(ent, ref humanoid) || ent.Comp.UniqueIdentifiers == null)
             return;
+
+        if (humanoid == null)
+            return; // Vortex edited
 
         var uniqueIdentifiers = ent.Comp.UniqueIdentifiers;
         UpdateSkin((ent, humanoid), uniqueIdentifiers);
@@ -662,10 +660,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
                 humanoid.Comp.SkinColor = SkinColor.ValidSkinTone(skinColoration, color);
                 break;
 
-            case HumanoidSkinColor.AnimalFur:
-            case HumanoidSkinColor.Hues:
-            case HumanoidSkinColor.TintedHues:
-            case HumanoidSkinColor.VoxFeathers:
+            default: // Vortex edited
                 string redHex = uniqueIdentifiers.FurColorR[0] + uniqueIdentifiers.FurColorR[1];
                 string greenHex = uniqueIdentifiers.FurColorG[0] + uniqueIdentifiers.FurColorG[1];
                 string blueHex = uniqueIdentifiers.FurColorB[0] + uniqueIdentifiers.FurColorB[1];
@@ -864,7 +859,8 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
             childDnaModifier.Lowest = component.Lowest;
 
             Dirty(child, childDnaModifier);
-            ChangeDna(child);
+            // Apply DNA changes to the new entity without recursion
+            ApplyDnaChangesToEntity(child, childDnaModifier, skipEnzyme55: true); // Vortex edited
 
             _admin.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(target):user} gene down up a step.");
 
@@ -921,7 +917,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
                     dnaModifier.Lowest = component.Lowest;
 
                     Dirty(parent, dnaModifier);
-                    ChangeDna(parent);
+                    ApplyDnaChangesToEntity(parent, dnaModifier, skipEnzyme55: true); // Vortex edited
                 }
 
                 var parentXform = Transform(parent);
@@ -975,9 +971,9 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
             childDnaModifier.Lowest = component.Lowest;
 
             Dirty(child, childDnaModifier);
-            ChangeDna(child);
+            ApplyDnaChangesToEntity(child, childDnaModifier, skipEnzyme55: true); // Vortex edited
 
-            _admin.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(target):user} gene went up a step.");
+            _admin.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(target):user} gene went up a step."); // Vortex edited
 
             // Third clearing
             _entManager.DeleteEntity(target); // Bye
@@ -1015,6 +1011,78 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
             default: return false;
         }
     }
+    // Vortex added
+    private void ApplyDnaChangesToEntity(EntityUid entity, DnaModifierComponent dnaModifier, bool skipEnzyme55)
+    {
+        TryChangeUniqueIdentifiers((entity, dnaModifier));
+
+        if (dnaModifier.EnzymesPrototypes == null)
+            return;
+
+        int totalInstability = dnaModifier.Instability;
+        var enzymes = dnaModifier.EnzymesPrototypes;
+        var messagesToShow = new List<string>();
+        foreach (var enzyme in enzymes)
+        {
+            if (skipEnzyme55 && enzyme.Order == 55)
+                continue;
+
+            if (enzyme.Order == 55)
+            {
+                TryChangeLastBlock(entity, dnaModifier, enzyme);
+                continue;
+            }
+
+            if (!_prototype.TryIndex<StructuralEnzymesPrototype>(enzyme.EnzymesPrototypeId, out var enzymePrototype))
+                continue;
+
+            bool meetsCondition = CheckHexCodeCondition(enzyme.HexCode, enzymePrototype.TypeDeviation);
+            if (enzymePrototype.AddComponent != null)
+            {
+                if (meetsCondition)
+                {
+                    bool hasAnyComponent = enzymePrototype.AddComponent
+                        .Any(componentEntry =>
+                        {
+                            var componentType = componentEntry.Value.Component?.GetType();
+                            return componentType != null && HasComp(entity, componentType);
+                        });
+
+                    if (!hasAnyComponent && _random.NextFloat() <= enzymePrototype.ChanceAssimilation)
+                    {
+                        EntityManager.AddComponents(entity, enzymePrototype.AddComponent, false);
+                        totalInstability += enzymePrototype.CostInstability;
+
+                        if (!string.IsNullOrEmpty(enzymePrototype.Message))
+                            messagesToShow.Add(enzymePrototype.Message);
+
+                        _admin.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} acquires a gene type: '{enzymePrototype.ID}'.");
+                    }
+                }
+                else
+                {
+                    foreach (var componentEntry in enzymePrototype.AddComponent)
+                    {
+                        var componentType = componentEntry.Value.Component?.GetType();
+                        if (componentType != null && HasComp(entity, componentType))
+                        {
+                            RemComp(entity, componentType);
+                            totalInstability -= enzymePrototype.CostInstability;
+
+                            _admin.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} loses the gene type: '{enzymePrototype.ID}'.");
+                        }
+                    }
+                }
+            }
+        }
+
+        UpdateInstability(entity, dnaModifier, totalInstability);
+        if (messagesToShow.Count > 0)
+        {
+            _ = ShowMessagesWithDelay(entity, messagesToShow);
+        }
+    }
+    // Vortex end
     #endregion Modify S.E.
 
     #region Chemistry

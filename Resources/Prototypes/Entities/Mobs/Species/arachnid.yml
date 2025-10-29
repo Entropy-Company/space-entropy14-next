@@ -177,6 +177,10 @@
     templateId: arachnid
     speciesId: arachnid #Goobedit - Fix Arachnid specific textures
   - type: IgnoreSpiderWeb # Goobstation
+  - type: DnaModifier
+    upper: MobArachnid
+    lowest: MobSpiderSpace
+
 
 - type: entity
   parent: BaseSpeciesDummy

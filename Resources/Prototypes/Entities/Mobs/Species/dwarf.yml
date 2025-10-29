@@ -115,6 +115,9 @@
   - type: InnateMiningScannerViewer # Frontier
     pingSound: null
     viewRange: 3 # Goob value
+  - type: DnaModifier
+    upper: MobDwarf
+    lowest: MobMonkeyDwarf
 
 - type: entity
   parent: BaseSpeciesDummy
@@ -130,3 +133,16 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+
+- type: entity
+  id: MobMonkeyDwarf
+  parent: MobMonkey
+  suffix: AI, Dwarf
+  components:
+  - type: Sprite
+    noRot: true
+    drawdepth: Mobs
+    scale: 1, 0.8
+  - type: DnaModifier
+    upper: MobDwarf
+    lowest: MobMonkeyDwarf

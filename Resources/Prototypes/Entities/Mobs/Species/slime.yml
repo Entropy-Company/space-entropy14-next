@@ -208,6 +208,9 @@
           32:
             sprite: Mobs/Species/Human/displacement.rsi
             state: jumpsuit-female
+  - type: DnaModifier
+    upper: MobSlimePerson
+    lowest: MobAdultSlimesBlue
 
 - type: entity
   parent: MobHumanDummy

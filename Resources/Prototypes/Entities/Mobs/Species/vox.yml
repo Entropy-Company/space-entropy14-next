@@ -363,6 +363,9 @@
     understands:
       - TauCetiBasic
       - NewKinPidgin        # Vox language from Floofstation
+  - type: DnaModifier
+    upper: MobVox
+    lowest: MobParrot
 
 - type: entity
   parent: BaseSpeciesDummy

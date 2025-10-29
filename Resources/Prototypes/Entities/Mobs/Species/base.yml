@@ -493,7 +493,6 @@
     - DoorBumpOpener
     - AnomalyHost
   - type: LayingDown # WD EDIT
-  - type: DnaModifier # Corvax-Wega-Genetics (Only for organic species)
   - type: EmoteOnDamage # CorvaxGoob-AutoEmote
     emotes:
       50: ["Scream"] # >50 of alive HP. Scream only

@@ -166,6 +166,9 @@
       - Shard
   - type: SpeedModifierImmunity
   - type: Rootable
+  - type: DnaModifier
+    upper: MobDiona
+    lowest: MobDionaNymph
 
 - type: entity
   parent: BaseSpeciesDummy

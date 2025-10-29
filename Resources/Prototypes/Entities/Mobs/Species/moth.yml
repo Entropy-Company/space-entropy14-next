@@ -315,6 +315,9 @@
         - MobLayer
   - type: DashAction # Goobstation - dark souls moths
     actionProto: ActionDashMoth
+  - type: DnaModifier
+    upper: MobMoth
+    lowest: MobMothroach
 
 - type: entity
   parent: BaseSpeciesDummy
