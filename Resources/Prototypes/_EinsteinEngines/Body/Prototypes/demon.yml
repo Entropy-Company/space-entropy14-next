@@ -1,28 +1,34 @@
 - type: body
   name: "demon"
   id: Demon
-  root: torso
+  root: chest
   slots:
     head:
       part: HeadDemon
       connections:
-      - torso
+      - chest
       organs:
         brain: OrganHumanBrain
         eyes: OrganHumanEyes
-    torso:
+    chest:
       part: TorsoDemon
       organs:
-        heart: OrganDemonHeart
+        heart: OrganAnimalHeart
         lungs: OrganHumanLungs
-        stomach: OrganDemonStomach
-        liver: OrganAnimalLiver
-        kidneys: OrganHumanKidneys
       connections:
+      - groin
       - right arm
       - left arm
-      - left leg
+      - head
+    groin:
+      part: GroinDemon
+      connections:
       - right leg
+      - left leg
+      organs:
+        stomach: OrganAnimalStomach
+        liver:  OrganAnimalLiver
+        kidneys: OrganHumanKidneys
     right arm:
       part: RightArmDemon
       connections:

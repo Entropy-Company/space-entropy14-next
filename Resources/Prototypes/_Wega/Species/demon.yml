@@ -24,6 +24,7 @@
     Chest: MobDemonTorso
     HeadTop: MobHumanoidAnyMarking
     HeadSide: MobHumanoidAnyMarking
+    Groin: MobDemonGroin
     Tail: MobDemonTail
     Eyes: MobHumanoidEyes
     LArm: MobDemonLArm
@@ -89,6 +90,30 @@
   baseSprite:
     sprite: _Wega/Mobs/Species/Demon/parts.rsi
     state: torso_m
+
+- type: humanoidBaseSprite
+  id: MobDemonGroin
+  baseSprite:
+    sprite: _Wega/Mobs/Species/Demon/parts.rsi
+    state: groin_m
+
+- type: humanoidBaseSprite
+  id: MobDemonGroinMale
+  baseSprite:
+    sprite: _Wega/Mobs/Species/Demon/parts.rsi
+    state: groin_m
+
+- type: humanoidBaseSprite
+  id: MobDemonGroinFemale
+  baseSprite:
+    sprite: _Wega/Mobs/Species/Demon/parts.rsi
+    state: groin_f
+
+- type: humanoidBaseSprite
+  id: MobDemonGroinNeutral
+  baseSprite:
+    sprite: _Wega/Mobs/Species/Demon/parts.rsi
+    state: groin_t
 
 - type: humanoidBaseSprite
   id: MobDemonTorsoMale
