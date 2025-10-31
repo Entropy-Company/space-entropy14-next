@@ -23,3 +23,11 @@
   minWidth: 0.95
   defaultHeightCm: 155
   defaultWeightKg: 75
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Этанол лечит небольшое количество механического урона.
+  - Чуют руды на расстоянии 3 тайлов.
+  special:
+  - Не может быть вызвана рвота от алкоголя.
+  cons:
+  - Легче обезоружить.

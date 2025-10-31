@@ -34,6 +34,9 @@
   minWidth: 0.90
   defaultHeightCm: 155
   defaultWeightKg: 65
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  special:
+  - Могут заспавнить комок шерсти.
 
 - type: markingPoints
   id: MobFelinidMarkingLimits

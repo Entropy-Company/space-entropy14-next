@@ -30,6 +30,13 @@
   defaultWidth: 0.90
   maxWidth: 1.10
   # end Goobstation: port EE height/width sliders
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Получают меньше урона холодом.
+  special:
+  - Могут быть помещены в сумку.
+  cons:
+  - Получают больше урона огнём.
 
 - type: markingPoints
   id: MobTajaranMarkingLimits

@@ -27,6 +27,13 @@
   maleFirstNames: NamesVulpakinMale
   femaleFirstNames: NamesVulpakinFemale
   lastNames: NamesVulpakinLast
+  category: Unusual
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Получает меньше механического урона.
+  - Наносит больше урона голыми руками.
+  cons:
+  - Получают больше урона огнём.
 
 - type: speciesBaseSprites
   id: MobVulpkaninSprites

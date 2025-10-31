@@ -37,6 +37,16 @@
   minWidth: 0.90
   defaultHeightCm: 185
   defaultWeightKg: 73
+  # ADT Species window start
+  pros:
+  - Наносят 7 проникающего урона в ближнем бою.
+  - Голодают медленее.
+  special:
+  - Могут плести шёлк, из которого создаются некоторые вещи.
+  cons:
+  - Получают на 50% больше тупого урона и урона огнём.
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  # ADT Species window end
 
 - type: speciesBaseSprites
   id: MobArachnidSprites

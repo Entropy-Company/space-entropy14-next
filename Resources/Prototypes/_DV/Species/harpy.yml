@@ -34,6 +34,14 @@
   defaultWidth: 0.80
   maxWidth: 1.0
   # end Goobstation: port EE height/width sliders
+  category: Unusual
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Могут летать, значительно повышая скорость но теряя выносливость.
+  special:
+  - Могут петь.
+  cons:
+  - Не могут носить обувь.
 
 - type: speciesBaseSprites
   id: MobHarpySprites

@@ -36,6 +36,12 @@
   maxHeight: 1.1
   maxWidth: 1.1
   minWidth: 0.90
+  category: Unusual
+  # ADT Species window start
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  cons:
+  - Получают урон при вдыхании кислорода.
+  # ADT Species window end
 
 - type: speciesBaseSprites
   id: MobVoxSprites
