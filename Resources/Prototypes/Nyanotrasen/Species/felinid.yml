@@ -36,7 +36,14 @@
   defaultWeightKg: 65
   description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
   special:
-  - Могут заспавнить комок шерсти.
+  - Могут изрыгать шерстяной комок.
+  - Максимальный рост ниже человеческого.
+  pros:
+  - Получают на 15% больше урона от тупого оружия.
+  - Получают на 15% больше урона от режущего оружия.
+  - Получают на 14% больше урона от колющего оружия.
+  cons:
+  - Фелиниды.
 
 - type: markingPoints
   id: MobFelinidMarkingLimits

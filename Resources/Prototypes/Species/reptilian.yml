@@ -40,13 +40,15 @@
   minWidth: 0.90
   defaultHeightCm: 183
   defaultWeightKg: 70
-  # ADT Species window start
   description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
   pros:
-  - Могут таскать объекты с занятыми руками(хвостом).
-  - Наносят больше урона голыми руками.
-
-  # ADT Species window end
+  - Могут таскать объекты с занятыми руками (хвостом).
+  - Урон голыми руками пробивающего типа (когти), что позволяет ломать структуры.
+  - Максимальный рост выше человеческого.
+  special:
+  - Имеют акцент, добавляющий шипящие "ccc", а также "щщщ".
+  cons:
+  - Получают урон ядами от шоколада.
 
 - type: speciesBaseSprites
   id: MobReptilianSprites
