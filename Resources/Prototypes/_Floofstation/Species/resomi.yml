@@ -33,6 +33,12 @@
   defaultWidth: 1
   maxWidth: 1
   # end Goobstation: port EE height/width sliders
+  category: Unusual
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Невосприимчивы к урону холодом и всем сопутствующим эффектам.
+  cons:
+  - Получают больше урона от огня и урона ушибами.
 
 - type: speciesBaseSprites
   id: MobResomiSprites

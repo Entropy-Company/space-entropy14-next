@@ -36,6 +36,20 @@
   maxHeight: 1.35
   maxWidth: 1.3
   minWidth: 0.945
+  # ADT Species window start
+  category: Unusual
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Не получают негативных эффектов от кудзу.
+  - Получают меньше механического урона.
+  special:
+  - Пацифисты.
+  - В критическом состоянии дионы могут распасться на нимф, после чего вернуться к жизни. Для этого нужна кровь.
+  - Выпив достаточно удобрений превращаются в дерево.
+  cons:
+  - Получают гораздо больше урона от ожогов.
+  - Не могут носить обувь.
+  # ADT Species window end
 
 - type: speciesBaseSprites
   id: MobDionaSprites

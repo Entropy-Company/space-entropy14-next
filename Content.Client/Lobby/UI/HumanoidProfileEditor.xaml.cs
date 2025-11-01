@@ -156,6 +156,8 @@
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Content.Client.ADT.Lobby.UI;
+using Content.Client.Guidebook;
 using Content.Client.Humanoid;
 using Content.Client.Lobby.UI.Loadouts;
 using Content.Client.Lobby.UI.Roles;
@@ -211,6 +213,7 @@ namespace Content.Client.Lobby.UI
         private readonly MarkingManager _markingManager;
         private readonly JobRequirementsManager _requirements;
         private readonly LobbyUIController _controller;
+        [Dependency] private readonly DocumentParsingManager _parsingMan = default!;
 
         private readonly SpriteSystem _sprite;
 
@@ -273,6 +276,7 @@ namespace Content.Client.Lobby.UI
         public event Action<List<ProtoId<GuideEntryPrototype>>>? OnOpenGuidebook;
 
         private ISawmill _sawmill;
+        private SpeciesWindow? _speciesWindow;  // ADT Species window
 
         public HumanoidProfileEditor(
             IClientPreferencesManager preferencesManager,
@@ -449,13 +453,50 @@ namespace Content.Client.Lobby.UI
                     return;
                 var prototype = _prototypeManager.Index<SpeciesPrototype>(Profile.Species);
                 var width = MathHelper.Lerp(prototype.MinWidth, prototype.MaxWidth, WidthSlider.Value);
-                var kg = (int)(width * 65f * prototype.BaseScale.X);
+                var kg = (int) (width * 65f * prototype.BaseScale.X);
                 CDWidth.Text = kg.ToString(CultureInfo.InvariantCulture);
                 SetProfileWidth(width);
             };
 
             #endregion Vortex Width
             // end Vortex - Height & Weight
+
+            // ADT Species Window start
+            NewSpeciesButton.OnToggled += args =>
+            {
+                if (Profile == null)
+                    return;
+
+                _speciesWindow?.Dispose();
+
+                if (!args.Pressed)
+                {
+                    _speciesWindow = null;
+                }
+                else
+                {
+                    _speciesWindow = new(Profile, prototypeManager, entManager, _controller, _resManager, _parsingMan);
+                    _speciesWindow.OpenCenteredLeft();
+                    var oldProfile = Profile.Clone();
+                    _speciesWindow.ChooseAction += args =>
+                    {
+                        SetSpecies(args);
+                        OnSkinColorOnValueChangedKeepColor(oldProfile);
+                        UpdateHairPickers();
+                        _speciesWindow?.Dispose();
+                        _speciesWindow = null;
+                        var name1 = _prototypeManager.Index(Profile?.Species ?? "Human").Name;
+                        NewSpeciesButton.Text = Loc.GetString(name1);
+                        NewSpeciesButton.Pressed = false;
+                    };
+                    _speciesWindow.OnClose += () =>
+                    {
+                        NewSpeciesButton.Pressed = false;
+                        _speciesWindow = null;
+                    };
+                }
+            };
+            // ADT Species Window end
 
             #region Skin
 
@@ -996,6 +1037,12 @@ namespace Content.Client.Lobby.UI
                 if (Profile?.Species.Equals(_species[i].ID) == true)
                 {
                     SpeciesButton.SelectId(i);
+
+                    // ADT Species Window start
+                    NewSpeciesButton.Text = name;
+                    NewSpeciesButton.Pressed = false;
+                    _speciesWindow?.Dispose();
+                    // ADT Species Window end
                 }
             }
 
@@ -2117,6 +2164,51 @@ namespace Content.Client.Lobby.UI
             ImportButton.Disabled = false;
             ExportButton.Disabled = false;
         }
+
+        // ADT Species Window start
+        private void OnSkinColorOnValueChangedKeepColor(HumanoidCharacterProfile previus)
+        {
+            if (Profile is null) return;
+
+            var skin = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration;
+            var color = previus.Appearance.SkinColor;
+
+            switch (skin)
+            {
+                case HumanoidSkinColor.HumanToned:
+                    {
+                        var tone = SkinColor.HumanSkinToneFromColor(previus.Appearance.SkinColor);
+                        color = SkinColor.HumanSkinTone((int)tone);
+                        Skin.Value = tone;
+
+                        Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(color));//
+                        break;
+                    }
+                case HumanoidSkinColor.Hues:
+                    {
+                        break;
+                    }
+                case HumanoidSkinColor.TintedHues:
+                    {
+                        color = SkinColor.TintedHues(previus.Appearance.SkinColor);
+
+                        Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(color));
+                        break;
+                    }
+                case HumanoidSkinColor.VoxFeathers:
+                    {
+                        color = SkinColor.ClosestVoxColor(previus.Appearance.SkinColor);
+
+                        Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(color));
+                        break;
+                    }
+            }
+
+            _rgbSkinColorSelector.Color = color;
+
+            ReloadProfilePreview();
+        }
+        // ADT Species Window end
 
         private void SetProfileHeight(float height)
         {

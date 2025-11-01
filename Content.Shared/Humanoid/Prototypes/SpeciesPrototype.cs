@@ -35,6 +35,7 @@
 using Content.Shared.Dataset;
 using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Humanoid.Prototypes;
 
@@ -164,6 +165,23 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField]
     public int MaxAge = 120;
 
+    // ADT Species Window start
+    [DataField]
+    public SpeciesCategory Category = SpeciesCategory.Classic;
+
+    [DataField]
+    public ResPath? Description;
+
+    [DataField]
+    public List<string> Pros = new();
+
+    [DataField]
+    public List<string> Cons = new();
+
+    [DataField]
+    public List<string> Special = new();
+    // ADT Species Window end
+
     // Begin DV - CD Character Records shouldn't nuke species heights
     /// <summary>
     /// The base height scale for this species
@@ -264,3 +282,12 @@ public enum SpeciesNaming : byte
     FirstDashLast, // Goobstation
     FirstRoman // EE Plasmeme Change
 }
+
+// ADT start
+public enum SpeciesCategory : byte
+{
+    Classic,
+    Unusual,
+    Special
+}
+// ADT end

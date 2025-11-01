@@ -16,6 +16,17 @@
   naming: FirstRoman
   sexes:
   - Unsexed
+  category: Special
+  description: "/ServerInfo/ADT/SpeciesDescriptions/Unfinished.xml"
+  pros:
+  - Невосприимчивы к урону холодом и всем сопутствующим эффектам.
+  - Не испытывают голод и жажду.
+  - Не могут истечь кровью.
+  - Могут лечится поедаю плазму и попивая молоко.
+  special:
+  - Дышат плазмой.
+  cons:
+  - Воспламеняются на воздухе.
 
 - type: speciesBaseSprites
   id: MobPlasmamanSprites
