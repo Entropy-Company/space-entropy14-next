@@ -249,3 +249,9 @@ Entries:
     type: Add
   id: 29
   time: '2025-10-31T23:59:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Обновление спрайтов всех шлюзов."
+    type: Add
+  id: 30
+  time: '2025-11-5T8:00:00.000Z'

@@ -106,7 +106,7 @@
   - type: InteractionOutline
   - type: Sprite
     sprite: Structures/Doors/Airlocks/Standard/basic.rsi
-    snapCardinals: true
+    snapCardinals: false # Vortex-Resprite-Airlocks
     layers:
     - state: closed
       map: ["enum.DoorVisualLayers.Base"]
