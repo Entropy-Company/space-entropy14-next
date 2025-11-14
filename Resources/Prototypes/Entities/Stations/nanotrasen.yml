@@ -94,3 +94,21 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Transform
+
+- type: entity
+  id: StandardGameCentcommStation # Vortex-PlayableCentComm
+  parent:
+  - BaseStation
+  - BaseStationNews
+  - BaseStationCargo
+  - BaseStationJobsSpawning
+  - BaseStationRecords
+  - BaseStationNtrTasks
+  - BaseStationMagnet
+  - BaseStationSalvageJobs
+  - BaseStationSiliconLawCrewsimov
+  - BaseStationNanotrasen
+  - BaseStationAlertLevels
+  categories: [ HideSpawnMenu ]
+  components:
+    - type: Transform
