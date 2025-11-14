@@ -6,7 +6,9 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Robust.Shared.Utility;
+using Content.Server.GameTicking; // Vortex-PlayableCentComm
+using Content.Server.Maps; // Vortex-PlayableCentComm
+using Robust.Shared.Prototypes; // Vortex-PlayableCentComm
 
 namespace Content.Server.Shuttles.Components;
 
@@ -22,8 +24,13 @@ public sealed partial class StationCentcommComponent : Component
     [DataField]
     public float ShuttleIndex;
 
+    // Vortex-PlayableCentComm start
+    /// <summary>
+    /// GameMap prototype to load.
+    /// </summary>
     [DataField]
-    public ResPath Map = new("/Maps/centcomm.yml");
+    public ProtoId<GameMapPrototype>? GameMap;
+    // Vortex-PlayableCentComm end
 
     /// <summary>
     /// Centcomm entity that was loaded.

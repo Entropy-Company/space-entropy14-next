@@ -1,0 +1,19 @@
+- type: gameMap
+  id: CorvaxCentCom
+  isGrid: true
+  mapName: 'Центральное командование'
+  mapPath: /Maps/_CorvaxGoob/Stations/CentComm/corvax_centcomm.yml
+  minPlayers: 100
+  stations:
+    centcomm:
+      stationProto: StandardGameCentcommStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Центральное командование'
+        - type: StationJobs
+          availableJobs:
+            CentralCommandOfficial: [ 1, 1 ]
+            BlueshieldOfficer: [ 1, 1 ]
+        - type: ForceCryoSpawn
+          forceLateJoinCryo: true
+          forceRoundStartCryo: true

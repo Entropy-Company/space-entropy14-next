@@ -104,9 +104,13 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Robust.Shared.Map; // Vortex-PlayableCentComm
 using Content.Shared.DeviceNetwork.Components;
 using Content.Server._CorvaxGoob.Announcer;
 using Robust.Shared.Audio;
+using Content.Server.GameTicking; // Vortex-PlayableCentComm
+using Content.Server.Maps; // Vortex-PlayableCentComm
+using Robust.Shared.EntitySerialization; // Vortex-PlayableCentComm
 
 namespace Content.Server.Shuttles.Systems;
 
@@ -140,6 +144,9 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
     [Dependency] private readonly TransformSystem _transformSystem = default!;
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly ExplosionSystem _explosion = default!; // Goob edit
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!; // Vortex-PlayableCentComm
+    [Dependency] private readonly IMapManager _mapManager = default!; // Vortex-PlayableCentComm
+    [Dependency] private readonly GameTicker _gameTicker = default!; // Vortex-PlayableCentComm
 
     private const float ShuttleSpawnBuffer = 1f;
 
@@ -601,49 +608,65 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
             return;
         }
 
-        if (string.IsNullOrEmpty(component.Map.ToString()))
+        // Vortex-PlayableCentComm edit start
+        // Check for existing centcomms and just point to that
+        var centcommQuery = AllEntityQuery<StationCentcommComponent>();
+        while (centcommQuery.MoveNext(out var otherComp))
         {
-            Log.Warning("No CentComm map found, skipping setup.");
+            if (otherComp == component)
+                continue;
+
+            if (!Exists(otherComp.MapEntity) || !Exists(otherComp.Entity))
+            {
+                Log.Error($"Discovered invalid centcomm component?");
+                ClearCentcomm(otherComp);
+                continue;
+            }
+
+            component.MapEntity = otherComp.MapEntity;
+            component.Entity = otherComp.Entity;
+            component.ShuttleIndex = otherComp.ShuttleIndex;
             return;
         }
 
-        var map = _mapSystem.CreateMap(out var mapId);
-        if (!_loader.TryLoadGrid(mapId, component.Map, out var grid))
+        // If GameMap is specified, load it
+        if (component.GameMap == null)
+        {
+            Log.Warning("No GameMap found for centcomm, skipping setup.");
+            return;
+        }
+
+        // Load GameMap using MapLoader like LoadMapRuleSystem does
+        var gameMap = _prototypeManager.Index(component.GameMap.Value);
+        _mapSystem.CreateMap(out var mapId);
+        var opts = DeserializationOptions.Default with { InitializeMaps = true };
+        
+        if (!_loader.TryLoadGrid(mapId, gameMap.MapPath, out var grid, opts))
+        {
+            Log.Error($"Failed to load centcomm grid from {gameMap.MapPath}!");
+            return;
+        }
+        
+        if (!Exists(grid.Value))
         {
             Log.Error($"Failed to set up centcomm grid!");
             return;
         }
 
-        if (!Exists(map))
+        // Initialize stations on the map using StationSystem
+        foreach (var stationConfig in gameMap.Stations.Values)
         {
-            Log.Error($"Failed to set up centcomm map!");
-            QueueDel(grid);
-            return;
+            _station.InitializeNewStation(stationConfig, new[] { grid.Value.Owner });
+            Log.Info($"Initialized station {stationConfig.StationPrototype} from game map {component.GameMap}");
         }
 
-        if (!Exists(grid))
-        {
-            Log.Error($"Failed to set up centcomm grid!");
-            QueueDel(map);
-            return;
-        }
-
-        var xform = Transform(grid.Value);
-        if (xform.ParentUid != map || xform.MapUid != map)
-        {
-            Log.Error($"Centcomm grid is not parented to its own map?");
-            QueueDel(map);
-            QueueDel(grid);
-            return;
-        }
-
-        component.MapEntity = map;
-        _metaData.SetEntityName(map, Loc.GetString("map-name-centcomm"));
-        component.Entity = grid;
+        component.MapEntity = _mapManager.GetMapEntityId(mapId);
+        component.Entity = grid.Value;
+        _metaData.SetEntityName(component.MapEntity.Value, Loc.GetString("map-name-centcomm"));
         _shuttle.TryAddFTLDestination(mapId, true, out _);
-        Log.Info($"Created centcomm grid {ToPrettyString(grid)} on map {ToPrettyString(map)} for station {ToPrettyString(station)}");
+        Log.Info($"Created centcomm from GameMap {component.GameMap} for station {ToPrettyString(station)}");
     }
-
+    // Vortex-PlayableCentComm end
     public HashSet<EntityUid> GetCentcommMaps()
     {
         var query = AllEntityQuery<StationCentcommComponent>();

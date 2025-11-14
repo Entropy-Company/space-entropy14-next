@@ -354,8 +354,14 @@ namespace Content.Server.GameTicking
             _playTimeTrackings.PlayerRolesChanged(player);
 
             var mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
-            DebugTools.AssertNotNull(mobMaybe);
-            var mob = mobMaybe!.Value;
+            // Vortex-ForceCryoSpawn start
+            if (mobMaybe == null)
+            {
+                _sawmill.Error($"Failed to spawn player {player.Name} on station {station}");
+                return;
+            }
+            var mob = mobMaybe.Value;
+            // Vortex-ForceCryoSpawn end
 
             _mind.TransferTo(newMind, mob);
             _admin.UpdatePlayerList(player);
