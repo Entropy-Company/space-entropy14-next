@@ -36,9 +36,9 @@
   name: job-name-centcomoff
   description: job-description-centcomoff
   playTimeTracker: JobCentralCommandOfficial
-  setPreference: false
+  setPreference: true
   startingGear: CentcomGear
-  icon: "JobIconNanotrasen"
+  icon: "JobIconCentCommOfficial" # Vortex-PlayableCentComm
   supervisors: job-supervisors-centcom # Goobstation
   whitelisted: true
   canBeAntag: false
@@ -83,6 +83,9 @@
     - HandheldFaxOfficial # NTRs fax is huge, do you expect me to use some POOR person fax?
     - BoxFolderCentComClipboard # Solely for holding and looking menacing.
     - DeterrentCaseFilled
+    - BoxSurvivalSlotsMedical # Vortex-PlayableCentComm
+    - EmergencyNitrogenTankFilled # Vortex-PlayableCentComm
+    - TelescopicBaton # Vortex-PlayableCentComm
 # Goobstation - End
 
 - type: chameleonOutfit

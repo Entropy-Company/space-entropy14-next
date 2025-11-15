@@ -102,6 +102,8 @@ using Robust.Shared.Timing;
 using Robust.Shared.Prototypes;
 using Content.Server.Shuttles.Components;
 using Robust.Shared.Physics;
+using Content.Server.Station.Systems; // Vortex-PlayableCentComm
+using Content.Server._Vortex.Station.Components; // Vortex-PlayableCentComm
 
 namespace Content.Server.Storage.EntitySystems;
 
@@ -116,6 +118,7 @@ public sealed class BluespaceLockerSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
     [Dependency] private readonly ExplosionSystem _explosionSystem = default!;
+    [Dependency] private readonly StationSystem _stationSystem = default!; // Vortex-PlayableCentComm
 
     public override void Initialize()
     {
@@ -277,6 +280,16 @@ public sealed class BluespaceLockerSystem : EntitySystem
             if (lockerComponent.PickLinksFromBluespaceLockers)
                 return false;
         }
+
+        // Vortex-PlayableCentComm start
+        // Check if locker station blocks cross-station linking
+        if (!TryComp<TransformComponent>(locker, out var lockerXform)) return false;
+        if (!TryComp<TransformComponent>(link, out var linkXform)) return false;
+        var lockerStation = _stationSystem.GetOwningStation(locker, lockerXform);
+        var linkStation = _stationSystem.GetOwningStation(link, linkXform);
+        if (lockerStation != null && HasComp<StationBluespaceLockerBlockComponent>(lockerStation.Value) && lockerStation != linkStation)
+            return false;
+        // Vortex-PlayableCentComm end
 
         return true;
     }

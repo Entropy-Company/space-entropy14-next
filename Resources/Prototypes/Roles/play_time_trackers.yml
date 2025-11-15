@@ -57,11 +57,6 @@
 - type: playTimeTracker
   id: JobCentralCommandOfficial
 
-# Vortex-CentCommServiceWorker
-- type: playTimeTracker
-  id: JobCentralCommandOperator
-# Vortex-CentCommServiceWorker
-
 - type: playTimeTracker
   id: JobChaplain
 
@@ -169,11 +164,6 @@
 
 - type: playTimeTracker
   id: JobServiceWorker
-
-# Vortex-CentCommServiceWorker
-- type: playTimeTracker
-  id: JobCentCommServiceWorker
-# Vortex-CentCommServiceWorker
 
 - type: playTimeTracker
   id: JobStationAi

@@ -1,0 +1,23 @@
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCentCommServiceWorker
+  icon:
+    sprite: /Textures/_Vortex/Interface/Misc/job_icons.rsi
+    state: CentCommServiceWorker
+  jobName: job-name-centcommserviceworker
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCentCommOperator
+  icon:
+    sprite: /Textures/_Vortex/Interface/Misc/job_icons.rsi
+    state: Operator
+  jobName: job-name-centcommoperator
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCentCommOfficial
+  icon:
+    sprite: /Textures/_Vortex/Interface/Misc/job_icons.rsi
+    state: Official
+  jobName: job-name-centcomoff

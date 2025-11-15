@@ -141,9 +141,6 @@
   description: department-CentralCommand-description
   color: "#0c344d"
   roles:
-  - CentralCommandOfficial
-  - CentralCommandOperator # Vortex-PlayableCentComm
-  - CentCommServiceWorker # Vortex-PlayableCentComm
   - CBURN
   - ERTLeader
   - ERTChaplain

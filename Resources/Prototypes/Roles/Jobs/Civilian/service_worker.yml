@@ -97,46 +97,6 @@
   - !type:AddImplantSpecial # Service workers can understand a chef's communications.
     implants: [ BasicSpaceItalianTranslatorImplant ]
 
-# Vortex-CentCommServiceWorker
-- type: job
-  id: CentCommServiceWorker
-  name: job-name-serviceworker
-  description: job-description-serviceworker
-  playTimeTracker: JobCentCommServiceWorker
-  startingGear: CentCommServiceWorkerGear
-  whitelisted: true
-  icon: "JobIconServiceWorker"
-  supervisors: job-supervisors-centcom
-  requirements:
-  - !type:AgeRequirement
-    requiredAge: 21
-  access:
-  - CentralCommand
-  - Service
-  - Maintenance
-  - Bar
-  - Kitchen
-  - Hydroponics
-  special:
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant ]
-
-- type: startingGear
-  id: CentCommServiceWorkerGear
-  equipment:
-    shoes: ClothingShoesColorBlack
-    id: ServiceWorkerPDA
-    ears: ClothingHeadsetService
-    jumpsuit: ClothingUniformJumpsuitMilitaryService
-    back: ClothingBackpackDuffel
-  storage:
-    back:
-    - BoxSurvivalSlotsMedical
-    - ClothingUniformJumpsuitBartender
-    - ClothingUniformJumpskirtBartender
-    - EmergencyNitrogenTankFilled
-# Vortex-CentCommServiceWorker
-
 - type: startingGear
   id: ServiceWorkerGear
   equipment:

@@ -83,6 +83,7 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Transform
+    - type: StationBluespaceLockerBlock
 
 - type: entity
   id: StandardStationArena
@@ -115,3 +116,4 @@
     - type: NoGarbageDecalSpawning
     - type: ProtectedGrid
     - type: TradeStation
+    - type: StationBluespaceLockerBlock

@@ -1,0 +1,31 @@
+- type: entity
+  parent: IDCardStandard
+  id: CentcomOperatorIDCard
+  name: central command operator ID card
+  components:
+  - type: Sprite
+    layers:
+    - state: centcom
+    - state: idcentcom
+  - type: Item
+    heldPrefix: blue
+  - type: PresetIdCard
+    job: CentralCommandOperator
+  - type: NanoChatCard
+    listNumber: false
+
+- type: entity
+  parent: IDCardStandard
+  id: CentcomServiceWorkerIDCard
+  name: central command operator ID card
+  components:
+  - type: Sprite
+    layers:
+    - state: centcom
+    - state: idcentcom
+  - type: Item
+    heldPrefix: blue
+  - type: PresetIdCard
+    job: CentCommServiceWorker
+  - type: NanoChatCard
+    listNumber: false

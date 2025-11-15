@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Sprited by discord: neyran.official (id: 564336524796362753)",
+    "size": {
+        "x": 8,
+        "y": 8
+    },
+    "states": [
+        {
+            "name": "CentCommServiceWorker"
+        },
+        {
+            "name": "Official"
+        },
+        {
+            "name": "Operator"
+        }		
+    ]
+}

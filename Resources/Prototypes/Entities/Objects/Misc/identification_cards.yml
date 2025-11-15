@@ -655,22 +655,6 @@
 
 - type: entity
   parent: IDCardStandard
-  id: CentcomOperatorIDCard
-  name: centcom operator ID card
-  components:
-  - type: Sprite
-    layers:
-    - state: centcom
-    - state: idcentcom
-  - type: Item
-    heldPrefix: blue
-  - type: PresetIdCard
-    job: CentralCommandOperator
-  - type: NanoChatCard # DeltaV
-    listNumber: false
-
-- type: entity
-  parent: IDCardStandard
   id: ERTLeaderIDCard
   name: ERT leader ID card
   components:

@@ -1,0 +1,19 @@
+- type: randomHumanoidSettings
+  id: CentcomOperator
+  parent: EventHumanoidCentcomm
+  components:
+    - type: AutoImplant
+      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ] # Goobstation
+    - type: Loadout
+      prototypes: [ CentcomOperatorGear ]
+      roleLoadout: [ RoleSurvivalStandard ]
+
+- type: entity
+  name: CentComm operator
+  id: RandomHumanoidSpawnerCentcomOperator
+  components:
+    - type: Sprite
+      sprite: Markers/jobs.rsi
+      state: centcom
+    - type: RandomHumanoidSpawner
+      settings: CentcomOperator

@@ -1,0 +1,11 @@
+- type: department
+  id: LiveCentralCommand
+  name: department-CentralCommand
+  description: department-CentralCommand-description
+  color: "#0c344d"
+  roles:
+  - CentralCommandOfficial
+  - CentralCommandOperator
+  - CentCommServiceWorker
+  editorHidden: false
+  weight: 120

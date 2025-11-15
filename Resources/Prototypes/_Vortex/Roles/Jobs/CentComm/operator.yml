@@ -1,0 +1,49 @@
+
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: job
+  id: CentralCommandOperator
+  name: job-name-centcommoperator
+  description: job-description-centcomoperator
+  playTimeTracker: JobCentralCommandOperator
+  setPreference: true
+  startingGear: CentcomOperatorGear
+  icon: "JobIconCentCommOperator"
+  supervisors: job-supervisors-centcom
+  whitelisted: true
+  canBeAntag: false
+  skills:
+  - All
+  requirements:
+  - !type:AgeRequirement
+    requiredAge: 21
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
+
+- type: startingGear
+  id: CentcomOperatorGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCentcomOfficial
+    shoes: ClothingShoesBootsJackFilled
+    head: ClothingHeadHatCentcomcap
+    eyes: ClothingEyesGlassesCentComm
+    gloves: ClothingHandsGlovesHeavyGoldenTrim
+    back: ClothingBackpackSatchelLeather
+    neck: ExecutiveIDCard
+    id: CentcomOperatorPDA
+    ears: ClothingHeadsetAltCentCom
+    pocket1: BoxFolderCentCom 
+    pocket2: WeaponDisabler
+  storage:
+    back:
+    - BoxSurvivalSlotsMedical
+    - BoxFolderCentComClipboard
+    - EmergencyNitrogenTankFilled
+    - TelescopicBaton

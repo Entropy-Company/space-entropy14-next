@@ -1,0 +1,39 @@
+- type: job
+  id: CentCommServiceWorker
+  name: job-name-centcommserviceworker
+  description: job-description-centcommserviceworker
+  playTimeTracker: JobCentCommServiceWorker
+  startingGear: CentCommServiceWorkerGear
+  whitelisted: true
+  setPreference: true
+  icon: "JobIconCentCommServiceWorker"
+  supervisors: job-supervisors-centcomservice
+  requirements:
+  - !type:AgeRequirement
+    requiredAge: 21
+  access:
+  - CentralCommand
+  - Service
+  - Maintenance
+  - Bar
+  - Kitchen
+  - Hydroponics
+  - Janitor
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+
+- type: startingGear
+  id: CentCommServiceWorkerGear
+  equipment:
+    shoes: ClothingShoesColorBlack
+    id: CentcomServiceWorkerPDA
+    ears: ClothingHeadsetService
+    jumpsuit: ClothingUniformJumpsuitMilitaryService
+    back: ClothingBackpackDuffel
+  storage:
+    back:
+    - BoxSurvivalSlotsMedical
+    - ClothingUniformJumpsuitBartender
+    - ClothingUniformJumpskirtBartender
+    - EmergencyNitrogenTankFilled
