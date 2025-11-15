@@ -1,5 +1,5 @@
 - type: gameMap
-  id: CorvaxCentCom
+  id: CorvaxCentComm
   isGrid: true
   mapName: 'Центральное командование'
   mapPath: /Maps/_CorvaxGoob/Stations/CentComm/corvax_centcomm.yml
@@ -13,7 +13,8 @@
         - type: StationJobs
           availableJobs:
             CentralCommandOfficial: [ 1, 1 ]
-            BlueshieldOfficer: [ 1, 1 ]
+            CentralCommandOperator: [ 1, 1 ]
+            CentCommServiceWorker: [ 6, 6 ]
         - type: ForceCryoSpawn
           forceLateJoinCryo: true
           forceRoundStartCryo: true

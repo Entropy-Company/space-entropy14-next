@@ -40,6 +40,7 @@
   startingGear: CentcomGear
   icon: "JobIconNanotrasen"
   supervisors: job-supervisors-centcom # Goobstation
+  whitelisted: true
   canBeAntag: false
   skills: # CorvaxGoob-Skills
   - All

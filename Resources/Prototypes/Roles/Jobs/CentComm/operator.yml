@@ -1,0 +1,29 @@
+
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: job
+  id: CentralCommandOperator
+  name: job-name-centcomoperator
+  description: job-description-centcomoperator
+  playTimeTracker: JobCentralCommandOperator
+  setPreference: false
+  startingGear: CentcomGear
+  icon: "JobIconNanotrasen"
+  supervisors: job-supervisors-centcom # Goobstation
+  whitelisted: true
+  canBeAntag: false
+  skills: # CorvaxGoob-Skills
+  - All
+  requirements:
+  - !type:AgeRequirement
+    requiredAge: 21
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  # Goobstation
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
+  special: # Goobstation
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
