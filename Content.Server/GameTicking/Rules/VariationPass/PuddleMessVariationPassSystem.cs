@@ -7,6 +7,7 @@ using Content.Server.Fluids.EntitySystems;
 using Content.Server.GameTicking.Rules.VariationPass.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Random.Helpers;
+using Content.Shared._Vortex.Station.Components; // Vortex-PlayableCentComm
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
@@ -20,6 +21,12 @@ public sealed class PuddleMessVariationPassSystem : VariationPassSystem<PuddleMe
 
     protected override void ApplyVariation(Entity<PuddleMessVariationPassComponent> ent, ref StationVariationPassEvent args)
     {
+        // Vortex-PlayableCentComm start
+        // Check if station has NoGarbageDecalSpawningComponent
+        if (HasComp<NoGarbageDecalSpawningComponent>(args.Station))
+            return;
+        // Vortex-PlayableCentComm end
+
         var totalTiles = Stations.GetTileCount(args.Station);
 
         if (!_proto.TryIndex(ent.Comp.RandomPuddleSolutionFill, out var proto))

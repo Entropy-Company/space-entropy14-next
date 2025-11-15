@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Server.GameTicking.Rules.VariationPass.Components;
+using Content.Shared._Vortex.Station.Components; // Vortex-PlayableCentComm
 using Content.Shared.Storage;
 using Robust.Shared.Random;
 
@@ -14,6 +15,12 @@ public sealed class EntitySpawnVariationPassSystem : VariationPassSystem<EntityS
 {
     protected override void ApplyVariation(Entity<EntitySpawnVariationPassComponent> ent, ref StationVariationPassEvent args)
     {
+        // Vortex-PlayableCentComm start
+        // Check if station has NoGarbageDecalSpawningComponent
+        if (HasComp<NoGarbageDecalSpawningComponent>(args.Station))
+            return;
+        // Vortex-PlayableCentComm end
+
         var totalTiles = Stations.GetTileCount(args.Station);
 
         var dirtyMod = Random.NextGaussian(ent.Comp.TilesPerEntityAverage, ent.Comp.TilesPerEntityStdDev);

@@ -112,3 +112,6 @@
   categories: [ HideSpawnMenu ]
   components:
     - type: Transform
+    - type: NoGarbageDecalSpawning
+    - type: ProtectedGrid
+    - type: TradeStation
