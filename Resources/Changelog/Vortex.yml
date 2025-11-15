@@ -255,7 +255,7 @@ Entries:
     type: Add
   id: 30
   time: '2025-11-5T08:00:00.000Z'
- - author: Neyran
+- author: Neyran
   changes:
   - message: "ЦентКом теперь полноценная станция."
     type: Add
