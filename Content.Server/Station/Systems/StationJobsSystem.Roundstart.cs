@@ -25,6 +25,7 @@ using Content.Server.Administration.Managers;
 using Content.Server.Antag;
 using Content.Server.Antag.Components;
 using Content.Server.Players.PlayTimeTracking;
+using Content.Server.Shuttles.Components;
 using Content.Server.Station.Components;
 using Content.Server.Station.Events;
 using Content.Shared.Preferences;
@@ -305,7 +306,7 @@ public sealed partial class StationJobsSystem
         IReadOnlyDictionary<NetUserId, HumanoidCharacterProfile> profiles,
         IReadOnlyList<EntityUid> stations)
     {
-        var givenStations = stations.ToList();
+        var givenStations = stations.Where(s => !HasComp<StationCentcommComponent>(s)).ToList();
         if (givenStations.Count == 0)
             return; // Don't attempt to assign them if there are no stations.
         // For players without jobs, give them the overflow job if they have that set...
