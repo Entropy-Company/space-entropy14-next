@@ -100,6 +100,7 @@
 
 using System.Linq;
 using System.Numerics;
+using Content.Client.Administration.UI.CustomControls; // Vortex-LateJoinGui-Update
 using Content.Client.CrewManifest;
 using Content.Client.GameTicking.Managers;
 using Content.Client.Lobby;
@@ -110,6 +111,7 @@ using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Robust.Client.Console;
 using Robust.Client.GameObjects;
+using Robust.Client.Graphics; // Vortex-LateJoinGui-Update
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
@@ -139,13 +141,21 @@ namespace Content.Client.LateJoin
 
         private readonly Dictionary<NetEntity, Dictionary<string, List<JobButton>>> _jobButtons = new();
         private readonly Dictionary<NetEntity, Dictionary<string, BoxContainer>> _jobCategories = new();
-        private readonly List<ScrollContainer> _jobLists = new();
+
+        // Vortex-LateJoinGui-Update start
+        private NetEntity? _selectedStation;
+        private Button? _selectedStationButton;
+        private ScrollContainer _stationListScroll = default!;
+        private ScrollContainer _jobListScroll = default!;
+        private BoxContainer _stationList = default!;
+        private BoxContainer _jobList = default!;
+        // Vortex-LateJoinGui-Update end
 
         private readonly Control _base;
 
         public LateJoinGui()
         {
-            MinSize = SetSize = new Vector2(360, 560);
+            MinSize = SetSize = new Vector2(820, 560); // Vortex-LateJoinGui-Update edited
             IoCManager.InjectDependencies(this);
             _sprites = _entitySystem.GetEntitySystem<SpriteSystem>();
             _crewManifest = _entitySystem.GetEntitySystem<CrewManifestSystem>();
@@ -155,9 +165,10 @@ namespace Content.Client.LateJoin
             Title = Loc.GetString("late-join-gui-title");
 
             _base = new BoxContainer()
-            {
-                Orientation = LayoutOrientation.Vertical,
-                VerticalExpand = true,
+            {   // Vortex-LateJoinGui-Update start
+                Orientation = LayoutOrientation.Horizontal,
+                HorizontalExpand = true,
+                // Vortex-LateJoinGui-Update end
             };
 
             Contents.AddChild(_base);
@@ -179,221 +190,227 @@ namespace Content.Client.LateJoin
         private void RebuildUI()
         {
             _base.RemoveAllChildren();
-            _jobLists.Clear();
             _jobButtons.Clear();
             _jobCategories.Clear();
+            _selectedStation = null; // Vortex-LateJoinGui-Update
 
+            // Vortex-LateJoinGui-Update start
             if (!_gameTicker.DisallowedLateJoin && _gameTicker.StationNames.Count == 0)
+            {
                 _sawmill.Warning("No stations exist, nothing to display in late-join GUI");
+                _base.AddChild(new Label { Text = Loc.GetString("late-join-gui-no-stations") });
+                return;
+            }
 
+            // Left panel: station list
+            _stationList = new BoxContainer { Orientation = LayoutOrientation.Vertical };
+            _stationListScroll = new ScrollContainer { Children = { _stationList }, VerticalExpand = true, MinWidth = 310, MaxWidth = 310, HorizontalExpand = false };
+
+            // Right panel: job list
+            _jobList = new BoxContainer { Orientation = LayoutOrientation.Vertical };
+            _jobListScroll = new ScrollContainer { Children = { _jobList }, VerticalExpand = true, MinWidth = 420, MaxWidth = 800, HorizontalExpand = true };
+
+            _base.AddChild(_stationListScroll);
+            var separator = new VSeparator();
+            separator.MinSize = new Vector2(4, 0);
+            separator.HorizontalExpand = false;
+            separator.VerticalExpand = true;
+            separator.Margin = new Thickness(3, 0, 3, 0);
+            _base.AddChild(separator); // Separator
+            _base.AddChild(_jobListScroll);
+
+            // Build station buttons
             foreach (var (id, name) in _gameTicker.StationNames)
             {
-                var jobList = new BoxContainer
+                var stationButton = new Button { Text = name };
+                stationButton.OnPressed += _ => SelectStation(stationButton, id);
+                _stationList.AddChild(stationButton);
+
+                // Pre-build job data
+                BuildJobDataForStation(id);
+            }
+
+            // Auto-select first station
+            if (_gameTicker.StationNames.Count > 0)
+            {
+                var firstStation = _gameTicker.StationNames.Keys.First();
+                _selectedStation = firstStation;
+                // Find the first button and highlight it
+                if (_stationList.Children.FirstOrDefault() is Button firstButton)
+                {
+                    _selectedStationButton = firstButton;
+                    _selectedStationButton.ModulateSelfOverride = Color.FromHex("#274c8d"); // Selected color
+                }
+                UpdateJobList();
+            }
+        }
+
+        private void BuildJobDataForStation(NetEntity stationId)
+        {
+            _jobButtons[stationId] = new Dictionary<string, List<JobButton>>();
+            _jobCategories[stationId] = new Dictionary<string, BoxContainer>();
+
+            var departments = _prototypeManager.EnumeratePrototypes<DepartmentPrototype>().ToArray();
+            Array.Sort(departments, DepartmentUIComparer.Instance);
+
+            foreach (var department in departments)
+            {
+                var departmentName = Loc.GetString(department.Name);
+                var stationAvailable = _gameTicker.JobsAvailable[stationId];
+                var jobsAvailable = new List<JobPrototype>();
+
+                foreach (var jobId in department.Roles)
+                {
+                    if (!stationAvailable.ContainsKey(jobId))
+                        continue;
+
+                    jobsAvailable.Add(_prototypeManager.Index<JobPrototype>(jobId));
+                }
+
+                jobsAvailable.Sort(JobUIComparer.Instance);
+
+                // Do not create categories with no jobs available.
+                if (jobsAvailable.Count == 0)
+                    continue;
+
+                var category = new BoxContainer
                 {
                     Orientation = LayoutOrientation.Vertical,
-                    Margin = new Thickness(0, 0, 5f, 0),
+                    Name = department.ID,
+                    ToolTip = Loc.GetString("late-join-gui-jobs-amount-in-department-tooltip",
+                        ("departmentName", departmentName))
                 };
 
-                var collapseButton = new ContainerButton()
-                {
-                    HorizontalAlignment = HAlignment.Right,
-                    ToggleMode = true,
-                    Children =
-                    {
-                        new TextureRect
-                        {
-                            StyleClasses = { OptionButton.StyleClassOptionTriangle },
-                            Margin = new Thickness(8, 0),
-                            HorizontalAlignment = HAlignment.Center,
-                            VerticalAlignment = VAlignment.Center,
-                        }
-                    }
-                };
-
-                _base.AddChild(new StripeBack()
+                category.AddChild(new PanelContainer
                 {
                     Children =
                     {
-                        new PanelContainer()
+                        new Label
                         {
-                            Children =
-                            {
-                                new Label()
-                                {
-                                    StyleClasses = { "LabelBig" },
-                                    Text = name,
-                                    Align = Label.AlignMode.Center,
-                                },
-                                collapseButton
-                            }
+                            StyleClasses = { "LabelBig" },
+                            Text = Loc.GetString("late-join-gui-department-jobs-label", ("departmentName", departmentName))
                         }
                     }
                 });
 
-                if (_configManager.GetCVar(CCVars.CrewManifestWithoutEntity))
+                _jobCategories[stationId][department.ID] = category;
+
+                foreach (var prototype in jobsAvailable)
                 {
-                    var crewManifestButton = new Button()
+                    var value = stationAvailable[prototype.ID];
+
+                    var jobLabel = new Label
                     {
-                        Text = Loc.GetString("crew-manifest-button-label")
-                    };
-                    crewManifestButton.OnPressed += _ => _crewManifest.RequestCrewManifest(id);
-
-                    _base.AddChild(crewManifestButton);
-                }
-
-                var jobListScroll = new ScrollContainer()
-                {
-                    VerticalExpand = true,
-                    Children = { jobList },
-                    Visible = false,
-                };
-
-                if (_jobLists.Count == 0)
-                    jobListScroll.Visible = true;
-
-                _jobLists.Add(jobListScroll);
-
-                _base.AddChild(jobListScroll);
-
-                collapseButton.OnToggled += _ =>
-                {
-                    foreach (var section in _jobLists)
-                    {
-                        section.Visible = false;
-                    }
-                    jobListScroll.Visible = true;
-                };
-
-                var firstCategory = true;
-                var departments = _prototypeManager.EnumeratePrototypes<DepartmentPrototype>().ToArray();
-                Array.Sort(departments, DepartmentUIComparer.Instance);
-
-                _jobButtons[id] = new Dictionary<string, List<JobButton>>();
-
-                foreach (var department in departments)
-                {
-                    var departmentName = Loc.GetString(department.Name);
-                    _jobCategories[id] = new Dictionary<string, BoxContainer>();
-                    var stationAvailable = _gameTicker.JobsAvailable[id];
-                    var jobsAvailable = new List<JobPrototype>();
-
-                    foreach (var jobId in department.Roles)
-                    {
-                        if (!stationAvailable.ContainsKey(jobId))
-                            continue;
-
-                        jobsAvailable.Add(_prototypeManager.Index<JobPrototype>(jobId));
-                    }
-
-                    jobsAvailable.Sort(JobUIComparer.Instance);
-
-                    // Do not display departments with no jobs available.
-                    if (jobsAvailable.Count == 0)
-                        continue;
-
-                    var category = new BoxContainer
-                    {
-                        Orientation = LayoutOrientation.Vertical,
-                        Name = department.ID,
-                        ToolTip = Loc.GetString("late-join-gui-jobs-amount-in-department-tooltip",
-                            ("departmentName", departmentName))
+                        Margin = new Thickness(5f, 0, 0, 0)
                     };
 
-                    if (firstCategory)
+                    var jobButton = new JobButton(jobLabel, prototype.ID, prototype.LocalizedName, value);
+
+                    var jobSelector = new BoxContainer
                     {
-                        firstCategory = false;
-                    }
-                    else
+                        Orientation = LayoutOrientation.Horizontal,
+                        HorizontalExpand = true
+                    };
+
+                    var icon = new TextureRect
                     {
-                        category.AddChild(new Control
+                        TextureScale = new Vector2(2, 2),
+                        VerticalAlignment = VAlignment.Center
+                    };
+
+                    var jobIcon = _prototypeManager.Index(prototype.Icon);
+                    icon.Texture = _sprites.Frame0(jobIcon.Icon);
+                    jobSelector.AddChild(icon);
+
+                    jobSelector.AddChild(jobLabel);
+                    jobButton.AddChild(jobSelector);
+
+                    jobButton.OnPressed += _ => SelectedId.Invoke((stationId, jobButton.JobId));
+
+                    if (!_jobRequirements.IsAllowed(prototype, (HumanoidCharacterProfile?)_preferencesManager.Preferences?.SelectedCharacter, out var reason))
+                    {
+                        jobButton.Disabled = true;
+
+                        if (!reason.IsEmpty)
                         {
-                            MinSize = new Vector2(0, 23),
+                            var tooltip = new Tooltip();
+                            tooltip.SetMessage(reason);
+                            jobButton.TooltipSupplier = _ => tooltip;
+                        }
+
+                        jobSelector.AddChild(new TextureRect
+                        {
+                            TextureScale = new Vector2(0.4f, 0.4f),
+                            Stretch = TextureRect.StretchMode.KeepCentered,
+                            Texture = _sprites.Frame0(new SpriteSpecifier.Texture(new ("/Textures/Interface/Nano/lock.svg.192dpi.png"))),
+                            HorizontalExpand = true,
+                            HorizontalAlignment = HAlignment.Right,
                         });
                     }
-
-                    category.AddChild(new PanelContainer
+                    else if (value == 0)
                     {
-                        Children =
-                        {
-                            new Label
-                            {
-                                StyleClasses = { "LabelBig" },
-                                Text = Loc.GetString("late-join-gui-department-jobs-label", ("departmentName", departmentName))
-                            }
-                        }
-                    });
-
-                    _jobCategories[id][department.ID] = category;
-                    jobList.AddChild(category);
-
-                    foreach (var prototype in jobsAvailable)
-                    {
-                        var value = stationAvailable[prototype.ID];
-
-                        var jobLabel = new Label
-                        {
-                            Margin = new Thickness(5f, 0, 0, 0)
-                        };
-
-                        var jobButton = new JobButton(jobLabel, prototype.ID, prototype.LocalizedName, value);
-
-                        var jobSelector = new BoxContainer
-                        {
-                            Orientation = LayoutOrientation.Horizontal,
-                            HorizontalExpand = true
-                        };
-
-                        var icon = new TextureRect
-                        {
-                            TextureScale = new Vector2(2, 2),
-                            VerticalAlignment = VAlignment.Center
-                        };
-
-                        var jobIcon = _prototypeManager.Index(prototype.Icon);
-                        icon.Texture = _sprites.Frame0(jobIcon.Icon);
-                        jobSelector.AddChild(icon);
-
-                        jobSelector.AddChild(jobLabel);
-                        jobButton.AddChild(jobSelector);
-                        category.AddChild(jobButton);
-
-                        jobButton.OnPressed += _ => SelectedId.Invoke((id, jobButton.JobId));
-
-                        if (!_jobRequirements.IsAllowed(prototype, (HumanoidCharacterProfile?)_preferencesManager.Preferences?.SelectedCharacter, out var reason))
-                        {
-                            jobButton.Disabled = true;
-
-                            if (!reason.IsEmpty)
-                            {
-                                var tooltip = new Tooltip();
-                                tooltip.SetMessage(reason);
-                                jobButton.TooltipSupplier = _ => tooltip;
-                            }
-
-                            jobSelector.AddChild(new TextureRect
-                            {
-                                TextureScale = new Vector2(0.4f, 0.4f),
-                                Stretch = TextureRect.StretchMode.KeepCentered,
-                                Texture = _sprites.Frame0(new SpriteSpecifier.Texture(new ("/Textures/Interface/Nano/lock.svg.192dpi.png"))),
-                                HorizontalExpand = true,
-                                HorizontalAlignment = HAlignment.Right,
-                            });
-                        }
-                        else if (value == 0)
-                        {
-                            jobButton.Disabled = true;
-                        }
-
-                        if (!_jobButtons[id].ContainsKey(prototype.ID))
-                        {
-                            _jobButtons[id][prototype.ID] = new List<JobButton>();
-                        }
-
-                        _jobButtons[id][prototype.ID].Add(jobButton);
+                        jobButton.Disabled = true;
                     }
+
+                    if (!_jobButtons[stationId].ContainsKey(prototype.ID))
+                    {
+                        _jobButtons[stationId][prototype.ID] = new List<JobButton>();
+                    }
+
+                    _jobButtons[stationId][prototype.ID].Add(jobButton);
+                    category.AddChild(jobButton);
                 }
             }
         }
+
+        private void SelectStation(Button button, NetEntity stationId)
+        {
+            // Reset previous button color
+            if (_selectedStationButton != null)
+            {
+                _selectedStationButton.ModulateSelfOverride = null;
+            }
+
+            _selectedStationButton = button;
+            _selectedStationButton.ModulateSelfOverride = Color.FromHex("#274c8d"); // Selected color
+
+            _selectedStation = stationId;
+            UpdateJobList();
+        }
+
+        private void UpdateJobList()
+        {
+            _jobList.RemoveAllChildren();
+
+            if (_selectedStation == null || !_jobCategories.ContainsKey(_selectedStation.Value))
+                return;
+
+            var stationId = _selectedStation.Value;
+
+            // Add crew manifest button if enabled
+            if (_configManager.GetCVar(CCVars.CrewManifestWithoutEntity))
+            {
+                var crewManifestButton = new Button()
+                {
+                    Text = Loc.GetString("crew-manifest-button-label"),
+                    HorizontalExpand = true
+                };
+                crewManifestButton.OnPressed += _ => _crewManifest.RequestCrewManifest(stationId);
+                _jobList.AddChild(crewManifestButton);
+            }
+
+            var firstCategory = true;
+            foreach (var category in _jobCategories[stationId].Values)
+            {
+                if (!firstCategory)
+                {
+                    _jobList.AddChild(new Control { MinSize = new Vector2(0, 23) });
+                }
+                firstCategory = false;
+                _jobList.AddChild(category);
+            }
+        }
+        // Vortex-LateJoinGui-Update end
 
         private void JobsAvailableUpdated(IReadOnlyDictionary<NetEntity, Dictionary<ProtoId<JobPrototype>, int?>> updatedJobs)
         {
@@ -420,6 +437,14 @@ namespace Content.Client.LateJoin
                         }
                     }
                 }
+                // Vortex-LateJoinGui-Update start
+
+                // If the selected station was updated, refresh the job list
+                if (_selectedStation == stationEntries.Key)
+                {
+                    UpdateJobList();
+                }
+                // Vortex-LateJoinGui-Update end
             }
         }
 
