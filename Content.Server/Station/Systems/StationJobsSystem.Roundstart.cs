@@ -288,6 +288,56 @@ public sealed partial class StationJobsSystem
                 done: ;
             }
         }
+        // Vortex-PriorityTweak start
+        // Fallback: assign High priority jobs to remaining players if possible
+        if (profiles.Count > 0)
+        {
+            var remainingPlayers = profiles.Keys.ToList();
+            foreach (var player in remainingPlayers)
+            {
+                var profile = profiles[player];
+                var highPriorityJobs = profile.JobPriorities.Where(p => p.Value == JobPriority.High).Select(p => p.Key).ToList();
+                if (highPriorityJobs.Count == 0)
+                    continue;
+
+                // Shuffle to randomize
+                _random.Shuffle(highPriorityJobs);
+
+                foreach (var jobId in highPriorityJobs)
+                {
+                    foreach (var station in stations)
+                    {
+                        if (stationJobs[station].TryGetValue(jobId, out var slots) && (slots == null || slots > 0))
+                        {
+                            // Check bans etc. (simplified, reuse logic from GetPlayersJobCandidates)
+                            var roleBans = _banManager.GetJobBans(player);
+                            if (roleBans != null && roleBans.Contains(jobId))
+                                continue;
+
+                            if (!_prototypeManager.TryIndex(jobId, out var job))
+                                continue;
+
+                            var antagBlacklists = _antag.GetPreSelectedAntagSessionsWithBlacklist();
+                            if (_player.TryGetSessionById(player, out var session) && antagBlacklists.TryGetValue(session, out var blacklistedJobs) && blacklistedJobs.Contains(jobId))
+                                continue;
+
+                            var antagBlocked = _antag.GetPreSelectedAntagSessions();
+                            if (!job.CanBeAntag && session != null && antagBlocked.Contains(session))
+                                continue;
+
+                            // Assign
+                            if (slots != null)
+                                stationJobs[station][jobId]--;
+
+                            profiles.Remove(player);
+                            assigned.Add(player, (jobId, station));
+                            goto nextPlayer;
+                        }
+                    }
+                }
+                nextPlayer:;
+            }
+        }// Vortex-PriorityTweak end
 
         endFunc:
         return assigned;

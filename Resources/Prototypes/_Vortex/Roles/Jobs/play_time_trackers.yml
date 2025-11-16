@@ -3,3 +3,6 @@
 
 - type: playTimeTracker
   id: JobCentralCommandOperator
+
+- type: playTimeTracker
+  id: JobCentralCommandChief

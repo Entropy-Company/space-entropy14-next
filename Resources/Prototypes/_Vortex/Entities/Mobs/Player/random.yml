@@ -3,7 +3,7 @@
   parent: EventHumanoidCentcomm
   components:
     - type: AutoImplant
-      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ] # Goobstation
+      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ]
     - type: Loadout
       prototypes: [ CentcomOperatorGear ]
       roleLoadout: [ RoleSurvivalStandard ]
@@ -17,3 +17,23 @@
       state: centcom
     - type: RandomHumanoidSpawner
       settings: CentcomOperator
+
+- type: randomHumanoidSettings
+  id: CentcomChief
+  parent: EventHumanoidCentcomm
+  components:
+    - type: AutoImplant
+      implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ]
+    - type: Loadout
+      prototypes: [ CentcomChiefGear ]
+      roleLoadout: [ RoleSurvivalStandard ]
+
+- type: entity
+  name: CentComm chief
+  id: RandomHumanoidSpawnerCentcomChief
+  components:
+    - type: Sprite
+      sprite: Markers/jobs.rsi
+      state: centcom
+    - type: RandomHumanoidSpawner
+      settings: CentcomChief

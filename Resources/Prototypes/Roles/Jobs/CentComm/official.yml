@@ -36,7 +36,8 @@
   name: job-name-centcomoff
   description: job-description-centcomoff
   playTimeTracker: JobCentralCommandOfficial
-  setPreference: false
+  setPreference: true
+  weight: 100
   startingGear: CentcomGear
   icon: "JobIconCentCommOfficial" # Vortex-PlayableCentComm
   supervisors: job-supervisors-centcom # Goobstation
@@ -85,7 +86,6 @@
     - DeterrentCaseFilled
     - BoxSurvivalSlotsMedical # Vortex-PlayableCentComm
     - EmergencyNitrogenTankFilled # Vortex-PlayableCentComm
-    - TelescopicBaton # Vortex-PlayableCentComm
 # Goobstation - End
 
 - type: chameleonOutfit

@@ -4,8 +4,9 @@
   description: department-CentralCommand-description
   color: "#0c344d"
   roles:
+  - CentralCommandChief
   - CentralCommandOfficial
   - CentralCommandOperator
   - CentCommServiceWorker
-  editorHidden: true
+  editorHidden: false
   weight: 120

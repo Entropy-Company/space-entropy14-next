@@ -4,14 +4,15 @@
   description: job-description-centcommserviceworker
   playTimeTracker: JobCentCommServiceWorker
   startingGear: CentCommServiceWorkerGear
+  weight: 100
   whitelisted: true
-  setPreference: false
+  setPreference: true
   canBeAntag: false
   icon: "JobIconCentCommServiceWorker"
   supervisors: job-supervisors-centcomservice
   requirements:
   - !type:AgeRequirement
-    requiredAge: 21
+    requiredAge: 18
   access:
   - CentralCommand
   - Service
@@ -20,6 +21,7 @@
   - Kitchen
   - Hydroponics
   - Janitor
+  - Cargo
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]

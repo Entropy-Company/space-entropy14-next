@@ -21,7 +21,7 @@ job-name-hop = глава персонала
 job-name-captain = капитан
 job-name-serviceworker = сервисный работник
 
-job-name-centcomoff = представитель Центком
+job-name-centcomoff = представитель ЦК
 job-name-cburn = агент карантинной службы Центком
 job-name-deathsquad = агент Центком
 job-name-reporter = репортёр
