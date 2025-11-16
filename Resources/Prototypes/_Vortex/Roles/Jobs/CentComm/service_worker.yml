@@ -5,7 +5,8 @@
   playTimeTracker: JobCentCommServiceWorker
   startingGear: CentCommServiceWorkerGear
   whitelisted: true
-  setPreference: true
+  setPreference: false
+  canBeAntag: false
   icon: "JobIconCentCommServiceWorker"
   supervisors: job-supervisors-centcomservice
   requirements:

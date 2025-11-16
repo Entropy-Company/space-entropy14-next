@@ -36,7 +36,7 @@
   name: job-name-centcomoff
   description: job-description-centcomoff
   playTimeTracker: JobCentralCommandOfficial
-  setPreference: true
+  setPreference: false
   startingGear: CentcomGear
   icon: "JobIconCentCommOfficial" # Vortex-PlayableCentComm
   supervisors: job-supervisors-centcom # Goobstation

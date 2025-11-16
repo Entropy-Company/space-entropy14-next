@@ -7,5 +7,5 @@
   - CentralCommandOfficial
   - CentralCommandOperator
   - CentCommServiceWorker
-  editorHidden: false
+  editorHidden: true
   weight: 120
