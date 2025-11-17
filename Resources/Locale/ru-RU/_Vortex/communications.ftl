@@ -1,0 +1,12 @@
+centcomm-console-title = Консоль связи станций
+centcomm-console-call-shuttle = Вызвать Эвакуационный Шаттл
+centcomm-console-recall-shuttle = Отозвать Эвакуационный Шаттл
+centcomm-console-view-manifest = Просмотреть Манифест Станции
+centcomm-console-arrival-time = Время прибытия (минуты):
+centcomm-console-arrival-time-invalid = Мин. значение 5, макс. 30
+centcomm-console-manifest-not-implemented = Просмотр манифеста пока не реализован
+centcomm-console-shuttle-arrives-in = Шаттл прибывает через: { $time }
+centcomm-console-shuttle-has-arrived = Шаттл прибыл!
+centcomm-console-call-shuttle-tooltip = Вызвать эвакуационный шаттл с указанным временем прибытия
+centcomm-console-recall-shuttle-tooltip = Отозвать эвакуационный шаттл
+centcomm-console-view-manifest-tooltip = Просмотреть манифест выбранной станции

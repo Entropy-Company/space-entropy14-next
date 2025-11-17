@@ -1,0 +1,28 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+               xmlns:ui="clr-namespace:Content.Client.CrewManifest.UI"
+               xmlns:cc="clr-namespace:Content.Client.Administration.UI.CustomControls;assembly=Content.Client"
+               Title="{Loc 'crew-manifest-window-title'}"
+               SetSize="820 560">
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+        <!-- Left Panel: Station Selection -->
+        <ScrollContainer VerticalExpand="True" MinWidth="310" MaxWidth="310" HorizontalExpand="False">
+            <BoxContainer Name="StationList" Orientation="Vertical" />
+        </ScrollContainer>
+
+        <!-- Separator -->
+        <cc:VSeparator MinSize="4 0" VerticalExpand="True" HorizontalExpand="False" Margin="3 0 3 0" />
+
+        <!-- Right Panel: Manifest -->
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+            <controls:StripeBack Name="StationNameContainer">
+                <PanelContainer>
+                    <Label Name="StationNameLabel" Align="Center" />
+                </PanelContainer>
+            </controls:StripeBack>
+            <ScrollContainer VerticalExpand="True" HorizontalExpand="True">
+                <ui:CrewManifestListing Name="ManifestListing" Orientation="Vertical" HorizontalExpand="True" />
+            </ScrollContainer>
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

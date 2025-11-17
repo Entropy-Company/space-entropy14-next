@@ -1,0 +1,14 @@
+- type: entity
+  parent: [ EncryptionKey, BaseCentcommContraband ]
+  id: EncryptionKeyDSO
+  name: department of the special operations encryption key
+  description: An encryption key used by captain's bosses.
+  components:
+  - type: EncryptionKey
+    channels:
+    - DSO
+    defaultChannel: DSO
+  - type: Sprite
+    layers:
+    - state: crypt_blue
+    - state: nano_label

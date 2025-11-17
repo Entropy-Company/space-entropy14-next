@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 11/15/2025 21:17:16
-  entityCount: 10684
+  time: 11/17/2025 03:51:19
+  entityCount: 10696
 maps: []
 grids:
 - 1
@@ -12560,20 +12560,6 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 28.5,69.5
-      parent: 1
-- proto: BaseComputer
-  entities:
-  - uid: 359
-    components:
-    - type: Transform
-      pos: 23.5,101.5
-      parent: 1
-- proto: BaseComputerAiAccess
-  entities:
-  - uid: 360
-    components:
-    - type: Transform
-      pos: 91.5,70.5
       parent: 1
 - proto: Beaker
   entities:
@@ -26799,6 +26785,13 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 18.321312,61.585743
       parent: 1
+- proto: CentcommCommsComputerCircuitboard
+  entities:
+  - uid: 8461
+    components:
+    - type: Transform
+      pos: 92.57809,58.5747
+      parent: 1
 - proto: CentcommComputerComms
   entities:
   - uid: 2971
@@ -26812,6 +26805,18 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 73.5,85.5
+      parent: 1
+- proto: CentcommConsole
+  entities:
+  - uid: 359
+    components:
+    - type: Transform
+      pos: 23.5,101.5
+      parent: 1
+  - uid: 360
+    components:
+    - type: Transform
+      pos: 91.5,70.5
       parent: 1
 - proto: Chair
   entities:
@@ -35942,6 +35947,68 @@ entities:
       parent: 4364
     - type: Physics
       canCollide: False
+- proto: EncryptionKeyDSO
+  entities:
+  - uid: 7111
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 7112
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 7276
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 7425
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 7553
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 7640
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 8138
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 8139
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 8140
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
+  - uid: 8246
+    components:
+    - type: Transform
+      parent: 4416
+    - type: Physics
+      canCollide: False
 - proto: ERTSpawnerCBURN
   entities:
   - uid: 4369
@@ -36057,6 +36124,13 @@ entities:
       parent: 1
     - type: FaxMachine
       name: Офицер СпецОпераций
+  - uid: 8626
+    components:
+    - type: Transform
+      pos: 74.5,87.5
+      parent: 1
+    - type: FaxMachine
+      name: Офис НШЦК
 - proto: FaxMachineCentcom
   entities:
   - uid: 4387
@@ -36221,6 +36295,54 @@ entities:
     - type: Transform
       pos: 21.5,101.5
       parent: 1
+    - type: Storage
+      storedItems:
+        7111:
+          position: 0,0
+          _rotation: South
+        7112:
+          position: 1,0
+          _rotation: South
+        7276:
+          position: 2,0
+          _rotation: South
+        7425:
+          position: 3,0
+          _rotation: South
+        7553:
+          position: 4,0
+          _rotation: South
+        7640:
+          position: 4,2
+          _rotation: South
+        8138:
+          position: 3,2
+          _rotation: South
+        8139:
+          position: 2,2
+          _rotation: South
+        8140:
+          position: 0,2
+          _rotation: South
+        8246:
+          position: 1,2
+          _rotation: South
+    - type: ContainerContainer
+      containers:
+        storagebase: !type:Container
+          showEnts: False
+          occludes: True
+          ents:
+          - 7111
+          - 7112
+          - 7276
+          - 7425
+          - 7553
+          - 8246
+          - 8140
+          - 8139
+          - 8138
+          - 7640
 - proto: filingCabinetRandom
   entities:
   - uid: 4417
@@ -68673,20 +68795,6 @@ entities:
     - type: Transform
       pos: 23.5,97.5
       parent: 1
-- proto: SpawnPointLatejoin
-  entities:
-  - uid: 7111
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 41.5,70.5
-      parent: 1
-  - uid: 7112
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 48.5,65.5
-      parent: 1
 - proto: SpeedLoaderMagnumIncendiary
   entities:
   - uid: 8469
@@ -80416,7 +80524,7 @@ entities:
       pos: 81.5,84.5
       parent: 1
     - type: WarpPoint
-      location: ЦентКом - НШЦК
+      location: ЦентКом - Каюта НШЦК
   - uid: 7110
     components:
     - type: Transform
@@ -80424,6 +80532,20 @@ entities:
       parent: 1
     - type: WarpPoint
       location: ЦентКом - ПЦК
+  - uid: 8955
+    components:
+    - type: Transform
+      pos: 68.5,81.5
+      parent: 1
+    - type: WarpPoint
+      location: ЦентКом - Комната ОСО
+  - uid: 9868
+    components:
+    - type: Transform
+      pos: 72.5,81.5
+      parent: 1
+    - type: WarpPoint
+      location: ЦентКом - Комната ГБЦК
 - proto: WaterCooler
   entities:
   - uid: 10328

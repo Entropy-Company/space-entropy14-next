@@ -1,0 +1,10 @@
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: CentcommComputerCircuitboard
+  name: station communication console board
+  description: A computer printed circuit board for a station communication console.
+  components:
+    - type: Sprite
+      state: cpu_centcomm
+    - type: ComputerBoard
+      prototype: CentcommConsole

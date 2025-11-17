@@ -1,0 +1,35 @@
+- type: entity
+  parent: BaseComputer
+  id: CentcommConsole
+  name: station communication console
+  description: Allows you to send evacuation shuttles to various stations in the sector, as well as view the manifest of these stations.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: id_key_off
+    - map: ["computerLayerScreen"]
+      state: comm_logs
+    - map: ["computerLayerKeys"]
+      state: id_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: AccessReader
+    access: [["CentralCommand"]]
+  - type: CentcommConsole
+  - type: ActivatableUI
+    key: enum.CentcommConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.CentcommConsoleUiKey.Key:
+        type: CentcommConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: Computer
+    board: CentcommComputerCircuitboard
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#00FF00"

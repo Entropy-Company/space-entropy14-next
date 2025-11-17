@@ -1,0 +1,61 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'centcomm-console-title'}"
+    MinSize="400 300">
+
+    <!-- Main Container -->
+    <BoxContainer Orientation="Vertical"
+        HorizontalExpand="False"
+        VerticalExpand="True"
+        Margin="6 6 6 5">
+
+        <!-- Shuttle Control Section -->
+        <BoxContainer Orientation="Vertical"
+            VerticalAlignment="Top"
+            SeparationOverride="4"
+            Margin="0 0 0 10">
+
+            <!-- Arrival Time Input -->
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <Label Name="ArrivalTimeLabel" Text="{Loc 'centcomm-console-arrival-time'}" />
+                <LineEdit Name="ArrivalTimeInput"
+                    Text="10"
+                    MinWidth="60"
+                    HorizontalAlignment="Left" />
+            </BoxContainer>
+
+            <!-- Call Shuttle Button -->
+            <Button Name="CallShuttleButton"
+                Access="Public"
+                Text="{Loc 'centcomm-console-call-shuttle'}"
+                ToolTip="{Loc 'centcomm-console-call-shuttle-tooltip'}"
+                StyleClasses="OpenBoth"
+                Disabled="True" />
+
+            <!-- Recall Shuttle Button -->
+            <Button Name="RecallShuttleButton"
+                Access="Public"
+                Text="{Loc 'centcomm-console-recall-shuttle'}"
+                ToolTip="{Loc 'centcomm-console-recall-shuttle-tooltip'}"
+                StyleClasses="OpenBoth"
+                Disabled="True" />
+
+            <!-- Countdown Label -->
+            <RichTextLabel Name="CountdownLabel" />
+        </BoxContainer>
+
+        <!-- Manifest Section -->
+        <BoxContainer Orientation="Vertical"
+            VerticalAlignment="Bottom"
+            SeparationOverride="4">
+
+            <!-- View Manifest Button -->
+            <Button Name="ViewManifestButton"
+                Access="Public"
+                Text="{Loc 'centcomm-console-view-manifest'}"
+                ToolTip="{Loc 'centcomm-console-view-manifest-tooltip'}"
+                StyleClasses="OpenBoth"
+                Disabled="False" />
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>

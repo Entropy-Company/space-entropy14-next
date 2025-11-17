@@ -1,10 +1,19 @@
 - type: department
+  id: LiveCentralCommandHead
+  name: department-CentralCommandHead
+  description: department-CentralCommandHead-description
+  color: "#038d0a"
+  roles:
+  - CentralCommandChief
+  editorHidden: true
+  weight: 130
+
+- type: department
   id: LiveCentralCommand
   name: department-CentralCommand
   description: department-CentralCommand-description
-  color: "#0c344d"
+  color: "#1e7926"
   roles:
-  - CentralCommandChief
   - CentralCommandOfficial
   - CentralCommandOperator
   - CentCommServiceWorker

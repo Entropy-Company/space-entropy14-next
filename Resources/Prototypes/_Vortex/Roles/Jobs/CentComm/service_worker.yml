@@ -22,6 +22,7 @@
   - Hydroponics
   - Janitor
   - Cargo
+  - Medical
   special:
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant ]

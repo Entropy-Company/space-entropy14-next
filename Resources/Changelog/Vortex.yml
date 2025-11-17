@@ -267,3 +267,15 @@ Entries:
     type: Add
   id: 31
   time: '2025-11-15T11:00:00.000Z'
+- author: Neyran
+  changes:
+  - message: "Добавлен факс НШЦК в его кабинет"
+    type: Tweak
+  - message: "Изменен цвет частоты ЦК"
+    type: Tweak
+  - message: "Добавлена консоль связи станций."
+    type: Add
+  - message: "Частота ДСО и ключ шифрования для неё."
+    type: Add
+  id: 32
+  time: '2025-11-17T06:30:00.000Z'

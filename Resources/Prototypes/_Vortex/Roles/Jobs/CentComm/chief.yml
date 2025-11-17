@@ -40,7 +40,7 @@
     outerClothing: ClothingOuterArmorCentcomCarapace
     neck: ClothingNeckCloakCentcom
     id: CentcomChiefPDA
-    ears: ClothingHeadsetAltCentCom
+    ears: ClothingHeadsetAltCentComChief
     pocket1: BoxFolderCentCom 
     pocket2: WeaponPulsePistol
   storage:
