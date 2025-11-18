@@ -15,13 +15,15 @@ namespace Content.Shared.Administration
 {
     public enum AdminAnnounceType
     {
-        Station,
+        AllStations, // Vortex-PlayableCentCom
+        SpecificStation, // Vortex-PlayableCentCom
         Server,
     }
 
     [Serializable, NetSerializable]
     public sealed class AdminAnnounceEuiState : EuiStateBase
     {
+        public Dictionary<NetEntity, string> Stations = new(); // Vortex-PlayableCentCom
     }
 
     public static class AdminAnnounceEuiMsg
@@ -33,6 +35,7 @@ namespace Content.Shared.Administration
             public string Announcer = default!;
             public string Announcement = default!;
             public AdminAnnounceType AnnounceType;
+            public NetEntity? SelectedStation; // Vortex-PlayableCentCom
             public string Voice = default!; // CorvaxGoob-TTS
             public string? ColorHex;
             public string? SoundPath;

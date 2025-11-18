@@ -14,6 +14,8 @@ namespace Content.Shared._Vortex.Communications
         public readonly bool CanCallShuttle;
         public readonly bool CanRecallShuttle;
         public readonly bool CanViewManifest;
+        public readonly bool CanCreateFTLDisk;
+        public readonly bool CanToggleBSSCorridor;
         public readonly TimeSpan? ExpectedCountdownEnd;
         public readonly bool CountdownStarted;
         public readonly Dictionary<NetEntity, string> StationNames;
@@ -21,11 +23,13 @@ namespace Content.Shared._Vortex.Communications
         public readonly string SelectedStationName;
         public readonly CrewManifestEntries? ManifestEntries;
 
-        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null)
+        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, bool canCreateFTLDisk, bool canToggleBSSCorridor, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null)
         {
             CanCallShuttle = canCallShuttle;
             CanRecallShuttle = canRecallShuttle;
             CanViewManifest = canViewManifest;
+            CanCreateFTLDisk = canCreateFTLDisk;
+            CanToggleBSSCorridor = canToggleBSSCorridor;
             ExpectedCountdownEnd = expectedCountdownEnd;
             CountdownStarted = expectedCountdownEnd != null;
             StationNames = stationNames ?? new();
@@ -65,6 +69,27 @@ namespace Content.Shared._Vortex.Communications
         {
             Station = station;
         }
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class CentcommConsoleCreateFTLDiskMessage : BoundUserInterfaceMessage
+    {
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class CentcommConsoleToggleBSSCorridorMessage : BoundUserInterfaceMessage
+    {
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class CentcommConsoleUpdateBSSButtonMessage : BoundUserInterfaceMessage
+    {
+        public bool IsOpen;
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class CentcommConsoleRequestBSSStateMessage : BoundUserInterfaceMessage
+    {
     }
 
     [Serializable, NetSerializable]

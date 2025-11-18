@@ -25,6 +25,16 @@ namespace Content.Client.Administration.UI
             _window.OnClose += () => SendMessage(new CloseEuiMessage());
             _window.AnnounceButton.OnPressed += AnnounceButtonOnOnPressed;
         }
+        // Vortex-PlayableCentCom-Start
+        public override void HandleState(EuiStateBase state)
+        {
+            base.HandleState(state);
+            if (state is AdminAnnounceEuiState announceState)
+            {
+                _window.SetStations(announceState.Stations);
+            }
+        }
+        // Vortex-PlayableCentCom-End
 
         private void AnnounceButtonOnOnPressed(BaseButton.ButtonEventArgs obj)
         {
@@ -34,12 +44,22 @@ namespace Content.Client.Administration.UI
             if (_window.VoiceButton.ItemCount > 0)
                 voice = (string) (_window.VoiceButton.GetItemMetadata(_window.VoiceButton.SelectedId) ?? voice);
             // CorvaxGoob-TTS-End
+            // Vortex-PlayableCentCom-Start
+            NetEntity? selectedStation = null;
+            if (_window.StationSelector.Visible && _window.StationSelector.ItemCount > 0 && _window.StationSelector.SelectedId >= 0)
+            {
+                selectedStation = (NetEntity?) _window.StationSelector.GetItemMetadata(_window.StationSelector.SelectedId);
+            }
+            // Vortex-PlayableCentCom-End
 
             SendMessage(new AdminAnnounceEuiMsg.DoAnnounce
             {
                 Announcement = Rope.Collapse(_window.Announcement.TextRope),
                 Announcer =  _window.Announcer.Text,
-                AnnounceType =  (AdminAnnounceType) (_window.AnnounceMethod.SelectedMetadata ?? AdminAnnounceType.Station),
+                // Vortex-PlayableCentCom-Edit-Start
+                AnnounceType =  (AdminAnnounceType) (_window.AnnounceMethod.SelectedMetadata ?? AdminAnnounceType.AllStations),
+                SelectedStation = selectedStation,
+                // Vortex-PlayableCentCom-Edit-End
                 Voice = voice, // CorvaxGoob-TTS
                 CloseAfter = !_window.KeepWindowOpen.Pressed,
                 ColorHex = _window.ColorInput.Text,

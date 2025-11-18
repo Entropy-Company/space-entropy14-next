@@ -999,6 +999,7 @@
     color: "#1d8bad"
     canShuttle: false
     global: true
+    delay: 10
   - type: Computer
     board: CentcommCommsComputerCircuitboard
   - type: PointLight

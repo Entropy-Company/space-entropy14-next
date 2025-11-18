@@ -10,5 +10,11 @@ namespace Content.Server._Vortex.Communications
 
         [DataField]
         public EntityUid? SelectedStation;
+
+        [DataField]
+        public TimeSpan FTLCooldownEndTime;
+
+        [DataField]
+        public TimeSpan BSSCooldownEndTime;
     }
 }

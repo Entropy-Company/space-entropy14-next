@@ -16,9 +16,6 @@ namespace Content.Client._Vortex.Communications.UI
     {
         [Dependency] private readonly IGameTiming _timing = default!;
 
-        public bool CanCallShuttle { get; set; }
-        public bool CanRecallShuttle { get; set; }
-        public bool CanViewManifest { get; set; }
         public bool CountdownStarted { get; set; }
         public TimeSpan? CountdownEnd { get; set; }
 
@@ -28,6 +25,8 @@ namespace Content.Client._Vortex.Communications.UI
         public event Action<float>? OnCallShuttle;
         public event Action? OnRecallShuttle;
         public event Action? OnViewManifest;
+        public event Action? OnCreateFTLDisk;
+        public event Action? OnToggleBSSCorridor;
 
         public CentcommConsoleMenu()
         {
@@ -39,6 +38,8 @@ namespace Content.Client._Vortex.Communications.UI
             CallShuttleButton.OnPressed += _ => CallShuttlePressed();
             RecallShuttleButton.OnPressed += _ => RecallShuttlePressed();
             ViewManifestButton.OnPressed += _ => ViewManifestPressed();
+            CreateFTLDiskButton.OnPressed += _ => CreateFTLDiskPressed();
+            ToggleBSSCorridorButton.OnPressed += _ => ToggleBSSCorridorPressed();
         }
 
         private void CallShuttlePressed()
@@ -64,6 +65,21 @@ namespace Content.Client._Vortex.Communications.UI
         private void ViewManifestPressed()
         {
             OnViewManifest?.Invoke();
+        }
+
+        private void CreateFTLDiskPressed()
+        {
+            OnCreateFTLDisk?.Invoke();
+        }
+
+        private void ToggleBSSCorridorPressed()
+        {
+            OnToggleBSSCorridor?.Invoke();
+        }
+
+        public void UpdateBSSButton(bool isOpen)
+        {
+            ToggleBSSCorridorButton.Text = Loc.GetString(isOpen ? "centcomm-console-bss-corridor-open" : "centcomm-console-bss-corridor-closed");
         }
 
         public void UpdateCountdown()

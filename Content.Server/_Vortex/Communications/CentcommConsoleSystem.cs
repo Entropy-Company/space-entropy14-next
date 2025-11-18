@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server.Access.Systems;
+using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
 using Content.Server.CrewManifest;
 using Content.Server.Popups;
@@ -14,8 +15,14 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.CrewManifest;
 using Content.Shared.Database;
+using Content.Shared.Labels.EntitySystems;
 using Content.Shared.Popups;
+using Content.Shared.Shuttles.Components;
+using Content.Shared.Storage;
+using Content.Shared.Storage.EntitySystems;
+using Robust.Shared.Map.Components;
 using Robust.Server.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 
@@ -32,6 +39,10 @@ namespace Content.Server._Vortex.Communications
         [Dependency] private readonly StationSystem _stationSystem = default!;
         [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
+        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+        [Dependency] private readonly LabelSystem _labelSystem = default!;
+        [Dependency] private readonly SharedStorageSystem _storageSystem = default!;
 
         private const float UIUpdateInterval = 5.0f;
 
@@ -40,6 +51,9 @@ namespace Content.Server._Vortex.Communications
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleCallShuttleMessage>(OnCallShuttleMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleRecallShuttleMessage>(OnRecallShuttleMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleSelectStationMessage>(OnSelectStationMessage);
+            SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleCreateFTLDiskMessage>(OnCreateFTLDiskMessage);
+            SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleToggleBSSCorridorMessage>(OnToggleBSSCorridorMessage);
+            SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleRequestBSSStateMessage>(OnRequestBSSStateMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, MapInitEvent>(OnMapInit);
         }
 
@@ -62,9 +76,6 @@ namespace Content.Server._Vortex.Communications
             base.Update(frameTime);
         }
 
-
-
-
         private void OnMapInit(EntityUid uid, CentcommConsoleComponent component, MapInitEvent args)
         {
             UpdateUI(uid, component);
@@ -81,6 +92,8 @@ namespace Content.Server._Vortex.Communications
             var canCall = CanCallShuttle(uid);
             var canRecall = CanRecallShuttle(uid);
             var canViewManifest = true; // Manifest enabled
+            var canCreateFTLDisk = _timing.CurTime >= component.FTLCooldownEndTime;
+            var canToggleBSSCorridor = _timing.CurTime >= component.BSSCooldownEndTime;
 
             var stationNamesList = _stationSystem.GetStationNames()
                 .Where(s => CompOrNull<StationManifestVisibilityComponent>(EntityManager.GetEntity(s.Entity))?.VisibleInCentcommManifest ?? true)
@@ -110,6 +123,8 @@ namespace Content.Server._Vortex.Communications
                     canCall,
                     canRecall,
                     canViewManifest,
+                    canCreateFTLDisk,
+                    canToggleBSSCorridor,
                     _roundEndSystem.ExpectedCountdownEnd,
                     stationNames,
                     component.SelectedStation != null ? EntityManager.GetNetEntity(component.SelectedStation.Value) : null,
@@ -187,6 +202,115 @@ namespace Content.Server._Vortex.Communications
             UpdateUI(uid, component);
         }
 
+        private void OnCreateFTLDiskMessage(EntityUid uid, CentcommConsoleComponent comp, CentcommConsoleCreateFTLDiskMessage message)
+        {
+            if (message.Actor is not { Valid: true } mob)
+                return;
+
+            if (!CanUse(mob, uid))
+            {
+                _popupSystem.PopupEntity(Loc.GetString("comms-console-permission-denied"), uid, message.Actor);
+                return;
+            }
+
+            // Cooldown check
+            if (_timing.CurTime < comp.FTLCooldownEndTime)
+            {
+                _popupSystem.PopupEntity("Действие недоступно. Подождите 5 секунд.", uid, message.Actor);
+                return;
+            }
+
+            // Find CentCom station
+            List<EntityUid> stations = _stationSystem.GetStations();
+            EntityUid? centComStation = null;
+            foreach (EntityUid station in stations)
+            {
+                if (TryComp<MetaDataComponent>(station, out var meta) && meta.EntityPrototype?.ID == "StandardGameCentcommStation")
+                {
+                    centComStation = station;
+                    break;
+                }
+            }
+
+            if (centComStation == null)
+            {
+                _popupSystem.PopupEntity("CentCom station not found.", uid, message.Actor);
+                return;
+            }
+
+            var stationData = Comp<StationDataComponent>(centComStation.Value);
+            if (stationData.Grids.Count == 0)
+            {
+                _popupSystem.PopupEntity("CentCom station has no grids.", uid, message.Actor);
+                return;
+            }
+            var mapId = Transform(stationData.Grids.First()).MapID;
+
+            // Find the map entity
+            if (!_mapSystem.TryGetMap(mapId, out var mapUid))
+            {
+                _popupSystem.PopupEntity("CentCom map not found.", uid, message.Actor);
+                return;
+            }
+
+            var dest = mapUid.Value;
+
+            // Check if the map is initialized
+            if (!TryComp<MapComponent>(dest, out var mapComp) || !mapComp.MapInitialized)
+            {
+                _popupSystem.PopupEntity("CentCom map not initialized.", uid, message.Actor);
+                return;
+            }
+
+            // Ensure the destination has FTLDestinationComponent
+            if (!TryComp<FTLDestinationComponent>(dest, out var ftlDestComp))
+            {
+                var ftlDest = EntityManager.AddComponent<FTLDestinationComponent>(dest);
+                ftlDest.RequireCoordinateDisk = true;
+
+                if (HasComp<MapGridComponent>(dest))
+                {
+                    ftlDest.BeaconsOnly = true;
+                }
+            }
+
+            // Spawn the disk at the console
+            var coords = Transform(uid).Coordinates;
+
+            // create the FTL disk
+            EntityUid cdUid = Spawn("CoordinatesDisk", coords);
+            var cd = EntityManager.EnsureComponent<ShuttleDestinationCoordinatesComponent>(cdUid);
+            cd.Destination = dest;
+            Dirty(cdUid, cd);
+
+            // create disk case
+            EntityUid cdCaseUid = Spawn("DiskCase", coords);
+
+            // apply labels
+            if (TryComp<MetaDataComponent>(dest, out var destMeta) && destMeta != null && destMeta.EntityName != null)
+            {
+                _labelSystem.Label(cdUid, destMeta.EntityName);
+                _labelSystem.Label(cdCaseUid, destMeta.EntityName);
+            }
+
+            // if the case has a storage, try to place the disk in there
+            if (TryComp<StorageComponent>(cdCaseUid, out var storage) && _storageSystem.Insert(cdCaseUid, cdUid, out _, storageComp: storage, playSound: false))
+            {
+                // Disk inserted into case successfully
+            }
+            else
+            {
+                // Something went wrong, delete the case and just spawn the disk
+                EntityManager.DeleteEntity(cdCaseUid);
+            }
+
+            _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{EntityManager.ToPrettyString(message.Actor):player} created an FTL disk to CentCom.");
+
+            // Update cooldown
+            comp.FTLCooldownEndTime = _timing.CurTime + TimeSpan.FromSeconds(5);
+
+            UpdateUI(uid, comp);
+        }
 
         private bool CanUse(EntityUid user, EntityUid console)
         {
@@ -195,6 +319,101 @@ namespace Content.Server._Vortex.Communications
                 return _accessReaderSystem.IsAllowed(user, console, accessReaderComponent);
             }
             return true;
+        }
+
+        private void OnToggleBSSCorridorMessage(EntityUid uid, CentcommConsoleComponent comp, CentcommConsoleToggleBSSCorridorMessage message)
+        {
+            // Cooldown check
+            if (_timing.CurTime < comp.BSSCooldownEndTime)
+            {
+                _popupSystem.PopupEntity("Действие недоступно. Подождите 5 секунд.", uid, message.Actor);
+                return;
+            }
+
+            // Find CentCom station
+            List<EntityUid> stations = _stationSystem.GetStations();
+            EntityUid? centComStation = null;
+            foreach (EntityUid station in stations)
+            {
+                if (TryComp<MetaDataComponent>(station, out var meta) && meta.EntityPrototype?.ID == "StandardGameCentcommStation")
+                {
+                    centComStation = station;
+                    break;
+                }
+            }
+
+            if (centComStation == null)
+            {
+                _popupSystem.PopupEntity("CentCom station not found.", uid, message.Actor);
+                return;
+            }
+
+            var stationData = Comp<StationDataComponent>(centComStation.Value);
+            if (stationData.Grids.Count == 0)
+            {
+                _popupSystem.PopupEntity("CentCom station has no grids.", uid, message.Actor);
+                return;
+            }
+            var mapId = Transform(stationData.Grids.First()).MapID;
+
+            if (!_mapSystem.TryGetMap(mapId, out var mapUid))
+            {
+                _popupSystem.PopupEntity("CentCom map not found.", uid, message.Actor);
+                return;
+            }
+
+            if (!TryComp<FTLDestinationComponent>(mapUid.Value, out var ftlComp))
+            {
+                _popupSystem.PopupEntity("CentCom map has no FTL destination component.", uid, message.Actor);
+                return;
+            }
+
+            // Toggle RequireCoordinateDisk
+            ftlComp.RequireCoordinateDisk = !ftlComp.RequireCoordinateDisk;
+            Dirty(mapUid.Value, ftlComp);
+
+            // Send update to client
+            _uiSystem.ServerSendUiMessage(uid, CentcommConsoleUiKey.Key, new CentcommConsoleUpdateBSSButtonMessage { IsOpen = !ftlComp.RequireCoordinateDisk }, message.Actor);
+
+            // Popup the status
+            var status = ftlComp.RequireCoordinateDisk ? "Закрыт" : "Открыт";
+            _popupSystem.PopupEntity($"БСС Коридор: {status}", uid, message.Actor);
+
+            // Update cooldown
+            comp.BSSCooldownEndTime = _timing.CurTime + TimeSpan.FromSeconds(5);
+
+            UpdateUI(uid, comp);
+        }
+
+        private void OnRequestBSSStateMessage(EntityUid uid, CentcommConsoleComponent comp, CentcommConsoleRequestBSSStateMessage message)
+        {
+            List<EntityUid> stations = _stationSystem.GetStations();
+            EntityUid? centComStation = null;
+            foreach (EntityUid station in stations)
+            {
+                if (TryComp<MetaDataComponent>(station, out var meta) && meta.EntityPrototype?.ID == "StandardGameCentcommStation")
+                {
+                    centComStation = station;
+                    break;
+                }
+            }
+
+            if (centComStation == null)
+                return;
+
+            var stationData = Comp<StationDataComponent>(centComStation.Value);
+            if (stationData.Grids.Count == 0)
+                return;
+
+            var mapId = Transform(stationData.Grids.First()).MapID;
+
+            if (!_mapSystem.TryGetMap(mapId, out var mapUid))
+                return;
+
+            if (!TryComp<FTLDestinationComponent>(mapUid.Value, out var ftlComp))
+                return;
+
+            _uiSystem.ServerSendUiMessage(uid, CentcommConsoleUiKey.Key, new CentcommConsoleUpdateBSSButtonMessage { IsOpen = !ftlComp.RequireCoordinateDisk }, message.Actor);
         }
     }
 }

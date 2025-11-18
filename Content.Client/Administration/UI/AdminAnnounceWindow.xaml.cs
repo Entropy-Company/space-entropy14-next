@@ -44,12 +44,20 @@ namespace Content.Client.Administration.UI
             IoCManager.InjectDependencies(this);
 
             Announcement.Placeholder = new Rope.Leaf(_localization.GetString("admin-announce-announcement-placeholder"));
-            AnnounceMethod.AddItem(_localization.GetString("admin-announce-type-station"));
-            AnnounceMethod.SetItemMetadata(0, AdminAnnounceType.Station);
+            // Vortex-PlayableCentCom-Edit-Start
+            Announcer.Text = _localization.GetString("admin-announce-announcer-default");
+            SoundInput.Text = "/Audio/_CorvaxGoob/Announcements/centcomm.ogg"; // Default to announce sound
+            AnnounceMethod.AddItem(_localization.GetString("admin-announce-type-all-stations"));
+            AnnounceMethod.SetItemMetadata(0, AdminAnnounceType.AllStations);
+            AnnounceMethod.AddItem(_localization.GetString("admin-announce-type-specific-station"));
+            AnnounceMethod.SetItemMetadata(1, AdminAnnounceType.SpecificStation);
             AnnounceMethod.AddItem(_localization.GetString("admin-announce-type-server"));
-            AnnounceMethod.SetItemMetadata(1, AdminAnnounceType.Server);
+            AnnounceMethod.SetItemMetadata(2, AdminAnnounceType.Server);
             AnnounceMethod.OnItemSelected += AnnounceMethodOnOnItemSelected;
+
+            StationSelector.OnItemSelected += args => StationSelector.SelectId(args.Id);
             Announcement.OnKeyBindUp += AnnouncementOnOnTextChanged;
+            // Vortex-PlayableCentCom-Edit-End
 
             // CorvaxGoob-TTS-Start
             if (_cfgManager.GetCVar(CCCVars.TTSEnabled))
@@ -93,9 +101,24 @@ namespace Content.Client.Administration.UI
         private void AnnounceMethodOnOnItemSelected(OptionButton.ItemSelectedEventArgs args)
         {
             AnnounceMethod.SelectId(args.Id);
-            Announcer.Editable = ((AdminAnnounceType?)args.Button.SelectedMetadata ?? AdminAnnounceType.Station) == AdminAnnounceType.Station;
-            TTSContainer.Visible = _cfgManager.GetCVar(CCCVars.TTSEnabled) && (((AdminAnnounceType?) args.Button.SelectedMetadata ?? AdminAnnounceType.Station) == AdminAnnounceType.Station); // CorvaxGoob-TTS
+            // Vortex-PlayableCentCom-Edit-Start
+            var type = (AdminAnnounceType?)args.Button.SelectedMetadata ?? AdminAnnounceType.AllStations;
+            Announcer.Editable = type == AdminAnnounceType.AllStations || type == AdminAnnounceType.SpecificStation;
+            StationSelector.Visible = type == AdminAnnounceType.SpecificStation;
+            TTSContainer.Visible = _cfgManager.GetCVar(CCCVars.TTSEnabled) && (type == AdminAnnounceType.AllStations || type == AdminAnnounceType.SpecificStation); // CorvaxGoob-TTS
         }
+
+        public void SetStations(Dictionary<NetEntity, string> stations)
+        {
+            StationSelector.Clear();
+            foreach (var (netEntity, name) in stations)
+            {
+                StationSelector.AddItem(name);
+                StationSelector.SetItemMetadata(StationSelector.ItemCount - 1, netEntity);
+            }
+            // No default selection
+        }
+        // Vortex-PlayableCentCom-Edit-End
 
         private void OnSoundInputTextChanged(LineEdit.LineEditEventArgs args)
         {

@@ -56,6 +56,23 @@
                 ToolTip="{Loc 'centcomm-console-view-manifest-tooltip'}"
                 StyleClasses="OpenBoth"
                 Disabled="False" />
+
+           <!-- FTL Section -->
+           <!-- Create FTL Disk Button -->
+           <Button Name="CreateFTLDiskButton"
+               Access="Public"
+               Text="{Loc 'centcomm-console-create-ftl-disk'}"
+               ToolTip="{Loc 'centcomm-console-create-ftl-disk-tooltip'}"
+               StyleClasses="OpenBoth"
+               Disabled="False" />
+
+           <!-- Toggle BSS Corridor Button -->
+           <Button Name="ToggleBSSCorridorButton"
+               Access="Public"
+               Text="{Loc 'centcomm-console-toggle-bss-corridor'}"
+               ToolTip="{Loc 'centcomm-console-toggle-bss-corridor-tooltip'}"
+               StyleClasses="OpenBoth"
+               Disabled="False" />
         </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

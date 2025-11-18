@@ -28,6 +28,11 @@ namespace Content.Client._Vortex.Communications.UI
             _menu.OnCallShuttle += CallShuttle;
             _menu.OnRecallShuttle += RecallShuttle;
             _menu.OnViewManifest += ViewManifest;
+            _menu.OnCreateFTLDisk += CreateFTLDisk;
+            _menu.OnToggleBSSCorridor += ToggleBSSCorridor;
+
+            // Request initial BSS state
+            SendMessage(new CentcommConsoleRequestBSSStateMessage());
         }
 
         private void CallShuttle(float arrivalTimeMinutes)
@@ -48,6 +53,16 @@ namespace Content.Client._Vortex.Communications.UI
             _manifestWindow.OpenCentered();
         }
 
+        private void CreateFTLDisk()
+        {
+            SendMessage(new CentcommConsoleCreateFTLDiskMessage());
+        }
+
+        private void ToggleBSSCorridor()
+        {
+            SendMessage(new CentcommConsoleToggleBSSCorridorMessage());
+        }
+
         protected override void UpdateState(BoundUserInterfaceState state)
         {
             base.UpdateState(state);
@@ -62,21 +77,30 @@ namespace Content.Client._Vortex.Communications.UI
 
             if (_menu != null)
             {
-                _menu.CanCallShuttle = centcommState.CanCallShuttle;
-                _menu.CanRecallShuttle = centcommState.CanRecallShuttle;
-                _menu.CanViewManifest = centcommState.CanViewManifest;
                 _menu.CountdownStarted = centcommState.CountdownStarted;
                 _menu.CountdownEnd = centcommState.ExpectedCountdownEnd;
 
                 _menu.UpdateCountdown();
-                _menu.CallShuttleButton.Disabled = !_menu.CanCallShuttle;
-                _menu.RecallShuttleButton.Disabled = !_menu.CanRecallShuttle;
-                _menu.ViewManifestButton.Disabled = !_menu.CanViewManifest;
+                _menu.CallShuttleButton.Disabled = !centcommState.CanCallShuttle;
+                _menu.RecallShuttleButton.Disabled = !centcommState.CanRecallShuttle;
+                _menu.ViewManifestButton.Disabled = !centcommState.CanViewManifest;
+                _menu.CreateFTLDiskButton.Disabled = !centcommState.CanCreateFTLDisk;
+                _menu.ToggleBSSCorridorButton.Disabled = !centcommState.CanToggleBSSCorridor;
             }
 
             if (_manifestWindow != null)
             {
                 _manifestWindow.Populate(_stationNames, _selectedStation, _selectedStationName, _manifestEntries);
+            }
+        }
+
+        protected override void ReceiveMessage(BoundUserInterfaceMessage message)
+        {
+            base.ReceiveMessage(message);
+
+            if (message is CentcommConsoleUpdateBSSButtonMessage updateMsg)
+            {
+                _menu?.UpdateBSSButton(updateMsg.IsOpen);
             }
         }
     }

@@ -28,8 +28,13 @@ SPDX-License-Identifier: MIT
             <OptionButton Name="AnnounceMethod" Access="Public" HorizontalExpand="True" SizeFlagsStretchRatio="2"/>
         </BoxContainer>
         <TextEdit Name="Announcement" Access="Public" VerticalExpand="True" MinHeight="100" />
+        <!-- Vortex-PlayableCentCom-Start -->
+        <OptionButton Name="StationSelector" Access="Public" Visible="False" HorizontalExpand="True" /> 
+        <!-- Vortex-PlayableCentCom-End -->
+        <!-- Vortex-AdminTweak-Start -->
         <LineEdit Name="ColorInput" Access="Public" PlaceHolder="{Loc admin-announce-color-placeholder}" HorizontalExpand="True" />
         <LineEdit Name="SoundInput" Access="Public" PlaceHolder="{Loc admin-announce-sound-placeholder}" HorizontalExpand="True" />
+        <!-- Vortex-AdminTweak-End -->
 
         <GridContainer Rows="1">
             <CheckBox Name="KeepWindowOpen" Access="Public" Text="{Loc 'admin-announce-keep-open'}" />

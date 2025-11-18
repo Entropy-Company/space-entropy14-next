@@ -518,8 +518,6 @@ public sealed partial class ChatSystem : SharedChatSystem
             {
                 if (_announcer.TryGetAnnouncerToday(out var announcerPrototype) && announcerPrototype.CentcomAnnouncementSound is not null)
                     announcementSound = announcerPrototype.CentcomAnnouncementSound;
-                else
-                    announcementSound = new SoundPathSpecifier(CentComAnnouncementSound);
             }
             // CorvaxGoob-CustomAnnouncers-End
 

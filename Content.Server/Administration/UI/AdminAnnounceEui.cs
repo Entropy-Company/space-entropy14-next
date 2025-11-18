@@ -17,6 +17,7 @@ using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
 using Content.Server.EUI;
+using Content.Server.Station.Systems; // Vortex-PlayableCentCom
 using Content.Shared.Administration;
 using Content.Shared.Chat;
 using Content.Shared.Eui;
@@ -30,6 +31,7 @@ namespace Content.Server.Administration.UI
     {
         [Dependency] private readonly IAdminManager _adminManager = default!;
         [Dependency] private readonly IChatManager _chatManager = default!;
+        private StationSystem _stationSystem = default!; // Vortex-PlayableCentCom
         private readonly TTSSystem _tts; // CorvaxGoob-TTS
         private readonly ChatSystem _chatSystem;
         [Dependency] private readonly IResourceManager _resourceManager = default!;
@@ -39,6 +41,7 @@ namespace Content.Server.Administration.UI
             IoCManager.InjectDependencies(this);
             _chatSystem = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<ChatSystem>();
             _tts = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<TTSSystem>()!; // CorvaxGoob-TTS
+            _stationSystem = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<StationSystem>(); // Vortex-PlayableCentCom
         }
 
         public override void Opened()
@@ -48,7 +51,14 @@ namespace Content.Server.Administration.UI
 
         public override EuiStateBase GetNewState()
         {
-            return new AdminAnnounceEuiState();
+            // Vortex-PlayableCentCom-Edit-Start
+            var state = new AdminAnnounceEuiState();
+            foreach (var (name, netEntity) in _stationSystem.GetStationNames())
+            {
+                state.Stations[netEntity] = name;
+            }
+            return state;
+            // Vortex-PlayableCentCom-Edit-End
         }
 
         public override void HandleMessage(EuiMessageBase msg)
@@ -69,7 +79,7 @@ namespace Content.Server.Administration.UI
                     {
                         try { color = Color.FromHex(doAnnounce.ColorHex); } catch { color = Color.Gold; }
                     }
-                    var sound = new SoundPathSpecifier("/Audio/Corvax/Announcements/centcomm.ogg");
+                    var sound = new SoundPathSpecifier("/Audio/_CorvaxGoob/Announcements/announce.ogg"); // Vortex-PlayableCentCom-Edit
                     if (!string.IsNullOrWhiteSpace(doAnnounce.SoundPath))
                         sound = new SoundPathSpecifier(doAnnounce.SoundPath.Trim());
 
@@ -78,12 +88,22 @@ namespace Content.Server.Administration.UI
                         case AdminAnnounceType.Server:
                             _chatManager.DispatchServerAnnouncement(doAnnounce.Announcement);
                             break;
-                        // TODO: Per-station announcement support
-                        case AdminAnnounceType.Station:
+                        // Vortex-PlayableCentCom-Start
+                        case AdminAnnounceType.AllStations:
                             _chatSystem.DispatchGlobalAnnouncement(doAnnounce.Announcement, doAnnounce.Announcer, true, sound, color);
                             _tts.SendTTSAdminAnnouncement(doAnnounce.Announcement, doAnnounce.Voice); // CorvaxGoob-TTS
                             break;
+                        case AdminAnnounceType.SpecificStation:
+                            if (doAnnounce.SelectedStation.HasValue)
+                            {
+                                var entityManager = IoCManager.Resolve<IEntityManager>();
+                                var stationUid = entityManager.GetEntity(doAnnounce.SelectedStation.Value);
+                                _chatSystem.DispatchStationAnnouncement(stationUid, doAnnounce.Announcement, doAnnounce.Announcer, true, sound, color);
+                                _tts.SendTTSAdminAnnouncement(doAnnounce.Announcement, doAnnounce.Voice); // CorvaxGoob-TTS
+                            }
+                            break;
                     }
+                    // Vortex-PlayableCentCom-End
 
                     StateDirty();
 
