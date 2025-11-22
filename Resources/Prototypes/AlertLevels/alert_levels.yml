@@ -144,6 +144,7 @@
     delta:
       announcement: alert-level-delta-announcement
       selectable: false
+      centcommSelectable: false # Vortex-PlayableCentcomm
       sound:
         path: /Audio/_CorvaxGoob/Misc/delta.ogg # CorvaxGoob-Announcements #base:/Audio/Misc/delta.ogg
         params:
@@ -159,6 +160,7 @@
     epsilon:
       announcement: alert-level-epsilon-announcement
       selectable: false
+      centcommSelectable: false # Vortex-PlayableCentcomm
       sound:
         path: /Audio/Misc/epsilon.ogg
         params:
@@ -181,6 +183,7 @@
     octarine: # DeltaV - Cosmic Cult
       announcement: alert-level-octarine-announcement
       selectable: false
+      centcommSelectable: false # Vortex-PlayableCentcomm
       sound: /Audio/Announcements/Alerts/code_octarine.ogg
       disableSelection: true
       color: CadetBlue

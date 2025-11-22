@@ -60,6 +60,15 @@ public sealed partial class AlertLevelDetail
     /// </summary>
     [DataField("selectable")] public bool Selectable { get; private set; } = true;
 
+
+    // Vortex added
+    /// <summary>
+    /// Whether this alert level is selectable from Centcomm console.
+    /// If false, Centcomm cannot select this alert level even if selectable is true.
+    /// </summary>
+    [DataField("centcommSelectable")] public bool CentcommSelectable { get; private set; } = true;
+    // Vortex end
+
     /// <summary>
     /// If this alert level disables user selection while it is active. Beware -
     /// setting this while something is selectable will disable selection permanently!

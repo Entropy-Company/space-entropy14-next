@@ -2,7 +2,7 @@
   id: CorvaxCentComm
   isGrid: true
   mapName: 'Центральное командование'
-  mapPath: /Maps/_CorvaxGoob/Stations/CentComm/corvax_centcomm.yml
+  mapPath: /Maps/_Vortex/Stations/CentComm/vortex_centcomm.yml
   minPlayers: 100
   stations:
     centcomm:

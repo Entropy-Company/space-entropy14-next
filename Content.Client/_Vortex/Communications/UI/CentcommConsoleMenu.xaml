@@ -4,75 +4,124 @@
     MinSize="400 300">
 
     <!-- Main Container -->
-    <BoxContainer Orientation="Vertical"
-        HorizontalExpand="False"
-        VerticalExpand="True"
-        Margin="6 6 6 5">
+    <TabContainer Name="MainTabContainer" VerticalExpand="True" Margin="6 6 6 5">
 
-        <!-- Shuttle Control Section -->
-        <BoxContainer Orientation="Vertical"
-            VerticalAlignment="Top"
-            SeparationOverride="4"
-            Margin="0 0 0 10">
+        <!-- Communication Tab -->
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" Margin="15">
+            <Label Text="{Loc 'centcomm-console-communication-tab'}" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
 
-            <!-- Arrival Time Input -->
-            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
-                <Label Name="ArrivalTimeLabel" Text="{Loc 'centcomm-console-arrival-time'}" />
-                <LineEdit Name="ArrivalTimeInput"
-                    Text="10"
-                    MinWidth="60"
-                    HorizontalAlignment="Left" />
+            <Control MinHeight="10" />
+
+            <!-- Station Selection -->
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                <Label Text="{Loc 'centcomm-console-station-selection-label'}" />
+                <OptionButton Name="StationSelector" HorizontalExpand="True" />
             </BoxContainer>
 
-            <!-- Call Shuttle Button -->
-            <Button Name="CallShuttleButton"
-                Access="Public"
-                Text="{Loc 'centcomm-console-call-shuttle'}"
-                ToolTip="{Loc 'centcomm-console-call-shuttle-tooltip'}"
-                StyleClasses="OpenBoth"
-                Disabled="True" />
+            <Control MinHeight="10" />
 
-            <!-- Recall Shuttle Button -->
-            <Button Name="RecallShuttleButton"
-                Access="Public"
-                Text="{Loc 'centcomm-console-recall-shuttle'}"
-                ToolTip="{Loc 'centcomm-console-recall-shuttle-tooltip'}"
-                StyleClasses="OpenBoth"
-                Disabled="True" />
+            <!-- Threat Code Selection -->
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                <Label Text="{Loc 'centcomm-console-threat-code-label'}" />
+                <OptionButton Name="ThreatCodeSelector" HorizontalExpand="True" />
+            </BoxContainer>
 
-            <!-- Countdown Label -->
-            <RichTextLabel Name="CountdownLabel" />
+            <Control MinHeight="20" />
+
+            <!-- Apply Button -->
+            <Button Name="ApplyThreatCodeButton"
+                Access="Public"
+                Text="{Loc 'centcomm-console-apply-button'}"
+                HorizontalAlignment="Center"
+                MinWidth="120"
+                StyleClasses="OpenBoth" />
+
+            <Control MinHeight="20" />
+
+            <!-- Visual Separator -->
+            <PanelContainer StyleClasses="LowDivider" />
+
+            <Control MinHeight="15" />
+
+            <!-- Manifest Section -->
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                <Label Text="{Loc 'centcomm-console-station-manifest-label'}" StyleClasses="LabelHeadingB" />
+                <Button Name="ViewManifestButton"
+                    Access="Public"
+                    Text="{Loc 'centcomm-console-view-manifest'}"
+                    ToolTip="{Loc 'centcomm-console-view-manifest-tooltip'}"
+                    StyleClasses="OpenBoth"
+                    HorizontalExpand="True" />
+            </BoxContainer>
         </BoxContainer>
 
-        <!-- Manifest Section -->
-        <BoxContainer Orientation="Vertical"
-            VerticalAlignment="Bottom"
-            SeparationOverride="4">
+        <!-- Evacuation Tab -->
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" Margin="15">
+            <Label Text="{Loc 'centcomm-console-evacuation-tab'}" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
 
-            <!-- View Manifest Button -->
-            <Button Name="ViewManifestButton"
-                Access="Public"
-                Text="{Loc 'centcomm-console-view-manifest'}"
-                ToolTip="{Loc 'centcomm-console-view-manifest-tooltip'}"
-                StyleClasses="OpenBoth"
-                Disabled="False" />
+            <Control MinHeight="20" />
 
-           <!-- FTL Section -->
-           <!-- Create FTL Disk Button -->
-           <Button Name="CreateFTLDiskButton"
-               Access="Public"
-               Text="{Loc 'centcomm-console-create-ftl-disk'}"
-               ToolTip="{Loc 'centcomm-console-create-ftl-disk-tooltip'}"
-               StyleClasses="OpenBoth"
-               Disabled="False" />
+            <!-- Shuttle Control Section -->
+            <BoxContainer Orientation="Vertical"
+                VerticalAlignment="Top"
+                SeparationOverride="4"
+                Margin="0 0 0 10">
 
-           <!-- Toggle BSS Corridor Button -->
-           <Button Name="ToggleBSSCorridorButton"
-               Access="Public"
-               Text="{Loc 'centcomm-console-toggle-bss-corridor'}"
-               ToolTip="{Loc 'centcomm-console-toggle-bss-corridor-tooltip'}"
-               StyleClasses="OpenBoth"
-               Disabled="False" />
+                <!-- Arrival Time Input -->
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Label Name="ArrivalTimeLabel" Text="{Loc 'centcomm-console-arrival-time'}" />
+                    <LineEdit Name="ArrivalTimeInput"
+                        Text="10"
+                        MinWidth="60"
+                        HorizontalAlignment="Left" />
+                </BoxContainer>
+
+                <!-- Call Shuttle Button -->
+                <Button Name="CallShuttleButton"
+                    Access="Public"
+                    Text="{Loc 'centcomm-console-call-shuttle'}"
+                    ToolTip="{Loc 'centcomm-console-call-shuttle-tooltip'}"
+                    StyleClasses="OpenBoth"
+                    Disabled="True" />
+
+                <!-- Recall Shuttle Button -->
+                <Button Name="RecallShuttleButton"
+                    Access="Public"
+                    Text="{Loc 'centcomm-console-recall-shuttle'}"
+                    ToolTip="{Loc 'centcomm-console-recall-shuttle-tooltip'}"
+                    StyleClasses="OpenBoth"
+                    Disabled="True" />
+
+                <!-- Countdown Label -->
+                <RichTextLabel Name="CountdownLabel" />
+            </BoxContainer>
         </BoxContainer>
-    </BoxContainer>
+
+        <!-- FTL Tab -->
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" Margin="15">
+            <Label Text="{Loc 'centcomm-console-bss-tab'}" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
+
+            <Control MinHeight="20" />
+
+            <!-- FTL Section -->
+            <BoxContainer Orientation="Vertical" SeparationOverride="4">
+
+                <!-- Create FTL Disk Button -->
+                <Button Name="CreateFTLDiskButton"
+                    Access="Public"
+                    Text="{Loc 'centcomm-console-create-ftl-disk'}"
+                    ToolTip="{Loc 'centcomm-console-create-ftl-disk-tooltip'}"
+                    StyleClasses="OpenBoth"
+                    Disabled="False" />
+
+                <!-- Toggle BSS Corridor Button -->
+                <Button Name="ToggleBSSCorridorButton"
+                    Access="Public"
+                    ToolTip="{Loc 'centcomm-console-toggle-bss-corridor-tooltip'}"
+                    StyleClasses="OpenBoth"
+                    Disabled="False" />
+            </BoxContainer>
+        </BoxContainer>
+
+    </TabContainer>
 </controls:FancyWindow>

@@ -16,3 +16,12 @@ centcomm-console-toggle-bss-corridor = Toggle FTL Corridor
 centcomm-console-toggle-bss-corridor-tooltip = Toggle coordinate disk requirement for FTL to CentCom
 centcomm-console-bss-corridor-open = FTL Corridor: Open
 centcomm-console-bss-corridor-closed = FTL Corridor: Closed
+centcomm-console-communication-tab = Communication
+centcomm-console-evacuation-tab = Evacuation
+centcomm-console-bss-tab = FTL
+
+# Communication Tab
+centcomm-console-station-selection-label = Select station:
+centcomm-console-threat-code-label = Threat code:
+centcomm-console-apply-button = Apply
+centcomm-console-station-manifest-label = Station manifest:

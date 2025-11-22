@@ -86,6 +86,9 @@
     - DeterrentCaseFilled
     - BoxSurvivalSlotsMedical # Vortex-PlayableCentComm
     - EmergencyNitrogenTankFilled # Vortex-PlayableCentComm
+  inhand:
+    - ExecutiveBriefcaseDebug # Vortex-PlayableCentComm
+
 # Goobstation - End
 
 - type: chameleonOutfit

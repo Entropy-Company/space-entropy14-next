@@ -16,5 +16,11 @@ namespace Content.Server._Vortex.Communications
 
         [DataField]
         public TimeSpan BSSCooldownEndTime;
+
+        [DataField]
+        public TimeSpan ThreatCodeCooldownEndTime;
+
+        [DataField]
+        public TimeSpan ThreatCodeCooldownDuration = TimeSpan.FromSeconds(5);
     }
 }

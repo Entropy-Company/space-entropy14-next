@@ -39,8 +39,8 @@
     back: ClothingBackpackSatchelLeather
     id: CentcomOperatorPDA
     ears: ClothingHeadsetAltCentCom
-    pocket1: BoxFolderCentCom 
-    pocket2: WeaponDisabler
+    pocket1: BoxFolderCentCom
+    pocket2: WeaponDisablerAdvanced
   storage:
     back:
     - BoxSurvivalSlotsMedical

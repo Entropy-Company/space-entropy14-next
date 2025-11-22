@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server.Access.Systems;
 using Content.Server.Administration.Logs;
+using Content.Server.AlertLevel;
 using Content.Server.Chat.Systems;
 using Content.Server.CrewManifest;
 using Content.Server.Popups;
@@ -25,12 +26,14 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Robust.Shared.Localization;
 
 namespace Content.Server._Vortex.Communications
 {
     public sealed class CentcommConsoleSystem : EntitySystem
     {
         [Dependency] private readonly AccessReaderSystem _accessReaderSystem = default!;
+        [Dependency] private readonly AlertLevelSystem _alertLevelSystem = default!;
         [Dependency] private readonly ChatSystem _chatSystem = default!;
         [Dependency] private readonly CrewManifestSystem _crewManifest = default!;
         [Dependency] private readonly EmergencyShuttleSystem _emergency = default!;
@@ -40,6 +43,7 @@ namespace Content.Server._Vortex.Communications
         [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
         [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+        [Dependency] private readonly ILocalizationManager _loc = default!;
         [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] private readonly LabelSystem _labelSystem = default!;
         [Dependency] private readonly SharedStorageSystem _storageSystem = default!;
@@ -54,6 +58,7 @@ namespace Content.Server._Vortex.Communications
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleCreateFTLDiskMessage>(OnCreateFTLDiskMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleToggleBSSCorridorMessage>(OnToggleBSSCorridorMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleRequestBSSStateMessage>(OnRequestBSSStateMessage);
+            SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleApplyThreatCodeMessage>(OnApplyThreatCodeMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, MapInitEvent>(OnMapInit);
         }
 
@@ -94,6 +99,7 @@ namespace Content.Server._Vortex.Communications
             var canViewManifest = true; // Manifest enabled
             var canCreateFTLDisk = _timing.CurTime >= component.FTLCooldownEndTime;
             var canToggleBSSCorridor = _timing.CurTime >= component.BSSCooldownEndTime;
+            var canApplyThreatCode = _timing.CurTime >= component.ThreatCodeCooldownEndTime;
 
             var stationNamesList = _stationSystem.GetStationNames()
                 .Where(s => CompOrNull<StationManifestVisibilityComponent>(EntityManager.GetEntity(s.Entity))?.VisibleInCentcommManifest ?? true)
@@ -106,6 +112,8 @@ namespace Content.Server._Vortex.Communications
 
             string selectedStationName = "";
             CrewManifestEntries? manifestEntries = null;
+            Dictionary<string, string> threatCodes = new(); // Display name -> Alert level ID
+
             if (component.SelectedStation != null)
             {
                 var netEntity = EntityManager.GetNetEntity(component.SelectedStation.Value);
@@ -115,6 +123,23 @@ namespace Content.Server._Vortex.Communications
                 }
                 var (manifestName, entries) = _crewManifest.GetCrewManifest(component.SelectedStation.Value);
                 manifestEntries = entries;
+
+                // Get available threat codes for this station
+                if (TryComp<AlertLevelComponent>(component.SelectedStation.Value, out var alertComp) && alertComp.AlertLevels != null)
+                {
+                    foreach (var (id, detail) in alertComp.AlertLevels.Levels)
+                    {
+                        // Centcomm can only select alert levels that are marked as centcommSelectable
+                        if (detail.CentcommSelectable)
+                        {
+                            // Get localized display name
+                            if (_loc.TryGetString($"alert-level-{id}", out var displayName))
+                            {
+                                threatCodes[displayName] = id;
+                            }
+                        }
+                    }
+                }
             }
 
             if (_uiSystem.HasUi(uid, CentcommConsoleUiKey.Key))
@@ -125,11 +150,13 @@ namespace Content.Server._Vortex.Communications
                     canViewManifest,
                     canCreateFTLDisk,
                     canToggleBSSCorridor,
+                    canApplyThreatCode,
                     _roundEndSystem.ExpectedCountdownEnd,
                     stationNames,
                     component.SelectedStation != null ? EntityManager.GetNetEntity(component.SelectedStation.Value) : null,
                     selectedStationName,
-                    manifestEntries
+                    manifestEntries,
+                    threatCodes
                 ));
             }
         }
@@ -414,6 +441,70 @@ namespace Content.Server._Vortex.Communications
                 return;
 
             _uiSystem.ServerSendUiMessage(uid, CentcommConsoleUiKey.Key, new CentcommConsoleUpdateBSSButtonMessage { IsOpen = !ftlComp.RequireCoordinateDisk }, message.Actor);
+        }
+
+        private void OnApplyThreatCodeMessage(EntityUid uid, CentcommConsoleComponent comp, CentcommConsoleApplyThreatCodeMessage message)
+        {
+            if (message.Actor is not { Valid: true } mob)
+                return;
+
+            if (!CanUse(mob, uid))
+            {
+                _popupSystem.PopupCursor(Loc.GetString("comms-console-permission-denied"), message.Actor, PopupType.Medium);
+                return;
+            }
+
+            // Check Centcomm-specific cooldown
+            if (_timing.CurTime < comp.ThreatCodeCooldownEndTime)
+            {
+                var remainingTime = (comp.ThreatCodeCooldownEndTime - _timing.CurTime).TotalSeconds;
+                _popupSystem.PopupCursor($"Действие недоступно. Подождите {remainingTime:F1} секунд.", message.Actor, PopupType.Medium);
+                return;
+            }
+
+            var targetStation = EntityManager.GetEntity(message.Station);
+
+            // Get the alert level ID from the threat code name
+            // The message.ThreatCode contains the localized display name (Russian)
+            // We need to find the corresponding alert level ID
+            string alertLevelId = GetAlertLevelIdFromDisplayName(targetStation, message.ThreatCode);
+
+            if (string.IsNullOrEmpty(alertLevelId))
+            {
+                _popupSystem.PopupCursor("Неизвестный код угрозы", message.Actor, PopupType.Medium);
+                return;
+            }
+
+            _alertLevelSystem.SetLevel(targetStation, alertLevelId, true, true, true); // force=true allows setting non-selectable levels
+
+            _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{EntityManager.ToPrettyString(message.Actor):player} applied threat code '{message.ThreatCode}' to station {EntityManager.ToPrettyString(targetStation):station}.");
+
+            // Set Centcomm-specific cooldown
+            comp.ThreatCodeCooldownEndTime = _timing.CurTime + comp.ThreatCodeCooldownDuration;
+
+            // Immediately update UI to reflect the new alert level
+            UpdateUI(uid, comp);
+
+            // Send success message back to client
+            _uiSystem.ServerSendUiMessage(uid, CentcommConsoleUiKey.Key, new CentcommConsoleApplyThreatCodeMessage(message.Station, "Успешно!"), message.Actor);
+        }
+
+        private string GetAlertLevelIdFromDisplayName(EntityUid station, string displayName)
+        {
+            if (!TryComp<AlertLevelComponent>(station, out var alertComp) || alertComp.AlertLevels == null)
+                return string.Empty;
+
+            // Find the alert level ID that has this display name
+            foreach (var (id, _) in alertComp.AlertLevels.Levels)
+            {
+                // Get the localized name for this alert level
+                if (_loc.TryGetString($"alert-level-{id}", out var localizedName) && localizedName == displayName)
+                {
+                    return id;
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

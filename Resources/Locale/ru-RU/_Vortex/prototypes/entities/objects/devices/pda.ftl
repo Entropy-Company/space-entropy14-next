@@ -1,6 +1,6 @@
 ent-CentcomOperatorPDA = КПК оператора Центком
     .desc = Светло-зелёный символ ходячей бюрократии.
-ent-CentcomServiceWorkerPDA = КПК сервисного работника ЦК
+ent-CentcomServiceWorkerPDA = КПК работника ЦК
     .desc = Светло-зелёный символ ходячей бюрократии.
 ent-CentcomChiefPDA = КПК начальника штаба ЦК
     .desc = Светло-зелёный символ ходячей бюрократии.
