@@ -15,6 +15,7 @@
     requiredAge: 18
   access:
   - CentralCommand
+  - CentralCommandWorker
   - Service
   - Maintenance
   - Bar

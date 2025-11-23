@@ -22,11 +22,14 @@
   - AllAccess
   access:
   - CentralCommand
+  - CentralCommandOperator
+  - CentralCommandDSO
+  - CentralCommandCommand
   - NanotrasenRepresentative
   - BlueshieldOfficer
   special:
   - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, RadioImplantCentcomm, NutrimentPumpImplant, DeathRattleImplantCentcomm ]
+    implants: [ MindShieldImplant, NutrimentPumpImplant, DeathRattleImplantCentcomm ]
 
 - type: startingGear
   id: CentcomOperatorGear

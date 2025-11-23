@@ -1057,6 +1057,13 @@
     - SyndicateAgent
     - Wizard
     - Xenoborg
+    # Vortex
+    - CentralCommandChief
+    - CentralCommandOperator
+    - CentralCommandWorker
+    - CentralCommandOSO
+    - CentralCommandCommand
+    - CentralCommandDSO
     # Goobstation
     - NanotrasenRepresentative
     - BlueshieldOfficer

@@ -11,14 +11,22 @@ namespace Content.Server._Vortex.Communications
         [DataField]
         public EntityUid? SelectedStation;
 
+        // Cooldown tracking - when actions were last used
         [DataField]
-        public TimeSpan FTLCooldownEndTime;
+        public TimeSpan LastFTLUse;
 
         [DataField]
-        public TimeSpan BSSCooldownEndTime;
+        public TimeSpan LastBSSUse;
 
         [DataField]
-        public TimeSpan ThreatCodeCooldownEndTime;
+        public TimeSpan LastThreatCodeUse;
+
+        // Cooldown durations - configurable
+        [DataField]
+        public TimeSpan FTLCooldownDuration = TimeSpan.FromSeconds(5);
+
+        [DataField]
+        public TimeSpan BSSCooldownDuration = TimeSpan.FromSeconds(5);
 
         [DataField]
         public TimeSpan ThreatCodeCooldownDuration = TimeSpan.FromSeconds(5);

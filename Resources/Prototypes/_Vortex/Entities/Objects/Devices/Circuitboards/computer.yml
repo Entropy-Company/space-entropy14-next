@@ -8,3 +8,14 @@
       state: cpu_centcomm
     - type: ComputerBoard
       prototype: CentcommConsole
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: CentcommIDComputerCircuitboard
+  name: centcomm id console board
+  description: Console board for the ID-card console CentComm.
+  components:
+    - type: Sprite
+      state: cpu_centcomm
+    - type: ComputerBoard
+      prototype: ComputerCentCommID

@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: job
-  id: CentralCommandChief
-  name: job-name-centcommchief
-  description: job-description-centcommchief
-  playTimeTracker: JobCentralCommandChief
+  id: CentralCommandOSO
+  name: job-name-centcommoso
+  description: job-description-centcommoso
+  playTimeTracker: JobCentralCommandOSO
   setPreference: false
   weight: 100
-  startingGear: CentcomChiefGear
-  icon: "JobIconCentCommChief"
+  startingGear: CentcomOSOGear
+  icon: "JobIconCentCommOSO"
   supervisors: job-supervisors-centcomchieft 
   whitelisted: true
   canBeAntag: false
@@ -21,13 +21,10 @@
   accessGroups:
   - AllAccess
   access:
-  - CentralCommandChief
   - CentralCommand
-  - CentralCommandOperator
-  - CentralCommandWorker
+  - CentralCommandDSO
   - CentralCommandOSO
   - CentralCommandCommand
-  - CentralCommandDSO
   - NanotrasenRepresentative
   - BlueshieldOfficer
   special:
@@ -35,17 +32,17 @@
     implants: [ MindShieldImplant, NutrimentPumpImplant, DeathRattleImplantCentcomm ]
 
 - type: startingGear
-  id: CentcomChiefGear
+  id: CentcomOSOGear
   equipment:
-    jumpsuit: ClothingUniformJumpsuitCentcomAdmiral
-    shoes: ClothingShoesBootsJackFilled
-    head: ClothingHeadHatCentcomcap
+    jumpsuit: ClothingUniformJumpsuitCentcomOfficerBlack
+    shoes: ClothingShoesCentcomBlack
+    head: ClothingHeadCapCentcomBlack
     eyes: ClothingEyesGlassesCentComm
-    gloves: ClothingHandsGlovesCentcomNaval
+    gloves: ClothingHandsGlovesCombat
     back: ClothingBackpackDuffelHolding
-    outerClothing: ClothingOuterArmorCentcomCarapace
-    neck: ClothingNeckCloakCentcom
-    id: CentcomChiefPDA
+    outerClothing: ClothingOuterArmorHeavy
+    neck: ClothingNeckCloakCentcomBlack
+    id: SpecialOperationsOfficerPDA
     ears: ClothingHeadsetAltCentComChief
     pocket1: BoxFolderCentCom 
     pocket2: WeaponPulsePistol
@@ -56,6 +53,5 @@
     - TelescopicBaton
     - WeaponDisablerAdvanced
     - ExecutiveIDCard
-    - RubberStampCentcom
     - RubberStampApproved
     - RubberStampDenied

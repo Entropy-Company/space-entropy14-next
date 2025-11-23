@@ -29,3 +29,11 @@
     sprite: /Textures/_Vortex/Interface/Misc/job_icons.rsi
     state: Chief
   jobName: job-name-centcommchief
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCentCommOSO
+  icon:
+    sprite: /Textures/_Vortex/Interface/Misc/job_icons.rsi
+    state: OfficerSO
+  jobName: job-name-centcommchief

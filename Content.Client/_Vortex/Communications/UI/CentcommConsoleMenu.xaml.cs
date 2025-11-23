@@ -59,9 +59,6 @@ namespace Content.Client._Vortex.Communications.UI
             // Handle dropdown selections
             StationSelector.OnItemSelected += OnStationSelected;
             ThreatCodeSelector.OnItemSelected += OnThreatCodeSelected;
-
-            // Initialize BSS button with default status (will be updated when server responds)
-            ToggleBSSCorridorButton.Text = Loc.GetString("centcomm-console-toggle-bss-corridor");
         }
 
         private void ApplyCentcommTabStyling()

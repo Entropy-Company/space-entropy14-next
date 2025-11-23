@@ -17,6 +17,7 @@ namespace Content.Shared._Vortex.Communications
         public readonly bool CanCreateFTLDisk;
         public readonly bool CanToggleBSSCorridor;
         public readonly bool CanApplyThreatCode;
+        public readonly bool BSSCorridorOpen;
         public readonly TimeSpan? ExpectedCountdownEnd;
         public readonly bool CountdownStarted;
         public readonly Dictionary<NetEntity, string> StationNames;
@@ -25,7 +26,7 @@ namespace Content.Shared._Vortex.Communications
         public readonly CrewManifestEntries? ManifestEntries;
         public readonly Dictionary<string, string> ThreatCodes; // Display name -> Alert level ID
 
-        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, bool canCreateFTLDisk, bool canToggleBSSCorridor, bool canApplyThreatCode, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null, Dictionary<string, string>? threatCodes = null)
+        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, bool canCreateFTLDisk, bool canToggleBSSCorridor, bool canApplyThreatCode, bool bssCorridorOpen = false, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null, Dictionary<string, string>? threatCodes = null)
         {
             CanCallShuttle = canCallShuttle;
             CanRecallShuttle = canRecallShuttle;
@@ -33,6 +34,7 @@ namespace Content.Shared._Vortex.Communications
             CanCreateFTLDisk = canCreateFTLDisk;
             CanToggleBSSCorridor = canToggleBSSCorridor;
             CanApplyThreatCode = canApplyThreatCode;
+            BSSCorridorOpen = bssCorridorOpen;
             ExpectedCountdownEnd = expectedCountdownEnd;
             CountdownStarted = expectedCountdownEnd != null;
             StationNames = stationNames ?? new();

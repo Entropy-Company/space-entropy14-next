@@ -1,0 +1,116 @@
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandCommandCGlassLocked
+  suffix: Central Command, Command, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandCommand ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandCommandCLocked
+  suffix: Central Command, Command, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandCommand ]
+
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandChiefGlassLocked
+  suffix: Central Command, Chief, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandChief ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandChiefLocked
+  suffix: Central Command, Chief, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandChief ]
+
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandOperatorGlassLocked
+  suffix: Central Command, Operator, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandOperator ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandOperatorLocked
+  suffix: Central Command, Operator, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandOperator ]
+
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandWorkerGlassLocked
+  suffix: Central Command, Worker, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandWorker ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandWorkerLocked
+  suffix: Central Command, Worker, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandWorker ]
+
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandDSOGlassLocked
+  suffix: DSO, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandDSO ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandDSOLocked
+  suffix: DSO, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandDSO ]
+
+- type: entity
+  parent: AirlockCentralCommandGlass
+  id: AirlockCentralCommandOSOGlassLocked
+  suffix: OSO, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandOSO ]
+
+- type: entity
+  parent: AirlockCentralCommand
+  id: AirlockCentralCommandOSOLocked
+  suffix: OSO, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandOSO ]
+
+- type: entity
+  parent: HighSecDoor
+  id: HighSecCentralCommandDSOLocked
+  suffix: DSO, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommandDSO ]

@@ -1,0 +1,23 @@
+- type: accessLevel
+  id: CentralCommandChief
+  name: id-card-access-level-centcommchief 
+
+- type: accessLevel
+  id: CentralCommandOperator
+  name: id-card-access-level-centcommoperator
+
+- type: accessLevel
+  id: CentralCommandWorker
+  name: id-card-access-level-centcommworker
+
+- type: accessLevel
+  id: CentralCommandOSO
+  name: id-card-access-level-centcommoso
+
+- type: accessLevel
+  id: CentralCommandCommand
+  name: id-card-access-level-centcomm-command
+
+- type: accessLevel
+  id: CentralCommandDSO
+  name: id-card-access-level-centcommdso

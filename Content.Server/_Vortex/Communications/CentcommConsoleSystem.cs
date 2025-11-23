@@ -27,6 +27,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Localization;
+using Robust.Shared.GameObjects;
 
 namespace Content.Server._Vortex.Communications
 {
@@ -59,6 +60,7 @@ namespace Content.Server._Vortex.Communications
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleToggleBSSCorridorMessage>(OnToggleBSSCorridorMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleRequestBSSStateMessage>(OnRequestBSSStateMessage);
             SubscribeLocalEvent<CentcommConsoleComponent, CentcommConsoleApplyThreatCodeMessage>(OnApplyThreatCodeMessage);
+            SubscribeLocalEvent<CentcommConsoleComponent, BoundUserInterfaceCheckRangeEvent>(OnBoundUserInterfaceCheckRange);
             SubscribeLocalEvent<CentcommConsoleComponent, MapInitEvent>(OnMapInit);
         }
 
@@ -92,14 +94,30 @@ namespace Content.Server._Vortex.Communications
             UpdateUI(uid, component);
         }
 
+        private void OnBoundUserInterfaceCheckRange(EntityUid uid, CentcommConsoleComponent component, ref BoundUserInterfaceCheckRangeEvent args)
+        {
+            if (args.Result == BoundUserInterfaceRangeResult.Fail)
+                return;
+
+            // Check if user has access to the console
+            if (!CanUse(args.Actor, uid))
+            {
+                args.Result = BoundUserInterfaceRangeResult.Fail;
+                _popupSystem.PopupCursor(Loc.GetString("comms-console-permission-denied"), args.Actor, PopupType.Medium);
+            }
+        }
+
         private void UpdateUI(EntityUid uid, CentcommConsoleComponent component)
         {
             var canCall = CanCallShuttle(uid);
             var canRecall = CanRecallShuttle(uid);
             var canViewManifest = true; // Manifest enabled
-            var canCreateFTLDisk = _timing.CurTime >= component.FTLCooldownEndTime;
-            var canToggleBSSCorridor = _timing.CurTime >= component.BSSCooldownEndTime;
-            var canApplyThreatCode = _timing.CurTime >= component.ThreatCodeCooldownEndTime;
+            var canCreateFTLDisk = _timing.CurTime >= component.LastFTLUse + component.FTLCooldownDuration;
+            var canToggleBSSCorridor = _timing.CurTime >= component.LastBSSUse + component.BSSCooldownDuration;
+            var canApplyThreatCode = _timing.CurTime >= component.LastThreatCodeUse + component.ThreatCodeCooldownDuration;
+
+            // Get current FTL corridor state
+            var bssCorridorOpen = GetBSSCorridorState();
 
             var stationNamesList = _stationSystem.GetStationNames()
                 .Where(s => CompOrNull<StationManifestVisibilityComponent>(EntityManager.GetEntity(s.Entity))?.VisibleInCentcommManifest ?? true)
@@ -151,6 +169,7 @@ namespace Content.Server._Vortex.Communications
                     canCreateFTLDisk,
                     canToggleBSSCorridor,
                     canApplyThreatCode,
+                    bssCorridorOpen,
                     _roundEndSystem.ExpectedCountdownEnd,
                     stationNames,
                     component.SelectedStation != null ? EntityManager.GetNetEntity(component.SelectedStation.Value) : null,
@@ -170,6 +189,39 @@ namespace Content.Server._Vortex.Communications
         {
             // Can recall if shuttle is called and round end can still be cancelled
             return _roundEndSystem.CanCallOrRecall() && _roundEndSystem.ExpectedCountdownEnd != null;
+        }
+
+        private bool GetBSSCorridorState()
+        {
+            // Find CentCom station
+            List<EntityUid> stations = _stationSystem.GetStations();
+            EntityUid? centComStation = null;
+            foreach (EntityUid station in stations)
+            {
+                if (TryComp<MetaDataComponent>(station, out var meta) && meta.EntityPrototype?.ID == "StandardGameCentcommStation")
+                {
+                    centComStation = station;
+                    break;
+                }
+            }
+
+            if (centComStation == null)
+                return false; // Default to closed if CentCom not found
+
+            var stationData = Comp<StationDataComponent>(centComStation.Value);
+            if (stationData.Grids.Count == 0)
+                return false;
+
+            var mapId = Transform(stationData.Grids.First()).MapID;
+
+            if (!_mapSystem.TryGetMap(mapId, out var mapUid))
+                return false;
+
+            if (!TryComp<FTLDestinationComponent>(mapUid.Value, out var ftlComp))
+                return false;
+
+            // Return true if corridor is open (coordinate disk not required)
+            return !ftlComp.RequireCoordinateDisk;
         }
 
         private void OnCallShuttleMessage(EntityUid uid, CentcommConsoleComponent component, CentcommConsoleCallShuttleMessage message)
@@ -241,9 +293,10 @@ namespace Content.Server._Vortex.Communications
             }
 
             // Cooldown check
-            if (_timing.CurTime < comp.FTLCooldownEndTime)
+            if (_timing.CurTime < comp.LastFTLUse + comp.FTLCooldownDuration)
             {
-                _popupSystem.PopupEntity("Действие недоступно. Подождите 5 секунд.", uid, message.Actor);
+                var remainingTime = (comp.LastFTLUse + comp.FTLCooldownDuration - _timing.CurTime).TotalSeconds;
+                _popupSystem.PopupEntity($"Действие недоступно. Подождите {remainingTime:F1} секунд.", uid, message.Actor);
                 return;
             }
 
@@ -334,7 +387,7 @@ namespace Content.Server._Vortex.Communications
             _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{EntityManager.ToPrettyString(message.Actor):player} created an FTL disk to CentCom.");
 
             // Update cooldown
-            comp.FTLCooldownEndTime = _timing.CurTime + TimeSpan.FromSeconds(5);
+            comp.LastFTLUse = _timing.CurTime;
 
             UpdateUI(uid, comp);
         }
@@ -351,9 +404,10 @@ namespace Content.Server._Vortex.Communications
         private void OnToggleBSSCorridorMessage(EntityUid uid, CentcommConsoleComponent comp, CentcommConsoleToggleBSSCorridorMessage message)
         {
             // Cooldown check
-            if (_timing.CurTime < comp.BSSCooldownEndTime)
+            if (_timing.CurTime < comp.LastBSSUse + comp.BSSCooldownDuration)
             {
-                _popupSystem.PopupEntity("Действие недоступно. Подождите 5 секунд.", uid, message.Actor);
+                var remainingTime = (comp.LastBSSUse + comp.BSSCooldownDuration - _timing.CurTime).TotalSeconds;
+                _popupSystem.PopupEntity($"Действие недоступно. Подождите {remainingTime:F1} секунд.", uid, message.Actor);
                 return;
             }
 
@@ -407,7 +461,7 @@ namespace Content.Server._Vortex.Communications
             _popupSystem.PopupEntity($"БСС Коридор: {status}", uid, message.Actor);
 
             // Update cooldown
-            comp.BSSCooldownEndTime = _timing.CurTime + TimeSpan.FromSeconds(5);
+            comp.LastBSSUse = _timing.CurTime;
 
             UpdateUI(uid, comp);
         }
@@ -455,9 +509,9 @@ namespace Content.Server._Vortex.Communications
             }
 
             // Check Centcomm-specific cooldown
-            if (_timing.CurTime < comp.ThreatCodeCooldownEndTime)
+            if (_timing.CurTime < comp.LastThreatCodeUse + comp.ThreatCodeCooldownDuration)
             {
-                var remainingTime = (comp.ThreatCodeCooldownEndTime - _timing.CurTime).TotalSeconds;
+                var remainingTime = (comp.LastThreatCodeUse + comp.ThreatCodeCooldownDuration - _timing.CurTime).TotalSeconds;
                 _popupSystem.PopupCursor($"Действие недоступно. Подождите {remainingTime:F1} секунд.", message.Actor, PopupType.Medium);
                 return;
             }
@@ -480,7 +534,7 @@ namespace Content.Server._Vortex.Communications
             _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{EntityManager.ToPrettyString(message.Actor):player} applied threat code '{message.ThreatCode}' to station {EntityManager.ToPrettyString(targetStation):station}.");
 
             // Set Centcomm-specific cooldown
-            comp.ThreatCodeCooldownEndTime = _timing.CurTime + comp.ThreatCodeCooldownDuration;
+            comp.LastThreatCodeUse = _timing.CurTime;
 
             // Immediately update UI to reflect the new alert level
             UpdateUI(uid, comp);

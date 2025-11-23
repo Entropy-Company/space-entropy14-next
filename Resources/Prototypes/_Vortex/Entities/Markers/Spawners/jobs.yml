@@ -1,0 +1,59 @@
+- type: entity
+  id: SpawnPointCentCommWorker
+  parent: SpawnPointJobBase
+  name: centcomm worker
+  components:
+  - type: SpawnPoint
+    job_id: CentCommServiceWorker
+  - type: Sprite
+    layers:
+      - state: green
+      - state: centcom
+
+- type: entity
+  id: SpawnPointCentCommOperator
+  parent: SpawnPointJobBase
+  name: centcomm operator
+  components:
+  - type: SpawnPoint
+    job_id: CentralCommandOperator
+  - type: Sprite
+    layers:
+      - state: green
+      - state: centcom
+
+- type: entity
+  id: SpawnPointCentCommChief
+  parent: SpawnPointJobBase
+  name: centcomm chief
+  components:
+  - type: SpawnPoint
+    job_id: CentralCommandChief
+  - type: Sprite
+    layers:
+      - state: green
+      - state: centcom
+
+- type: entity
+  id: SpawnPointCentCommOfficial
+  parent: SpawnPointJobBase
+  name: centcomm official
+  components:
+  - type: SpawnPoint
+    job_id: CentralCommandOfficial
+  - type: Sprite
+    layers:
+      - state: green
+      - state: centcom
+
+- type: entity
+  id: SpawnPointCentCommOSO
+  parent: SpawnPointJobBase
+  name: centcomm oso
+  components:
+  - type: SpawnPoint
+    job_id: CentralCommandOSO
+  - type: Sprite
+    layers:
+      - state: green
+      - state: centcom

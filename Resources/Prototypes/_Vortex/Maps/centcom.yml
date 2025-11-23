@@ -13,6 +13,7 @@
         - type: StationJobs
           availableJobs:
             CentralCommandChief: [ 1, 1 ]
+            CentralCommandOSO: [ 1, 1 ]
             CentralCommandOfficial: [ 1, 1 ]
             CentralCommandOperator: [ 1, 1 ]
             CentCommServiceWorker: [ 6, 6 ]

@@ -144,7 +144,6 @@
     delta:
       announcement: alert-level-delta-announcement
       selectable: false
-      centcommSelectable: false # Vortex-PlayableCentcomm
       sound:
         path: /Audio/_CorvaxGoob/Misc/delta.ogg # CorvaxGoob-Announcements #base:/Audio/Misc/delta.ogg
         params:

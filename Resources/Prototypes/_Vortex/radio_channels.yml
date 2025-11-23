@@ -2,6 +2,6 @@
   id: DSO
   name: chat-radio-dso
   keycode: 'д'
-  frequency: 1337
+  frequency: 4154
   color: "#536d98"
   longRange: true

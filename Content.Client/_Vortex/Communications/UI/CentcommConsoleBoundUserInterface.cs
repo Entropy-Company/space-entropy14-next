@@ -103,6 +103,9 @@ namespace Content.Client._Vortex.Communications.UI
                 _menu.ToggleBSSCorridorButton.Disabled = !centcommState.CanToggleBSSCorridor;
                 _menu.ApplyThreatCodeButton.Disabled = !centcommState.CanApplyThreatCode;
 
+                // Update BSS button with current state
+                _menu.UpdateBSSButton(centcommState.BSSCorridorOpen);
+
                 // Populate communication tab dropdowns
                 _menu.PopulateStationSelector(centcommState.StationNames);
                 _menu.PopulateThreatCodeSelector(centcommState.ThreatCodes);

@@ -5,6 +5,7 @@
   color: "#038d0a"
   roles:
   - CentralCommandChief
+  - CentralCommandOSO
   editorHidden: true
   weight: 130
 
