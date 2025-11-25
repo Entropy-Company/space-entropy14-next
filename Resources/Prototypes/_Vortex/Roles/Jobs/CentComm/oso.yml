@@ -29,22 +29,22 @@
   - BlueshieldOfficer
   special:
   - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, NutrimentPumpImplant, DeathRattleImplantCentcomm ]
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant]
 
 - type: startingGear
   id: CentcomOSOGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitCentcomOfficerBlack
-    shoes: ClothingShoesCentcomBlack
+    shoes: ClothingShoesBootsJackFilled
     head: ClothingHeadCapCentcomBlack
-    eyes: ClothingEyesGlassesCentComm
+    eyes: ClothingEyesGlassesDeathsquad
     gloves: ClothingHandsGlovesCombat
     back: ClothingBackpackDuffelHolding
-    outerClothing: ClothingOuterArmorHeavy
-    neck: ClothingNeckCloakCentcomBlack
+    outerClothing: ClothingOuterArmourInvisible
+    neck: ExecutiveIDCard
     id: SpecialOperationsOfficerPDA
-    ears: ClothingHeadsetAltCentComChief
-    pocket1: BoxFolderCentCom 
+    ears: ClothingHeadsetAltCentComOSO
+    pocket1: WeaponRevolverMateba 
     pocket2: WeaponPulsePistol
   storage:
     back:
@@ -52,6 +52,10 @@
     - EmergencyNitrogenTankFilled
     - TelescopicBaton
     - WeaponDisablerAdvanced
-    - ExecutiveIDCard
+    - ClothingNeckCloakCentcomBlack
+    - NukeOverride
     - RubberStampApproved
     - RubberStampDenied
+    - CentralCommandBusinessCard
+    - CentralCommandBusinessCard
+    - DeterrentCaseFilled

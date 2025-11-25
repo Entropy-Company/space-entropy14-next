@@ -156,7 +156,12 @@
     groups:
     - AllAccess
     tags:
-    - CentralCommand
+    - CentralCommand 
+    - CentralCommandOperator # Vortex-PlayableCentCom
+    - CentralCommandWorker # Vortex-PlayableCentCom
+    - CentralCommandOSO # Vortex-PlayableCentCom
+    - CentralCommandCommand # Vortex-PlayableCentCom
+    - CentralCommandDSO # Vortex-PlayableCentCom
     - NanotrasenRepresentative
     - BlueshieldOfficer
 
@@ -224,7 +229,7 @@
     layers:
     - state: ert_security
   - type: PresetIdCard
-    job: SpecialOperationsOfficer
+    job: CentralCommandOSO # Vortex-PlayableCentCom
 
 # Inspector
 

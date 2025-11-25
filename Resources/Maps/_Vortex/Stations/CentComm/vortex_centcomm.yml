@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 11/23/2025 02:58:59
-  entityCount: 10748
+  time: 11/25/2025 03:11:42
+  entityCount: 10776
 maps: []
 grids:
 - 1
@@ -215,7 +215,7 @@ entities:
           version: 7
         5,3:
           ind: 5,3
-          tiles: MQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAACTAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAAMQAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAADEAAAAAAACTAAAAAAAAkwAAAAAAADsAAAAAAAA7AAAAAAAAOwAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAxAAAAAAAAkwAAAAAAAJMAAAAAAAA7AAAAAAAAOwAAAAAAADsAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAOwAAAAAAADsAAAAAAAA7AAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAEAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAgAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAABAAAAAAAAkwAAAAAAADsAAAAAAAA7AAAAAAAAIgAAAAAAACIAAAAAAAAiAAAAAAAAkwAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAAAQAAAAAAAJMAAAAAAAA7AAAAAAAAOwAAAAAAACIAAAAAAAAiAAAAAAAAIgAAAAAAACIAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAAAAAHwAAAAAAAB8AAAAAAAAfAAAAAAAAJwAAAAAAACcAAAAAAACTAAAAAAAAOwAAAAAAADsAAAAAAAAiAAAAAAAAIgAAAAAAACIAAAAAAAAiAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAJwAAAAAAAB8AAAAAAAAhAAAAAAAAHwAAAAAAACcAAAAAAAAnAAAAAAAAkwAAAAAAAJMAAAAAAAAgAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAACcAAAAAAAAfAAAAAAAAIQAAAAAAAB8AAAAAAAAnAAAAAAAAJwAAAAAAAJMAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAAAAAHwAAAAAAAB8AAAAAAAAfAAAAAAAAJwAAAAAAACcAAAAAAACTAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAAAAAB0AAAAAAAAdAAAAAAAAHQAAAAAAAB0AAAAAAAAdAAAAAAAAkwAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+          tiles: MQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAAMQAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAFAAAAAAAAMQAAAAAAADEAAAAAAACTAAAAAAAAkwAAAAAAADsAAAAAAAA7AAAAAAAAOwAAAAAAAJMAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMQAAAAAAAAUAAAAAAAAxAAAAAAAABQAAAAAAADEAAAAAAAAxAAAAAAAAkwAAAAAAAJMAAAAAAAA7AAAAAAAAOwAAAAAAADsAAAAAAACTAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAOwAAAAAAADsAAAAAAAA7AAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAEAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAgAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAAAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAABAAAAAAAAkwAAAAAAADsAAAAAAAA7AAAAAAAAIgAAAAAAACIAAAAAAAAiAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAAAAAAAAAAAkAAAAAAAAJAAAAAAAACQAAAAAAAAkAAAAAAAAJAAAAAAAAAQAAAAAAAJMAAAAAAAA7AAAAAAAAOwAAAAAAACIAAAAAAAAiAAAAAAAAIgAAAAAAACIAAAAAAACTAAAAAAAAkwAAAAAAAAAAAAAAAAAnAAAAAAAAHwAAAAAAAB8AAAAAAAAfAAAAAAAAJwAAAAAAACcAAAAAAACTAAAAAAAAOwAAAAAAADsAAAAAAAAiAAAAAAAAIgAAAAAAACIAAAAAAAAiAAAAAAAAkwAAAAAAAJMAAAAAAAAAAAAAAAAAJwAAAAAAAB8AAAAAAAAhAAAAAAAAHwAAAAAAACcAAAAAAAAnAAAAAAAAkwAAAAAAAJMAAAAAAAAgAAAAAAAAkwAAAAAAAJMAAAAAAACTAAAAAAAAkwAAAAAAAJMAAAAAAAAjAAAAAAAAAAAAAAAAACcAAAAAAAAfAAAAAAAAIQAAAAAAAB8AAAAAAAAnAAAAAAAAJwAAAAAAAJMAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAACTAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAAAAAHwAAAAAAAB8AAAAAAAAfAAAAAAAAJwAAAAAAACcAAAAAAACTAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAkwAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAAAAAB0AAAAAAAAdAAAAAAAAHQAAAAAAAB0AAAAAAAAdAAAAAAAAkwAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAACAAAAAAAAAgAAAAAAAAIAAAAAAAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAA==
           version: 7
         5,2:
           ind: 5,2
@@ -2125,6 +2125,9 @@ entities:
             10351: 62,62
             10352: 63,62
             10353: 64,62
+            10368: 80,73
+            10369: 81,73
+            10370: 82,73
         - node:
             zIndex: 1
             color: '#FFFFFFFF'
@@ -10495,6 +10498,9 @@ entities:
     - type: Transform
       pos: 90.5,60.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
     - type: DeviceList
       devices:
       - 6665
@@ -11855,6 +11861,9 @@ entities:
       rot: 3.141592653589793 rad
       pos: 88.5,56.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 231
     components:
     - type: Transform
@@ -11888,6 +11897,9 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 85.5,51.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommand
   - uid: 237
     components:
     - type: Transform
@@ -12050,6 +12062,9 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 47.5,102.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
   - uid: 265
     components:
     - type: Transform
@@ -12124,24 +12139,36 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 74.5,81.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 278
     components:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 70.5,81.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 279
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 74.5,84.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 280
     components:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 78.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 281
     components:
     - type: Transform
@@ -12154,6 +12181,9 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 86.5,66.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommand
   - uid: 283
     components:
     - type: Transform
@@ -12166,6 +12196,9 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 21.5,97.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandOSO
   - uid: 285
     components:
     - type: Transform
@@ -25344,7 +25377,7 @@ entities:
   - uid: 7278
     components:
     - type: Transform
-      pos: 92.47955,73.8706
+      pos: 87.363754,65.21136
       parent: 1
 - proto: CargoPallet
   entities:
@@ -26982,12 +27015,18 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 93.5,68.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 2972
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 73.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandChief
 - proto: CentcommConsole
   entities:
   - uid: 359
@@ -26995,6 +27034,9 @@ entities:
     - type: Transform
       pos: 23.5,101.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandOSO
   - uid: 3160
     components:
     - type: Transform
@@ -27007,6 +27049,9 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 72.5,86.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandChief
   - uid: 7831
     components:
     - type: Transform
@@ -30184,8 +30229,7 @@ entities:
   - uid: 3451
     components:
     - type: Transform
-      rot: 3.5779249665883754 rad
-      pos: 11.1,50
+      pos: 10.771698,49.522163
       parent: 1
 - proto: ComfyChair
   entities:
@@ -30530,6 +30574,9 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 70.5,50.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
 - proto: ComputerCargoOrders
   entities:
   - uid: 3511
@@ -30538,6 +30585,9 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 70.5,49.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
     - type: DeviceLinkSource
       linkedPorts:
         2771:
@@ -30550,6 +30600,18 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 93.5,67.5
+      parent: 1
+  - uid: 3523
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 46.5,43.5
+      parent: 1
+  - uid: 3524
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 48.5,43.5
       parent: 1
   - uid: 3525
     components:
@@ -30614,6 +30676,9 @@ entities:
     - type: Transform
       pos: 76.5,65.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
   - uid: 3521
     components:
     - type: Transform
@@ -30625,24 +30690,13 @@ entities:
     - type: Transform
       pos: 22.5,101.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
   - uid: 8783
     components:
     - type: Transform
       pos: 88.5,80.5
-      parent: 1
-- proto: ComputerId
-  entities:
-  - uid: 3523
-    components:
-    - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 48.5,43.5
-      parent: 1
-  - uid: 3524
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 46.5,43.5
       parent: 1
 - proto: ComputerMedicalRecords
   entities:
@@ -30728,6 +30782,38 @@ entities:
     components:
     - type: Transform
       pos: 89.5,80.5
+      parent: 1
+- proto: ContrabandDetectorSecure
+  entities:
+  - uid: 10755
+    components:
+    - type: Transform
+      pos: 45.5,37.5
+      parent: 1
+  - uid: 10756
+    components:
+    - type: Transform
+      pos: 44.5,37.5
+      parent: 1
+  - uid: 10757
+    components:
+    - type: Transform
+      pos: 46.5,37.5
+      parent: 1
+  - uid: 10758
+    components:
+    - type: Transform
+      pos: 49.5,37.5
+      parent: 1
+  - uid: 10759
+    components:
+    - type: Transform
+      pos: 48.5,37.5
+      parent: 1
+  - uid: 10760
+    components:
+    - type: Transform
+      pos: 50.5,37.5
       parent: 1
 - proto: ContrabassInstrument
   entities:
@@ -30854,6 +30940,9 @@ entities:
     - type: Transform
       pos: 38.5,87.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -31200,6 +31289,9 @@ entities:
     - type: Transform
       pos: 40.5,89.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
 - proto: CrayonRed
   entities:
   - uid: 3618
@@ -31486,6 +31578,16 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 3.5,77.5
+      parent: 1
+  - uid: 10750
+    components:
+    - type: Transform
+      pos: 71.5,71.5
+      parent: 1
+  - uid: 10751
+    components:
+    - type: Transform
+      pos: 73.5,71.5
       parent: 1
 - proto: CutterMachine
   entities:
@@ -36363,36 +36465,50 @@ entities:
     - type: Transform
       pos: 18.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4370
     components:
     - type: Transform
       pos: 19.5,95.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4371
     components:
     - type: Transform
       pos: 17.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4372
     components:
     - type: Transform
       pos: 17.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4373
     components:
     - type: Transform
       pos: 19.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4374
     components:
     - type: Transform
       pos: 19.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4375
     components:
     - type: Transform
       pos: 18.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
 - proto: ERTSpawnerEngineering
   entities:
   - uid: 4376
@@ -36400,6 +36516,8 @@ entities:
     - type: Transform
       pos: 33.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
 - proto: ERTSpawnerJanitor
   entities:
   - uid: 4377
@@ -36414,6 +36532,8 @@ entities:
     - type: Transform
       pos: 19.5,95.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
 - proto: ERTSpawnerMedical
   entities:
   - uid: 4379
@@ -36421,6 +36541,8 @@ entities:
     - type: Transform
       pos: 33.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
 - proto: ERTSpawnerSrcurity
   entities:
   - uid: 4380
@@ -36428,21 +36550,29 @@ entities:
     - type: Transform
       pos: 31.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4381
     components:
     - type: Transform
       pos: 31.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4382
     components:
     - type: Transform
       pos: 32.5,87.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
   - uid: 4383
     components:
     - type: Transform
       pos: 32.5,89.5
       parent: 1
+    missingComponents:
+    - DeleteOnTrigger
 - proto: ExecutiveBriefcaseDebug
   entities:
   - uid: 7834
@@ -36468,22 +36598,6 @@ entities:
     - type: Transform
       pos: 30.5,63.5
       parent: 1
-- proto: FaxMachineBase
-  entities:
-  - uid: 7116
-    components:
-    - type: Transform
-      pos: 24.5,99.5
-      parent: 1
-    - type: FaxMachine
-      name: Офицер СпецОпераций
-  - uid: 8626
-    components:
-    - type: Transform
-      pos: 74.5,87.5
-      parent: 1
-    - type: FaxMachine
-      name: Офис НШЦК
 - proto: FaxMachineCentcom
   entities:
   - uid: 4387
@@ -36493,6 +36607,20 @@ entities:
       parent: 1
     - type: FaxMachine
       name: ЦентКом
+  - uid: 7116
+    components:
+    - type: Transform
+      pos: 24.5,99.5
+      parent: 1
+    - type: FaxMachine
+      name: Офис НШЦК
+  - uid: 8385
+    components:
+    - type: Transform
+      pos: 74.5,87.5
+      parent: 1
+    - type: FaxMachine
+      name: Офис НШЦК
 - proto: FaxMachineSyndie
   entities:
   - uid: 4388
@@ -39226,6 +39354,20 @@ entities:
     components:
     - type: Transform
       pos: 45.5,99.5
+      parent: 1
+    - type: Fixtures
+      fixtures: {}
+  - uid: 9009
+    components:
+    - type: Transform
+      pos: 71.5,71.5
+      parent: 1
+    - type: Fixtures
+      fixtures: {}
+  - uid: 9010
+    components:
+    - type: Transform
+      pos: 73.5,71.5
       parent: 1
     - type: Fixtures
       fixtures: {}
@@ -57439,6 +57581,9 @@ entities:
     - type: Transform
       pos: 72.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandChief
     - type: EntityStorage
       air:
         volume: 200
@@ -57679,7 +57824,7 @@ entities:
       parent: 1
     - type: AccessReader
       access:
-      - - CentralCommand
+      - - CentralCommandOSO
     - type: EntityStorage
       air:
         volume: 200
@@ -57728,7 +57873,7 @@ entities:
       parent: 1
     - type: AccessReader
       access:
-      - - CentralCommand
+      - - CentralCommandOSO
     - type: EntityStorage
       air:
         volume: 200
@@ -58403,6 +58548,10 @@ entities:
     - type: Transform
       pos: 20.243052,90.519325
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
+      - - CentralCommandOSO
     - type: DeviceLinkSource
       linkedPorts:
         4373:
@@ -58442,6 +58591,10 @@ entities:
     - type: Transform
       pos: 30.75,90.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
+      - - CentralCommandOSO
     - type: DeviceLinkSource
       linkedPorts:
         422:
@@ -58511,6 +58664,9 @@ entities:
       rot: 3.141592653589793 rad
       pos: 92.5,65.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
     - type: DeviceLinkSource
       linkedPorts:
         453:
@@ -58546,6 +58702,9 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 43.5,87.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandOSO
     - type: DeviceLinkSource
       linkedPorts:
         4377:
@@ -58560,6 +58719,9 @@ entities:
       rot: 3.141592653589793 rad
       pos: 20.250582,94.510124
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandOSO
     - type: DeviceLinkSource
       linkedPorts:
         4370:
@@ -58583,6 +58745,9 @@ entities:
       rot: 3.141592653589793 rad
       pos: 20.741323,94.510124
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandOSO
     - type: DeviceLinkSource
       linkedPorts:
         4378:
@@ -58603,6 +58768,9 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 92.5,78.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
     - type: DeviceLinkSource
       linkedPorts:
         464:
@@ -58743,6 +58911,9 @@ entities:
     - type: Transform
       pos: 38.5,89.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -58769,11 +58940,17 @@ entities:
     - type: Transform
       pos: 27.5,44.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
   - uid: 7024
     components:
     - type: Transform
       pos: 30.5,44.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: LockerEvidence
   entities:
   - uid: 7025
@@ -58798,6 +58975,9 @@ entities:
     - type: Transform
       pos: 29.565758,64.45943
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
     - type: EntityStorage
       air:
         volume: 200
@@ -58910,6 +59090,9 @@ entities:
     - type: Transform
       pos: 65.5,71.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: LockerHeadOfPersonnelFilled
   entities:
   - uid: 7029
@@ -58917,6 +59100,9 @@ entities:
     - type: Transform
       pos: 73.5,65.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandCommand
     - type: EntityStorage
       air:
         volume: 200
@@ -67380,6 +67566,11 @@ entities:
     - type: Transform
       pos: 82.533905,76.566895
       parent: 1
+  - uid: 10749
+    components:
+    - type: Transform
+      pos: 44.070404,47.60514
+      parent: 1
 - proto: SheetPlasma
   entities:
   - uid: 8297
@@ -68003,6 +68194,9 @@ entities:
         477:
         - - Pressed
           - Open
+        134:
+        - - Pressed
+          - DoorBolt
   - uid: 8372
     components:
     - type: MetaData
@@ -68314,14 +68508,6 @@ entities:
         102:
         - - Pressed
           - DoorBolt
-  - uid: 8385
-    components:
-    - type: MetaData
-      desc: Эта кнопка переключает болтирование шлюза.
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 11.5,51.5
-      parent: 1
   - uid: 8386
     components:
     - type: Transform
@@ -68737,6 +68923,13 @@ entities:
     - type: Transform
       pos: 60.5,65.5
       parent: 1
+- proto: SignBath
+  entities:
+  - uid: 10754
+    components:
+    - type: Transform
+      pos: 74.5,73.5
+      parent: 1
 - proto: SignBiohazardMed
   entities:
   - uid: 8404
@@ -68848,6 +69041,13 @@ entities:
     components:
     - type: Transform
       pos: 29.5,49.5
+      parent: 1
+- proto: SignHead
+  entities:
+  - uid: 8668
+    components:
+    - type: Transform
+      pos: 77.5,81.5
       parent: 1
 - proto: SignHydro1
   entities:
@@ -69976,6 +70176,9 @@ entities:
     - type: Transform
       pos: 31.5,83.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70018,6 +70221,9 @@ entities:
     - type: Transform
       pos: 33.5,84.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70056,6 +70262,9 @@ entities:
     - type: Transform
       pos: 42.5,88.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70074,6 +70283,9 @@ entities:
     - type: Transform
       pos: 21.5,96.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70092,6 +70304,9 @@ entities:
     - type: Transform
       pos: 21.5,95.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70110,6 +70325,9 @@ entities:
     - type: Transform
       pos: 17.5,83.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70128,6 +70346,9 @@ entities:
     - type: Transform
       pos: 17.5,84.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70168,6 +70389,9 @@ entities:
     - type: Transform
       pos: 17.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70186,6 +70410,9 @@ entities:
     - type: Transform
       pos: 33.5,83.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70205,6 +70432,9 @@ entities:
     - type: Transform
       pos: 33.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: ContainerContainer
       containers:
         entity_storage: !type:Container
@@ -70223,6 +70453,9 @@ entities:
     - type: Transform
       pos: 31.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70263,6 +70496,9 @@ entities:
     - type: Transform
       pos: 31.5,84.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70303,6 +70539,9 @@ entities:
     - type: Transform
       pos: 19.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70343,6 +70582,9 @@ entities:
     - type: Transform
       pos: 19.5,84.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70383,6 +70625,9 @@ entities:
     - type: Transform
       pos: 19.5,83.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
     - type: EntityStorage
       air:
         volume: 200
@@ -70423,11 +70668,17 @@ entities:
     - type: Transform
       pos: 27.5,45.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
   - uid: 8582
     components:
     - type: Transform
       pos: 30.5,45.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: SuitStorageSec
   entities:
   - uid: 8583
@@ -71270,13 +71521,6 @@ entities:
       - SurveillanceCameraSupply
       nameSet: True
       id: Доки
-- proto: SyndieFlag
-  entities:
-  - uid: 8668
-    components:
-    - type: Transform
-      pos: 11.5,50.5
-      parent: 1
 - proto: Syringe
   entities:
   - uid: 8669
@@ -73245,18 +73489,6 @@ entities:
       rot: 3.141592653589793 rad
       pos: 69.5,71.5
       parent: 1
-  - uid: 9009
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 71.5,71.5
-      parent: 1
-  - uid: 9010
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 73.5,71.5
-      parent: 1
   - uid: 9011
     components:
     - type: Transform
@@ -73721,6 +73953,9 @@ entities:
     - type: Transform
       pos: 65.5,64.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineAmmo
   entities:
   - uid: 9049
@@ -73752,6 +73987,9 @@ entities:
     - type: Transform
       pos: 65.5,65.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineCargoDrobe
   entities:
   - uid: 9054
@@ -73785,6 +74023,9 @@ entities:
     - type: Transform
       pos: 33.5,72.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineChefvend
   entities:
   - uid: 8746
@@ -73792,6 +74033,9 @@ entities:
     - type: Transform
       pos: 29.5,65.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineChemicals
   entities:
   - uid: 9060
@@ -73870,6 +74114,9 @@ entities:
       rot: 3.141592653589793 rad
       pos: 29.5,66.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineDrGibb
   entities:
   - uid: 9073
@@ -73884,6 +74131,9 @@ entities:
     - type: Transform
       pos: 26.5,44.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineEngivend
   entities:
   - uid: 9075
@@ -73891,11 +74141,17 @@ entities:
     - type: Transform
       pos: 24.5,44.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
   - uid: 9076
     components:
     - type: Transform
       pos: 35.5,86.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
 - proto: VendingMachineGames
   entities:
   - uid: 9077
@@ -73915,6 +74171,9 @@ entities:
     - type: Transform
       pos: 40.5,86.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
 - proto: VendingMachineLawDrobe
   entities:
   - uid: 9080
@@ -73948,6 +74207,9 @@ entities:
     - type: Transform
       pos: 33.5,76.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineSec
   entities:
   - uid: 9085
@@ -73955,6 +74217,9 @@ entities:
     - type: Transform
       pos: 29.5,85.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandDSO
   - uid: 9086
     components:
     - type: Transform
@@ -73982,6 +74247,9 @@ entities:
     - type: Transform
       pos: 29.5,78.5
       parent: 1
+    - type: AccessReader
+      access:
+      - - CentralCommandWorker
 - proto: VendingMachineSnack
   entities:
   - uid: 9090
@@ -74104,76 +74372,90 @@ entities:
     - type: Transform
       pos: 63.5,84.5
       parent: 1
-- proto: WallPlastitanium
+- proto: WallPlastitaniumIndestructible
   entities:
   - uid: 9109
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 9.5,50.5
       parent: 1
   - uid: 9110
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 9.5,49.5
       parent: 1
   - uid: 9111
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 9.5,48.5
       parent: 1
   - uid: 9112
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 9.5,47.5
       parent: 1
   - uid: 9113
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 9.5,46.5
       parent: 1
   - uid: 9114
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 10.5,46.5
       parent: 1
   - uid: 9115
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 11.5,46.5
       parent: 1
   - uid: 9116
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 12.5,46.5
       parent: 1
   - uid: 9117
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 10.5,50.5
       parent: 1
   - uid: 9118
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 11.5,50.5
       parent: 1
   - uid: 9119
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 12.5,50.5
       parent: 1
   - uid: 9120
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 12.5,49.5
       parent: 1
   - uid: 9121
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 12.5,48.5
       parent: 1
   - uid: 9122
     components:
     - type: Transform
+      rot: -1.5707963267948966 rad
       pos: 12.5,47.5
       parent: 1
 - proto: WallReinforced
@@ -74248,6 +74530,11 @@ entities:
     components:
     - type: Transform
       pos: 83.5,77.5
+      parent: 1
+  - uid: 8626
+    components:
+    - type: Transform
+      pos: 93.5,56.5
       parent: 1
   - uid: 8751
     components:
@@ -79455,6 +79742,81 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 34.5,106.5
       parent: 1
+  - uid: 10761
+    components:
+    - type: Transform
+      pos: 87.5,51.5
+      parent: 1
+  - uid: 10762
+    components:
+    - type: Transform
+      pos: 88.5,51.5
+      parent: 1
+  - uid: 10763
+    components:
+    - type: Transform
+      pos: 89.5,51.5
+      parent: 1
+  - uid: 10764
+    components:
+    - type: Transform
+      pos: 90.5,51.5
+      parent: 1
+  - uid: 10765
+    components:
+    - type: Transform
+      pos: 91.5,51.5
+      parent: 1
+  - uid: 10766
+    components:
+    - type: Transform
+      pos: 92.5,51.5
+      parent: 1
+  - uid: 10767
+    components:
+    - type: Transform
+      pos: 92.5,52.5
+      parent: 1
+  - uid: 10768
+    components:
+    - type: Transform
+      pos: 92.5,53.5
+      parent: 1
+  - uid: 10769
+    components:
+    - type: Transform
+      pos: 92.5,54.5
+      parent: 1
+  - uid: 10770
+    components:
+    - type: Transform
+      pos: 92.5,55.5
+      parent: 1
+  - uid: 10771
+    components:
+    - type: Transform
+      pos: 93.5,55.5
+      parent: 1
+  - uid: 10772
+    components:
+    - type: Transform
+      pos: 94.5,56.5
+      parent: 1
+  - uid: 10773
+    components:
+    - type: Transform
+      pos: 94.5,57.5
+      parent: 1
+  - uid: 10774
+    components:
+    - type: Transform
+      pos: 94.5,58.5
+      parent: 1
+  - uid: 10775
+    components:
+    - type: Transform
+      pos: 94.5,59.5
+      parent: 1
 - proto: WallReinforcedDiagonal
   entities:
   - uid: 1642
@@ -79486,6 +79848,12 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 85.5,45.5
+      parent: 1
+  - uid: 10776
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 94.5,60.5
       parent: 1
 - proto: WallSolid
   entities:
@@ -81649,6 +82017,26 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
+- proto: WeatherRainAdmeme
+  entities:
+  - uid: 10752
+    components:
+    - type: Transform
+      pos: 71.5,71.5
+      parent: 1
+    - type: Physics
+      canCollide: False
+    - type: Fixtures
+      fixtures: {}
+  - uid: 10753
+    components:
+    - type: Transform
+      pos: 73.5,71.5
+      parent: 1
+    - type: Physics
+      canCollide: False
+    - type: Fixtures
+      fixtures: {}
 - proto: Windoor
   entities:
   - uid: 10365

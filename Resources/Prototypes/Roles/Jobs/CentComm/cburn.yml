@@ -28,6 +28,9 @@
   # Goobstation
   - NanotrasenRepresentative
   - BlueshieldOfficer
+  # Vortex
+  - CentralCommandDSO
+  - CentralCommandCommand
   special: # Goobstation
   - !type:AddImplantSpecial
     implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
@@ -40,7 +43,7 @@
     mask: ClothingMaskGasERT
     neck: ExecutiveIDCard # Executive Access!
     eyes: ClothingEyesGlassesMedSec # Better glasses
-    ears: ClothingHeadsetAltCentCom
+    ears: ClothingHeadsetAltCentComDSO # Vortex-PlayableCentCom
     gloves: ClothingHandsGlovesCombat
     outerClothing: ClothingOuterHardsuitCBURN
     shoes: ClothingShoesBootsMagEmergencyResponseTeam # Goobstation
