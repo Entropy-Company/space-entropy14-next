@@ -657,7 +657,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
         {
             case HumanoidSkinColor.HumanToned:
                 var color = ConvertSkinToneToColor(uniqueIdentifiers.SkinTone);
-                humanoid.Comp.SkinColor = SkinColor.ValidSkinTone(skinColoration, color);
+                humanoid.Comp.SkinColor = color; // Vortex-Edited
                 break;
 
             default: // Vortex edited
@@ -674,7 +674,7 @@ public sealed partial class DnaModifierSystem : SharedDnaModifierSystem
                 float blueNormalized = blue / 255f;
 
                 var newColor = new Color(redNormalized, greenNormalized, blueNormalized);
-                humanoid.Comp.SkinColor = SkinColor.ValidSkinTone(skinColoration, newColor);
+                humanoid.Comp.SkinColor = newColor; // Vortex-Edited
                 break;
         }
     }
