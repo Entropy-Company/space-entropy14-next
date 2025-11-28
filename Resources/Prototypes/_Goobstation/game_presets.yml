@@ -194,17 +194,6 @@
     - SecretPlusLow
 
 - type: gamePreset
-  id: SecretPlusLow
-  alias:
-    - secretpluscalm
-  name: Секрет+ Спокойный
-  description: По началу спокойно. Возможно и до конца..
-  showInVote: true
-  rules:
-    - SecretPlusCalm
-    - LavalandStormScheduler
-
-- type: gamePreset
   id: SecretPlusMid
   alias:
     - secretplusmid
