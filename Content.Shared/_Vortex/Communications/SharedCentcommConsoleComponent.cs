@@ -15,9 +15,9 @@ namespace Content.Shared._Vortex.Communications
         public readonly bool CanRecallShuttle;
         public readonly bool CanViewManifest;
         public readonly bool CanCreateFTLDisk;
-        public readonly bool CanToggleBSSCorridor;
+        public readonly bool CanToggleFTLCorridor;
         public readonly bool CanApplyThreatCode;
-        public readonly bool BSSCorridorOpen;
+        public readonly bool FTLCorridorOpen;
         public readonly TimeSpan? ExpectedCountdownEnd;
         public readonly bool CountdownStarted;
         public readonly Dictionary<NetEntity, string> StationNames;
@@ -25,16 +25,19 @@ namespace Content.Shared._Vortex.Communications
         public readonly string SelectedStationName;
         public readonly CrewManifestEntries? ManifestEntries;
         public readonly Dictionary<string, string> ThreatCodes; // Display name -> Alert level ID
+        public readonly bool CommunicationTabEnabled;
+        public readonly bool EvacuationTabEnabled;
+        public readonly bool FTLTabEnabled;
 
-        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, bool canCreateFTLDisk, bool canToggleBSSCorridor, bool canApplyThreatCode, bool bssCorridorOpen = false, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null, Dictionary<string, string>? threatCodes = null)
+        public CentcommConsoleInterfaceState(bool canCallShuttle, bool canRecallShuttle, bool canViewManifest, bool canCreateFTLDisk, bool canToggleFTLCorridor, bool canApplyThreatCode, bool ftlCorridorOpen = false, TimeSpan? expectedCountdownEnd = null, Dictionary<NetEntity, string>? stationNames = null, NetEntity? selectedStation = null, string? selectedStationName = null, CrewManifestEntries? manifestEntries = null, Dictionary<string, string>? threatCodes = null, bool communicationTabEnabled = true, bool evacuationTabEnabled = true, bool ftlTabEnabled = true)
         {
             CanCallShuttle = canCallShuttle;
             CanRecallShuttle = canRecallShuttle;
             CanViewManifest = canViewManifest;
             CanCreateFTLDisk = canCreateFTLDisk;
-            CanToggleBSSCorridor = canToggleBSSCorridor;
+            CanToggleFTLCorridor = canToggleFTLCorridor;
             CanApplyThreatCode = canApplyThreatCode;
-            BSSCorridorOpen = bssCorridorOpen;
+            FTLCorridorOpen = ftlCorridorOpen;
             ExpectedCountdownEnd = expectedCountdownEnd;
             CountdownStarted = expectedCountdownEnd != null;
             StationNames = stationNames ?? new();
@@ -42,6 +45,9 @@ namespace Content.Shared._Vortex.Communications
             SelectedStationName = selectedStationName ?? "";
             ManifestEntries = manifestEntries;
             ThreatCodes = threatCodes ?? new();
+            CommunicationTabEnabled = communicationTabEnabled;
+            EvacuationTabEnabled = evacuationTabEnabled;
+            FTLTabEnabled = ftlTabEnabled;
         }
     }
 
@@ -83,18 +89,18 @@ namespace Content.Shared._Vortex.Communications
     }
 
     [Serializable, NetSerializable]
-    public sealed class CentcommConsoleToggleBSSCorridorMessage : BoundUserInterfaceMessage
+    public sealed class CentcommConsoleToggleFTLCorridorMessage : BoundUserInterfaceMessage
     {
     }
 
     [Serializable, NetSerializable]
-    public sealed class CentcommConsoleUpdateBSSButtonMessage : BoundUserInterfaceMessage
+    public sealed class CentcommConsoleUpdateFTLButtonMessage : BoundUserInterfaceMessage
     {
         public bool IsOpen;
     }
 
     [Serializable, NetSerializable]
-    public sealed class CentcommConsoleRequestBSSStateMessage : BoundUserInterfaceMessage
+    public sealed class CentcommConsoleRequestFTLStateMessage : BoundUserInterfaceMessage
     {
     }
 

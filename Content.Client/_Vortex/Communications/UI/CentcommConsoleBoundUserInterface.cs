@@ -29,11 +29,12 @@ namespace Content.Client._Vortex.Communications.UI
             _menu.OnRecallShuttle += RecallShuttle;
             _menu.OnViewManifest += ViewManifest;
             _menu.OnCreateFTLDisk += CreateFTLDisk;
-            _menu.OnToggleBSSCorridor += ToggleBSSCorridor;
+            _menu.OnToggleFTLCorridor += ToggleFTLCorridor;
             _menu.OnApplyThreatCode += ApplyThreatCode;
 
             // Request initial FTL state
-            SendMessage(new CentcommConsoleRequestBSSStateMessage());
+            SendMessage(new CentcommConsoleRequestFTLStateMessage());
+            // Server will send UI state immediately when BoundUIOpenedEvent is raised
         }
 
         private void CallShuttle(float arrivalTimeMinutes)
@@ -68,9 +69,9 @@ namespace Content.Client._Vortex.Communications.UI
             SendMessage(new CentcommConsoleCreateFTLDiskMessage());
         }
 
-        private void ToggleBSSCorridor()
+        private void ToggleFTLCorridor()
         {
-            SendMessage(new CentcommConsoleToggleBSSCorridorMessage());
+            SendMessage(new CentcommConsoleToggleFTLCorridorMessage());
         }
 
         private void ApplyThreatCode(NetEntity station, string threatCode)
@@ -100,11 +101,14 @@ namespace Content.Client._Vortex.Communications.UI
                 _menu.RecallShuttleButton.Disabled = !centcommState.CanRecallShuttle;
                 _menu.ViewManifestButton.Disabled = !centcommState.CanViewManifest;
                 _menu.CreateFTLDiskButton.Disabled = !centcommState.CanCreateFTLDisk;
-                _menu.ToggleBSSCorridorButton.Disabled = !centcommState.CanToggleBSSCorridor;
+                _menu.ToggleFTLCorridorButton.Disabled = !centcommState.CanToggleFTLCorridor;
                 _menu.ApplyThreatCodeButton.Disabled = !centcommState.CanApplyThreatCode;
 
-                // Update BSS button with current state
-                _menu.UpdateBSSButton(centcommState.BSSCorridorOpen);
+                // Update FTL button with current state
+                _menu.UpdateFTLButton(centcommState.FTLCorridorOpen);
+
+                // Handle tab visibility
+                UpdateTabVisibility(centcommState);
 
                 // Populate communication tab dropdowns
                 _menu.PopulateStationSelector(centcommState.StationNames);
@@ -117,13 +121,38 @@ namespace Content.Client._Vortex.Communications.UI
             }
         }
 
+        private void UpdateTabVisibility(CentcommConsoleInterfaceState state)
+        {
+            if (_menu == null)
+                return;
+
+            // Hide/show tabs based on configuration
+            _menu.SetTabVisible(0, state.CommunicationTabEnabled);
+            _menu.SetTabVisible(1, state.EvacuationTabEnabled);
+            _menu.SetTabVisible(2, state.FTLTabEnabled);
+
+            // Set the main tab to the first enabled tab
+            int mainTabIndex = -1;
+            if (state.CommunicationTabEnabled)
+                mainTabIndex = 0;
+            else if (state.EvacuationTabEnabled)
+                mainTabIndex = 1;
+            else if (state.FTLTabEnabled)
+                mainTabIndex = 2;
+
+            if (mainTabIndex >= 0)
+            {
+                _menu.SetCurrentTab(mainTabIndex);
+            }
+        }
+
         protected override void ReceiveMessage(BoundUserInterfaceMessage message)
         {
             base.ReceiveMessage(message);
 
-            if (message is CentcommConsoleUpdateBSSButtonMessage updateMsg)
+            if (message is CentcommConsoleUpdateFTLButtonMessage updateMsg)
             {
-                _menu?.UpdateBSSButton(updateMsg.IsOpen);
+                _menu?.UpdateFTLButton(updateMsg.IsOpen);
             }
             else if (message is CentcommConsoleApplyThreatCodeMessage applyMsg)
             {

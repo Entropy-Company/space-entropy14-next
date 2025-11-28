@@ -12,13 +12,14 @@ centcomm-console-recall-shuttle-tooltip = Отозвать эвакуацион�
 centcomm-console-view-manifest-tooltip = Просмотреть манифест выбранной станции
 centcomm-console-create-ftl-disk = Напечатать БСС диск
 centcomm-console-create-ftl-disk-tooltip = Напечатать БСС диск координат к станции ЦК
-centcomm-console-toggle-bss-corridor = Переключить БСС коридор
-centcomm-console-toggle-bss-corridor-tooltip = Переключить требование диска координат для БСС к ЦК
-centcomm-console-bss-corridor-open = БСС Коридор: Открыт
-centcomm-console-bss-corridor-closed = БСС Коридор: Закрыт
+centcomm-console-toggle-ftl-corridor = Переключить FTL коридор
+centcomm-console-toggle-ftl-corridor-tooltip = Переключить требование диска координат для FTL к ЦК
+centcomm-console-ftl-corridor-open = FTL Коридор: Открыт
+centcomm-console-ftl-corridor-closed = FTL Коридор: Закрыт
 centcomm-console-communication-tab = Связь
 centcomm-console-evacuation-tab = Эвакуация
-centcomm-console-bss-tab = Блюспейс Скачки
+centcomm-console-ftl-tab = Блюспейс Скачки
+centcomm-console-disabled = Консоль выключена
 
 # Communication Tab
 centcomm-console-station-selection-label = Выберите станцию:

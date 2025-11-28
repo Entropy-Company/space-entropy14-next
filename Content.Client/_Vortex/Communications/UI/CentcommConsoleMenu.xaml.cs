@@ -31,7 +31,7 @@ namespace Content.Client._Vortex.Communications.UI
         public event Action? OnRecallShuttle;
         public event Action? OnViewManifest;
         public event Action? OnCreateFTLDisk;
-        public event Action? OnToggleBSSCorridor;
+        public event Action? OnToggleFTLCorridor;
         public event Action<NetEntity, string>? OnApplyThreatCode;
 
         public CentcommConsoleMenu()
@@ -44,7 +44,7 @@ namespace Content.Client._Vortex.Communications.UI
             // Set tab titles
             MainTabContainer.SetTabTitle(0, Loc.GetString("centcomm-console-communication-tab"));
             MainTabContainer.SetTabTitle(1, Loc.GetString("centcomm-console-evacuation-tab"));
-            MainTabContainer.SetTabTitle(2, Loc.GetString("centcomm-console-bss-tab"));
+            MainTabContainer.SetTabTitle(2, Loc.GetString("centcomm-console-ftl-tab"));
 
             // Apply Centcomm console styling
             ApplyCentcommTabStyling();
@@ -53,7 +53,7 @@ namespace Content.Client._Vortex.Communications.UI
             RecallShuttleButton.OnPressed += _ => RecallShuttlePressed();
             ViewManifestButton.OnPressed += _ => ViewManifestPressed();
             CreateFTLDiskButton.OnPressed += _ => CreateFTLDiskPressed();
-            ToggleBSSCorridorButton.OnPressed += _ => ToggleBSSCorridorPressed();
+            ToggleFTLCorridorButton.OnPressed += _ => ToggleFTLCorridorPressed();
             ApplyThreatCodeButton.OnPressed += _ => ApplyThreatCodePressed();
 
             // Handle dropdown selections
@@ -118,9 +118,9 @@ namespace Content.Client._Vortex.Communications.UI
             OnCreateFTLDisk?.Invoke();
         }
 
-        private void ToggleBSSCorridorPressed()
+        private void ToggleFTLCorridorPressed()
         {
-            OnToggleBSSCorridor?.Invoke();
+            OnToggleFTLCorridor?.Invoke();
         }
 
         private void ApplyThreatCodePressed()
@@ -241,24 +241,34 @@ namespace Content.Client._Vortex.Communications.UI
             }
         }
 
-        public void UpdateBSSButton(bool isOpen)
+        public void UpdateFTLButton(bool isOpen)
         {
             // Always show current status, with fallback if localization fails
             string statusText;
             if (isOpen)
             {
-                statusText = Loc.TryGetString("centcomm-console-bss-corridor-open", out var openText)
+                statusText = Loc.TryGetString("centcomm-console-ftl-corridor-open", out var openText)
                     ? openText
-                    : "БСС Коридор: Открыт";
+                    : "FTL Коридор: Открыт";
             }
             else
             {
-                statusText = Loc.TryGetString("centcomm-console-bss-corridor-closed", out var closedText)
+                statusText = Loc.TryGetString("centcomm-console-ftl-corridor-closed", out var closedText)
                     ? closedText
-                    : "БСС Коридор: Закрыт";
+                    : "FTL Коридор: Закрыт";
             }
 
-            ToggleBSSCorridorButton.Text = statusText;
+            ToggleFTLCorridorButton.Text = statusText;
+        }
+
+        public void SetTabVisible(int tabIndex, bool visible)
+        {
+            MainTabContainer.SetTabVisible(tabIndex, visible);
+        }
+
+        public void SetCurrentTab(int tabIndex)
+        {
+            MainTabContainer.CurrentTab = tabIndex;
         }
 
         public void UpdateCountdown()

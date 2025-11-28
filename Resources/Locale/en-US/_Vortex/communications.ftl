@@ -12,13 +12,14 @@ centcomm-console-recall-shuttle-tooltip = Recall the evacuation shuttle
 centcomm-console-view-manifest-tooltip = View the manifest of the selected station
 centcomm-console-create-ftl-disk = Create FTL Disk
 centcomm-console-create-ftl-disk-tooltip = Create FTL disk to CentCom
-centcomm-console-toggle-bss-corridor = Toggle FTL Corridor
-centcomm-console-toggle-bss-corridor-tooltip = Toggle coordinate disk requirement for FTL to CentCom
-centcomm-console-bss-corridor-open = FTL Corridor: Open
-centcomm-console-bss-corridor-closed = FTL Corridor: Closed
+centcomm-console-toggle-ftl-corridor = Toggle FTL Corridor
+centcomm-console-toggle-ftl-corridor-tooltip = Toggle coordinate disk requirement for FTL to CentCom
+centcomm-console-ftl-corridor-open = FTL Corridor: Open
+centcomm-console-ftl-corridor-closed = FTL Corridor: Closed
 centcomm-console-communication-tab = Communication
 centcomm-console-evacuation-tab = Evacuation
-centcomm-console-bss-tab = FTL
+centcomm-console-ftl-tab = FTL
+centcomm-console-disabled = Console disabled
 
 # Communication Tab
 centcomm-console-station-selection-label = Select station:

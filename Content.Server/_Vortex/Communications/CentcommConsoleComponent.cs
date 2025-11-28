@@ -16,7 +16,7 @@ namespace Content.Server._Vortex.Communications
         public TimeSpan LastFTLUse;
 
         [DataField]
-        public TimeSpan LastBSSUse;
+        public TimeSpan LastFTLToggleUse;
 
         [DataField]
         public TimeSpan LastThreatCodeUse;
@@ -26,9 +26,19 @@ namespace Content.Server._Vortex.Communications
         public TimeSpan FTLCooldownDuration = TimeSpan.FromSeconds(5);
 
         [DataField]
-        public TimeSpan BSSCooldownDuration = TimeSpan.FromSeconds(5);
+        public TimeSpan FTLToggleCooldownDuration = TimeSpan.FromSeconds(5);
 
         [DataField]
         public TimeSpan ThreatCodeCooldownDuration = TimeSpan.FromSeconds(5);
+
+        // Tab enable/disable configuration
+        [DataField]
+        public bool CommunicationTabEnabled = true;
+
+        [DataField]
+        public bool EvacuationTabEnabled = true;
+
+        [DataField]
+        public bool FTLTabEnabled = true;
     }
 }

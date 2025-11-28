@@ -99,7 +99,7 @@
 
         <!-- FTL Tab -->
         <BoxContainer Orientation="Vertical" VerticalExpand="True" Margin="15">
-            <Label Text="{Loc 'centcomm-console-bss-tab'}" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
+            <Label Text="{Loc 'centcomm-console-ftl-tab'}" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
 
             <Control MinHeight="20" />
 
@@ -114,10 +114,10 @@
                     StyleClasses="OpenBoth"
                     Disabled="False" />
 
-                <!-- Toggle BSS Corridor Button -->
-                <Button Name="ToggleBSSCorridorButton"
+                <!-- Toggle FTL Corridor Button -->
+                <Button Name="ToggleFTLCorridorButton"
                     Access="Public"
-                    ToolTip="{Loc 'centcomm-console-toggle-bss-corridor-tooltip'}"
+                    ToolTip="{Loc 'centcomm-console-toggle-ftl-corridor-tooltip'}"
                     StyleClasses="OpenBoth"
                     Disabled="False" />
             </BoxContainer>
