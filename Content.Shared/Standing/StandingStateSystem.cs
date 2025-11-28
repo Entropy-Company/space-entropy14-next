@@ -54,6 +54,7 @@ public sealed class StandingStateSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<StandingStateComponent, AttemptMobCollideEvent>(OnMobCollide);
         SubscribeLocalEvent<StandingStateComponent, AttemptMobTargetCollideEvent>(OnMobTargetCollide);
+        SubscribeLocalEvent<StandingStateComponent, ComponentStartup>(OnStandingStateStartup);
     }
 
     private void OnMobTargetCollide(Entity<StandingStateComponent> ent, ref AttemptMobTargetCollideEvent args)
@@ -62,6 +63,13 @@ public sealed class StandingStateSystem : EntitySystem
         {
             args.Cancelled = true;
         }
+    }
+
+    private void OnStandingStateStartup(EntityUid uid, StandingStateComponent component, ComponentStartup args)
+    {
+        var appearance = EnsureComp<AppearanceComponent>(uid);
+        var state = component.CurrentState == StandingState.Standing ? RotationState.Vertical : RotationState.Horizontal;
+        _appearance.SetData(uid, RotationVisuals.RotationState, state, appearance);
     }
 
     private void OnMobCollide(Entity<StandingStateComponent> ent, ref AttemptMobCollideEvent args)
