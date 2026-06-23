@@ -173,6 +173,19 @@
   components:
   - type: Pda
     id: NanotrasenRepresentativeIDCard
+  - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    preinstalled:
+      - CrewManifestCartridge
+      - NotekeeperCartridge
+      - NanoTaskCartridge
+      - NewsReaderCartridge
+      - MedTekCartridge
+      - WantedListCartridge
+      - LogProbeCartridge
+      - AstroNavCartridge
+      - NanoChatCartridge # DeltaV
+      - WalletCartridge # <Onyx Economy>
 
 - type: entity
   parent: CentcomPDA
