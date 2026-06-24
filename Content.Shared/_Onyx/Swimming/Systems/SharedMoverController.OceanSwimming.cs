@@ -56,18 +56,14 @@ public abstract partial class SharedMoverController
         var wishLengthSquared = wishDir.LengthSquared();
 
         if (!mover.HasDirectionalMovement || wishLengthSquared <= 0f)
-        {
-            wishDir = Vector2.Zero;
             return;
-        }
 
         var now = Timing.CurTime;
 
         var intervalSeconds = Math.Max(MinStrokeInterval, ocean.StrokeInterval.TotalSeconds);
-        var durationSeconds = Math.Clamp(
-            ocean.StrokeDuration.TotalSeconds,
-            MinStrokeDuration,
-            intervalSeconds);
+
+        var rawDuration = ocean.StrokeDuration.TotalSeconds;
+        var durationSeconds = rawDuration > intervalSeconds ? intervalSeconds : (rawDuration < MinStrokeDuration ? MinStrokeDuration : rawDuration);
 
         var interval = TimeSpan.FromSeconds(intervalSeconds);
         var duration = TimeSpan.FromSeconds(durationSeconds);
@@ -88,8 +84,8 @@ public abstract partial class SharedMoverController
 
         var sprint = new OceanSwimmingSprintEvent();
         RaiseLocalEvent(uid, sprint);
-        if (sprint.IsSprinting)
-            speed *= MathF.Max(1f, ocean.SprintSpeedMultiplier);
+        if (sprint.IsSprinting && ocean.SprintSpeedMultiplier > 1f)
+            speed *= ocean.SprintSpeedMultiplier;
 
         wishDir = Vector2.Normalize(wishDir) * speed * power;
     }

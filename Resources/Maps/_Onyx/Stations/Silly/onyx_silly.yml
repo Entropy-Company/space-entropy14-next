@@ -134,6 +134,7 @@ entities:
       staminaRecovery: 4
       staminaCost: 5
       swimSpeed: 3.5
+      sprintStaminaCostMultiplier: 1.5
     - type: WeatherScheduler
       random: True
       stages:
