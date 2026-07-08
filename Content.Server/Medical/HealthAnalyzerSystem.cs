@@ -388,11 +388,15 @@ public sealed class HealthAnalyzerSystem : EntitySystem
             bodyTemperature = temp.CurrentTemperature;
 
         var bloodAmount = float.NaN;
+        var bloodLow = false; // Goobstation
 
         if (TryComp<BloodstreamComponent>(target, out var bloodstream) &&
             _solutionContainerSystem.ResolveSolution(target, bloodstream.BloodSolutionName,
                 ref bloodstream.BloodSolution, out var bloodSolution))
+        {
             bloodAmount = bloodSolution.FillFraction;
+            bloodLow = bloodAmount < bloodstream.BloodlossThreshold; // Goobstation
+        }
 
         var bodyStatus = _woundSystem.GetDamageableStatesOnBody(target);
         Dictionary<TargetBodyPart, bool> bleeding; // Goobstation - removed unnecessary allocation
@@ -422,6 +426,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
                     vitalDamage, // Goobstation
                     traumas,
                     partPain, // <Onyx-PainFix Edited>
+                    bloodLow, // Goobstation
                     part != null ? GetNetEntity(part) : null
                 ));
                 break;

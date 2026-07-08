@@ -1130,11 +1130,12 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.Property<JsonDocument>("Markings")
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
-
+                    // <Onyx-OOCNotes>
                     b.Property<string>("OOCNotes")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("oocnotes");
+                    // </Onyx-OOCNotes>
                     b.Property<JsonDocument>("OrganMarkings")
                         .HasColumnType("jsonb")
                         .HasColumnName("organ_markings");
@@ -2059,7 +2060,7 @@ namespace Content.Server.Database.Migrations.Postgres
 
                     b.Navigation("Profile");
                 });
-
+            // </Onyx-OOCNotes>
             modelBuilder.Entity("Content.Server.Database.VortexModel+VortexProfile", b =>
                 {
                     b.HasOne("Content.Server.Database.Profile", "Profile")
@@ -2071,6 +2072,7 @@ namespace Content.Server.Database.Migrations.Postgres
 
                     b.Navigation("Profile");
                 });
+            // <Onyx-OOCNotes>
             modelBuilder.Entity("Content.Server.Database.Unban", b =>
                 {
                     b.HasOne("Content.Server.Database.Ban", "Ban")

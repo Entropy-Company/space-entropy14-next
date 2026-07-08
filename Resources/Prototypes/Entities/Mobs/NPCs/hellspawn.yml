@@ -92,7 +92,9 @@
   - type: RotationVisuals
     defaultRotation: 90
     horizontalRotation: 90
-  - type: GhostTakeoverAvailable
+# CorvaxGoob start
+#  - type: GhostTakeoverAvailable
+# CorvaxGoob end
   - type: HTN
     rootTask:
       task: SimpleHostileCompound

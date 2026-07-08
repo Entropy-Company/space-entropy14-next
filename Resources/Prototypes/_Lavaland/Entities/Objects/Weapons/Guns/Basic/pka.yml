@@ -104,12 +104,10 @@
     sprite: _Lavaland/Objects/Weapons/Guns/Basic/kinetic_repeater.rsi
   - type: Gun
     selectedMode: Burst
-    burstFireRate: 3
+    burstFireRate: 5
     burstCooldown: 1.5
     availableModes:
     - Burst
-    soundGunshot:
-      path: /Audio/Weapons/Guns/Gunshots/kinetic_accel.ogg
   - type: BasicEntityAmmoProvider
     proto: RapidBulletKinetic
     capacity: 3

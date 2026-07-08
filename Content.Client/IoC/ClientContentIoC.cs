@@ -164,7 +164,7 @@ namespace Content.Client.IoC
 
             collection.Register<IParallaxManager, ParallaxManager>();
             collection.Register<GeneratedParallaxCache>();
-            collection.Register<DiscordIdManager>(); // ADT Discord
+            collection.Register<DiscordIdManager>(); // <Onyx-Discord>
             collection.Register<EntityScreenshotRenderService>(); // Corvax-Wiki
             collection.Register<EntityScreenshotGenerator>(); // Corvax-Wiki
             collection.Register<IChatManager, ChatManager>();

@@ -1,8 +1,0 @@
-- type: latheRecipe
-  parent: BaseRoboticsRecipe
-  id: SlimeScannerXenobio
-  result: SlimeScannerXenobio
-  materials:
-    Glass: 150
-    Plastic: 100
-    Steel: 200

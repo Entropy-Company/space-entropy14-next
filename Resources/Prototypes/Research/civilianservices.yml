@@ -80,6 +80,7 @@
     - MassMediaCircuitboard
     - JukeboxCircuitBoard
     - BorgModuleLollypop
+    - CrayonRainbowLarge # Goobstation
   position: 0,1
   technologyPrerequisites: []
 - type: technology
@@ -128,11 +129,12 @@
   cost: 7500
   recipeUnlocks:
     - StasisBedMachineCircuitboard
-    - StasisOperatingTableCircuitboard
+    - StasisOperatingTableCircuitboard # Corvax-Goob-StasisOperatingTable
     - CryoPodMachineCircuitboard
     - CryostasisBeaker
     - SyringeCryostasis
-    - NTBodyBag
+    - CryostasisCigarette # goob cryo cigarette
+    - NTBodyBag # Corvax-Goob-AdvancedBodyBags-end
     - PrisonerBodyBag
     - RadiationBodyBag
   position: 3,3
@@ -237,6 +239,7 @@
     - BluespaceBodyBag
     - MedkitCombat
     - VialBluespace
+    - DrinkShakerBluespace # goob
   position: 4,3
   technologyPrerequisites:
     - BiochemicalStasis

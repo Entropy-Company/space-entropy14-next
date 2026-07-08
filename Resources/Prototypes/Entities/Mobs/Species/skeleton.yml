@@ -186,6 +186,8 @@
       proto: SkeletonBarkOne
       sound:
         collection: ADTSkeletonBark
+  - type: GrabIntent #goob
+  - type: Grabbable #goob
 
 - type: entity
   parent: BaseSpeciesDummy

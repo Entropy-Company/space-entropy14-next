@@ -230,7 +230,7 @@ namespace Content.Server.IoC
             IoCManager.Register<IAdminLogManager, AdminLogManager>();
             IoCManager.Register<PlayTimeTrackingManager>();
             IoCManager.Register<UserDbDataManager>();
-            IoCManager.Register<ServerDiscordIdManager>(); // ADT Discord
+            IoCManager.Register<ServerDiscordIdManager>(); // <Onyx-Discord>
             IoCManager.Register<ServerInfoManager>();
             IoCManager.Register<PoissonDiskSampler>();
             IoCManager.Register<DiscordWebhook>();

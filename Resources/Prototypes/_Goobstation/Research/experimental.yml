@@ -44,6 +44,8 @@
   tier: 1
   cost: 5000
   recipeUnlocks:
+    - SlimeScannerXenobio
+    - XenobiologyBountyComputerCircuitboard
     - SlimeGrinderMachineCircuitboard
     - ClothingBackpackXenoBioTank
   position: 0,4
@@ -94,8 +96,8 @@
 #     - ExperimentalScience
 #     - ModsuitsTech
 - type: technology
-  id: XenobagHolding
-  name: research-technology-xenobag-holding
+  id: XenoCompatibility
+  name: research-technology-xeno-compatibility
   icon:
     sprite: _Goobstation/Clothing/Belt/xenobag_holding.rsi
     state: icon
@@ -106,4 +108,19 @@
     - ClothingBeltChemBagXenobiologyHolding
   position: 1,4
   technologyPrerequisites:
-    - Xenobiology
+    - ExperimentalScience
+
+- type: technology
+  id: XenobagHolding
+  name: research-technology-xenobag-holding
+  icon:
+    sprite: _Goobstation/Clothing/Belt/xenobag_holding.rsi
+    state: icon
+  discipline: Experimental
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ClothingBeltChemBagXenobiologyHolding
+  position: -4,3
+  technologyPrerequisites:
+  - Xenobiology

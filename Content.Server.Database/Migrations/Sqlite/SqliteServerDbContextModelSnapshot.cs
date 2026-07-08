@@ -1065,11 +1065,12 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.Property<byte[]>("Markings")
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
-
+                    // </Onyx-OOCNotes>
                     b.Property<string>("OOCNotes")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("oocnotes");
+                    // <Onyx-OOCNotes>
                     b.Property<byte[]>("OrganMarkings")
                         .HasColumnType("jsonb")
                         .HasColumnName("organ_markings");
@@ -1974,7 +1975,7 @@ namespace Content.Server.Database.Migrations.Sqlite
 
                     b.Navigation("Profile");
                 });
-
+            // <Onyx-OOCNotes>
             modelBuilder.Entity("Content.Server.Database.VortexModel+VortexProfile", b =>
                 {
                     b.HasOne("Content.Server.Database.Profile", "Profile")
@@ -1986,6 +1987,7 @@ namespace Content.Server.Database.Migrations.Sqlite
 
                     b.Navigation("Profile");
                 });
+            // </Onyx-OOCNotes>
             modelBuilder.Entity("Content.Server.Database.Unban", b =>
                 {
                     b.HasOne("Content.Server.Database.Ban", "Ban")

@@ -1097,7 +1097,8 @@
   parent: PlushieTwofish
   id: EvilPlushieTwofish
   suffix: Evil
-  
+
+
 - type: entity
   parent: BaseItem
   id: ToyBladeEldritch

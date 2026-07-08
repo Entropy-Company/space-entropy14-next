@@ -32,13 +32,12 @@ namespace Content.Server.Speech
 {
     public sealed class SpeechSoundSystem : EntitySystem
     {
+        [Dependency] private readonly IConfigurationManager _cfg = default!; // Goob
         [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly IPrototypeManager _protoManager = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly SharedAudioSystem _audio = default!;
 
-        // Goobs tation
-        [Dependency] private readonly IConfigurationManager _cfg = default!;
 
         public override void Initialize()
         {
@@ -52,8 +51,14 @@ namespace Content.Server.Speech
             // Goobstation start
             var getSpeechSoundEv = new GetSpeechSoundEvent();
             RaiseLocalEvent(ent, ref getSpeechSoundEv);
-            if (getSpeechSoundEv.SpeechSoundProtoId == null ||
-                !_protoManager.TryIndex<SpeechSoundsPrototype>(getSpeechSoundEv.SpeechSoundProtoId, out var prototype))
+            SpeechSoundsPrototype? prototype;
+            if (getSpeechSoundEv.Handled)
+            {
+                if (getSpeechSoundEv.SpeechSoundProtoId is not { } protoId ||
+                    !_protoManager.TryIndex(protoId, out prototype))
+                    return null;
+            }
+            else
             {
                 if (ent.Comp.SpeechSounds == null)
                     return null;

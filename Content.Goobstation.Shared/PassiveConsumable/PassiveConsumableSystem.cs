@@ -5,23 +5,23 @@ using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
-using Content.Shared.Inventory;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
-using Robust.Shared.Network;
+using Content.Shared.Popups;
 using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Shared.PassiveConsumable;
 
 public sealed class PassiveConsumableSystem : EntitySystem
 {
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IngestionSystem _ingestion = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
     [Dependency] private readonly StomachSystem _stomach = default!;
     [Dependency] private readonly ReactiveSystem _reactive = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private readonly FlavorProfileSystem _flavor = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly INetManager _net = default!; // <Onyx-Fix>
 
     public override void Initialize()
     {
@@ -32,27 +32,23 @@ public sealed class PassiveConsumableSystem : EntitySystem
     }
 
     private void OnEquipped(Entity<PassiveConsumableComponent> ent, ref ClothingGotEquippedEvent args)
-    { 
-        // <Onyx-Fix>
-        if (_net.IsClient)
-            return;
-
-        if (args.Clothing.InSlotFlag is not { } slot || (slot & ent.Comp.Slot) == SlotFlags.NONE)
-            return;
-        // </Onyx-Fix>
-
+    {
         ent.Comp.Wearer = args.Wearer;
         ent.Comp.NextConsume = _timing.CurTime + ent.Comp.ConsumeInterval;
         Dirty(ent);
+
+        if (!TryComp<EdibleComponent>(ent.Owner, out var edible))
+            return;
+
+        if (!_solution.TryGetSolution(ent.Owner, edible.Solution, out _, out var solution))
+            return;
+
+        var flavors = _flavor.GetLocalizedFlavorsMessage(args.Wearer, solution);
+        _popup.PopupEntity(Loc.GetString("edible-nom", ("food", ent.Owner), ("flavors", flavors)), args.Wearer, args.Wearer);
     }
 
     private void OnUnequipped(Entity<PassiveConsumableComponent> ent, ref ClothingGotUnequippedEvent args)
     {
-        // <Onyx-Fix>
-        if (_net.IsClient)
-            return;
-        // </Onyx-Fix>
-
         ent.Comp.Wearer = null;
         ent.Comp.NextConsume = TimeSpan.Zero;
         Dirty(ent);
@@ -61,11 +57,6 @@ public sealed class PassiveConsumableSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-
-        // <Onyx-Fix>
-        if (_net.IsClient)
-            return;
-        // </Onyx-Fix>
 
         var query = EntityQueryEnumerator<PassiveConsumableComponent, ClothingComponent, EdibleComponent>();
         List<(EntityUid Uid, EdibleComponent Edible, EntityUid User, bool Delete)>? finished = null;
@@ -82,7 +73,6 @@ public sealed class PassiveConsumableSystem : EntitySystem
             {
                 finished ??= [];
                 finished.Add((uid, edible, comp.Wearer!.Value, shouldDelete));
-                continue; // <Onyx-Fix>
             }
 
             comp.NextConsume = _timing.CurTime + comp.ConsumeInterval;
@@ -95,7 +85,7 @@ public sealed class PassiveConsumableSystem : EntitySystem
         {
             if (delete)
             {
-                _ingestion.SpawnTrash((uid, edible), user); // <Onyx-Fix>
+                _ingestion.SpawnTrash((uid, edible), user);
                 QueueDel(uid);
             }
         }
@@ -137,7 +127,7 @@ public sealed class PassiveConsumableSystem : EntitySystem
             return false;
         }
 
-        _reactive.DoEntityReaction(wearer, split, ReactionMethod.Ingestion); // <Onyx-Fix>
+        _reactive.DoEntityReaction(wearer, solution, ReactionMethod.Ingestion);
         _stomach.TryTransferSolution(bestStomachUid.Value, split, bestStomach);
 
         if (soln.Value.Comp.Solution.Volume > FixedPoint2.Zero)

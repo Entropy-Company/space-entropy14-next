@@ -48,6 +48,7 @@
     - Demon
     # Corvax-Wega-Species-end
     - Shadowkin
+    - Hydrakin # Monolith/Obelisk
 
 - type: guideEntry
   id: Arachnid
@@ -139,3 +140,8 @@
   id: Shadowkin
   name: species-name-shadowkin
   text: "/ServerInfo/Guidebook/Mobs/Shadowkin.xml"
+
+- type: guideEntry
+  id: Hydrakin
+  name: species-name-hydrakin
+  text: "/ServerInfo/Guidebook/Mobs/Hydrakin.xml"
